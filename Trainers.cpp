@@ -32,7 +32,7 @@ void Trainers::ShowTeam() {
 		std::cout << pokemon.GetName() << " " << pokemon.GetLevel() << "\nDescription : " << pokemon.GetDescription() << "\n";
 	}
 }
-void Trainers::Introduce() {
+void Trainers::Introduce() { // modifier pour afficher les sprites des trainers et leur faire dire leur catchphrase
 	std::cout << "Bonjour, mon nom est " << name << " " << lastName << ".\n" << catchPhrase << "\n";
 }
 void Trainers::EarnMoney(int amount) {
