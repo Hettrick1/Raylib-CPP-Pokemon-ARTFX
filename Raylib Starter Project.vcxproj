@@ -133,7 +133,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Abilities.cpp" />
+    <ClCompile Include="Battle.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Pokemon.cpp" />
+    <ClCompile Include="PokemonData.cpp" />
+    <ClCompile Include="Trainers.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Abilities.h" />
+    <ClInclude Include="Battle.h" />
+    <ClInclude Include="Pokemon.h" />
+    <ClInclude Include="PokemonData.h" />
+    <ClInclude Include="Poketype.h" />
+    <ClInclude Include="Trainers.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
