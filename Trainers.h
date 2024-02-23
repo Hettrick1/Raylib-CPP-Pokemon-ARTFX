@@ -10,16 +10,17 @@
 class Trainers
 {
 private:
-	std::string name;
-	std::string lastName;
-	std::string catchPhrase;
-	int money;
-	int lifePoints;
-	int pokeballs;
-	std::vector<Pokemon> team;
-	Pokemon* currentPokemon;
+	std::string mName;
+	std::string mLastName;
+	std::string mCatchPhrase;
+	int mMoney;
+	int mLifePoints;
+	int mPokeballs;
+	std::vector<Pokemon> mTeam;
+	Pokemon* mCurrentPokemon;
 
 public:
+	Trainers();
 	Trainers(std::string dName, std::string dLastName, std::string dCatchPhrase, int dMoney, int dLifePoints, int dPokeballs);
 	Trainers(std::string dName, std::string dLastName, std::string dCatchPhrase, Pokemon& dFirstPokemon);
 	~Trainers();

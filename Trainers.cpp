@@ -3,52 +3,63 @@
 
 #include <iostream>
 
-Trainers::Trainers(std::string dName, std::string dLastName, std::string dCatchPhrase, int dMoney, int dLifePoints, int dPokeballs) {
-	name = dName;
-	lastName = dLastName;
-	catchPhrase = dCatchPhrase;
-	money = dMoney;
-	lifePoints = dLifePoints;
-	pokeballs = dPokeballs;
+
+Trainers::Trainers()
+{
+	mName = "Name";
+	mLastName = "LastName";
+	mCatchPhrase = "CatchPhrase";
+	mMoney = 100;
+	mLifePoints = 100;
+	mPokeballs = 100;
 }
-Trainers::Trainers(std::string dName, std::string dLastName, std::string dCatchPhrase, Pokemon& dFirstPokemon) {
-	name = dName;
-	lastName = dLastName;
-	catchPhrase = dCatchPhrase;
-	money = 100;
-	lifePoints = 100;
-	pokeballs = 10;
-	currentPokemon = &dFirstPokemon;
+
+Trainers::Trainers(std::string name, std::string lastName, std::string catchPhrase, int money, int lifePoints, int pokeballs) {
+	mName = name;
+	mLastName = lastName;
+	mCatchPhrase = catchPhrase;
+	mMoney = money;
+	mLifePoints = lifePoints;
+	mPokeballs = pokeballs;
+}
+Trainers::Trainers(std::string name, std::string lastName, std::string catchPhrase, Pokemon& firstPokemon) {
+	mName = name;
+	mLastName = lastName;
+	mCatchPhrase = catchPhrase;
+	mMoney = 100;
+	mLifePoints = 100;
+	mPokeballs = 10;
+	mCurrentPokemon = &firstPokemon;
 }
 Trainers::~Trainers() {}
-std::string Trainers::GetName() { return name; }
+std::string Trainers::GetName() { return mName; }
 void Trainers::AddPokemon(Pokemon& pokemon) {
-	team.push_back(pokemon);
+	mTeam.push_back(pokemon);
 }
-std::vector<Pokemon>& Trainers::GetTeam() { return team; }
+std::vector<Pokemon>& Trainers::GetTeam() { return mTeam; }
 void Trainers::ShowTeam() {
-	std::cout << "Dresseur : " << name << "\nTeam : \n";
-	for (const Pokemon& pokemon : team) {
+	std::cout << "Dresseur : " << mName << "\nTeam : \n";
+	for (const Pokemon& pokemon : mTeam) {
 		std::cout << pokemon.GetName() << " " << pokemon.GetLevel() << "\nDescription : " << pokemon.GetDescription() << "\n";
 	}
 }
 void Trainers::Introduce() { // modifier pour afficher les sprites des trainers et leur faire dire leur catchphrase
-	std::cout << "Bonjour, mon nom est " << name << " " << lastName << ".\n" << catchPhrase << "\n";
+	std::cout << "Bonjour, mon nom est " << mName << " " << mLastName << ".\n" << mCatchPhrase << "\n";
 }
 void Trainers::EarnMoney(int amount) {
-	money += amount;
-	std::cout << "Earned " << amount << " money. Total money: " << money << "\n";
+	mMoney += amount;
+	std::cout << "Earned " << amount << " money. Total money: " << mMoney << "\n";
 }
 
 void Trainers::EarnPokeballs(int count) {
-	pokeballs += count;
-	std::cout << "Earned " << count << " pokeballs. Total pokeballs: " << pokeballs << "\n";
+	mPokeballs += count;
+	std::cout << "Earned " << count << " pokeballs. Total pokeballs: " << mPokeballs << "\n";
 }
 
 void Trainers::ChangeCurrentPokemon() {
 	std::vector<Pokemon*> pokemonsAvailable;
 	int answer = 0;
-	for (Pokemon& pokemon : team) {
+	for (Pokemon& pokemon : mTeam) {
 		if (!pokemon.GetIncapacited()) {
 			pokemonsAvailable.push_back(&pokemon);
 		}
@@ -62,22 +73,22 @@ void Trainers::ChangeCurrentPokemon() {
 		std::cin >> answer;
 	} while (answer <= 0 || answer > pokemonsAvailableSize);
 
-	currentPokemon = pokemonsAvailable[answer - 1];
-	std::cout << "Vous avez choisi : " << currentPokemon->GetName() << ".\n";
+	mCurrentPokemon = pokemonsAvailable[answer - 1];
+	std::cout << "Vous avez choisi : " << mCurrentPokemon->GetName() << ".\n";
 }
 
 Pokemon* Trainers::GetCurrentPokemon() {
-	return currentPokemon;
+	return mCurrentPokemon;
 }
 
 int Trainers::GetMoney() {
-	return money;
+	return mMoney;
 }
 void Trainers::SetCurrentPokemon(Pokemon& pokemon) {
-	currentPokemon = &pokemon;
+	mCurrentPokemon = &pokemon;
 }
 
 void Trainers::SetCurrentPokemon(int pokemon)
 {
-	currentPokemon = &team[pokemon];
+	mCurrentPokemon = &mTeam[pokemon];
 }
