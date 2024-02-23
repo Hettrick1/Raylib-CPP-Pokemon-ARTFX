@@ -20,7 +20,6 @@ private:
 	Pokemon* currentPokemon;
 
 public:
-	Trainers();
 	Trainers(std::string dName, std::string dLastName, std::string dCatchPhrase, int dMoney, int dLifePoints, int dPokeballs);
 	Trainers(std::string dName, std::string dLastName, std::string dCatchPhrase, Pokemon& dFirstPokemon);
 	~Trainers();

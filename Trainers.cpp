@@ -3,15 +3,6 @@
 
 #include <iostream>
 
-Trainers::Trainers() {
-	name = "Player";
-	lastName = "Player";
-	catchPhrase = "CatchPhrase";
-	money = 100;
-	lifePoints = 100;
-	pokeballs = 10;
-}
-
 Trainers::Trainers(std::string dName, std::string dLastName, std::string dCatchPhrase, int dMoney, int dLifePoints, int dPokeballs) {
 	name = dName;
 	lastName = dLastName;
