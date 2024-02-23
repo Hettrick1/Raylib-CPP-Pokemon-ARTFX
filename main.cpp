@@ -1,22 +1,60 @@
 #include "raylib.h"
 #include <iostream>
 
-using namespace std;
+const int WIDTH = 800;
+const int HEIGHT = 500;
+float deltaTime;
+
+void Load();
+void Start();
+void Update();
+void Draw();
+void Unload();
+void center_window(float window_width, float window_height);
 
 int main() {
-
-    
-    cout << "Hello World" << endl;
-
-    InitWindow(300, 300, "My first Raylib window!");
-    SetTargetFPS(60);
-
+    Load();
+    Start();
     while (!WindowShouldClose()) {
-        BeginDrawing();
-        ClearBackground(DARKGREEN);
-        EndDrawing();
+        Update();
+        Draw();
     }
-
-    CloseWindow();
+    Unload();
     return 0;
+}
+
+void Load()
+{
+    InitWindow(WIDTH, HEIGHT, "Pokemon");
+    SetTargetFPS(60);
+}
+
+void Start()
+{
+    center_window(WIDTH, HEIGHT);
+}
+
+void Update()
+{
+    deltaTime = GetFrameTime();
+}
+
+void Draw()
+{
+    BeginDrawing();
+    ClearBackground(WHITE);
+    EndDrawing();
+}
+
+void Unload()
+{
+    CloseWindow();
+}
+
+void center_window(float window_width, float window_height)
+{
+    int monitor = GetCurrentMonitor();
+    int monitor_width = GetMonitorWidth(monitor);
+    int monitor_height = GetMonitorHeight(monitor);
+    SetWindowPosition((int)(monitor_width / 2) - (int)(window_width / 2), (int)(monitor_height / 2) - (int)(window_height / 2));
 }
