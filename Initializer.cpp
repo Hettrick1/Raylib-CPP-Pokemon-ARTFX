@@ -47,7 +47,7 @@ Pokemon Initializer::NewPokemon(std::vector<std::string>& AllNames) {
     return Pokemon(name, type, level, description, static_cast<float>(health));
 }
 
-Trainers& Initializer::GetDresseur(int dresseurIndex) {
+Trainers& Initializer::GetTrainer(int dresseurIndex) {
     return AllDresseurs[dresseurIndex];
 }
 
@@ -59,7 +59,7 @@ Trainers& Initializer::GetPlayer() {
     return player;
 }
 
-void Initialisation::CreatePlayer() {
+void Initializer::CreatePlayer() {
     std::string playerFirstName, playerLastName, playerCatchphrase;
     int answer;
     Pokemon firstPokemon;
@@ -87,7 +87,7 @@ void Initialisation::CreatePlayer() {
         firstPokemon = Pokemon("Salamèche", PokeType::FIRE, 1, "Il se refugie dans sa carapace et replique en eclaboussant l ennemi a la premiere occasion.", 100);
         break;
     }
-    Dresseur defaultPlayer(playerFirstName, playerLastName, playerCatchphrase, firstPokemon);
+    Trainers defaultPlayer(playerFirstName, playerLastName, playerCatchphrase, firstPokemon);
     player = defaultPlayer;
     player.AddPokemon(firstPokemon);
     std::cout << "Vous avez choisi : " << firstPokemon.GetName() << "\n";

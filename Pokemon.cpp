@@ -3,23 +3,27 @@
 #include "Abilities.h"
 #include "PokemonData.h"
 
-Pokemon::Pokemon(std::string pName, PokeType pType, int pLevel, std::string pDescription, float pHealth) {
-	name = pName;
-	type = pType;
-	level = pLevel;
-	description = pDescription;
-	health = pHealth;
-	maxHealth = pHealth;
-	incapacited = false;
+Pokemon::Pokemon()
+{
+}
+
+Pokemon::Pokemon(std::string name, PokeType type, int level, std::string description, float health) {
+	mName = name;
+	mType = type;
+	mLevel = level;
+	mDescription = description;
+	mHealth = health;
+	mMaxHealth = health;
+	mIncapacited = false;
 }
 Pokemon::~Pokemon() {}
 
-std::string Pokemon::GetName() const { return name; }
-int Pokemon::GetLevel() const { return level; }
-std::string Pokemon::GetDescription() const { return description; }
-float Pokemon::GetHealth() const { return health; }
-PokeType Pokemon::GetType() { return type; }
-bool Pokemon::GetIncapacited() { return incapacited; }
+std::string Pokemon::GetName() const { return mName; }
+int Pokemon::GetLevel() const { return mLevel; }
+std::string Pokemon::GetDescription() const { return mDescription; }
+float Pokemon::GetHealth() const { return mHealth; }
+PokeType Pokemon::GetType() { return mType; }
+bool Pokemon::GetIncapacited() { return mIncapacited; }
 
 float Pokemon::CalculateDamage(Abilities& ability, Pokemon& defender) {
 
@@ -42,12 +46,12 @@ float Pokemon::CalculateDamage(Abilities& ability, Pokemon& defender) {
 }
 
 void Pokemon::TakeDamages(float damages) {
-	if (health > damages) {
-		health -= damages;
+	if (mHealth > damages) {
+		mHealth -= damages;
 	}
 	else {
-		incapacited = true;
-		health = 0;
+		mIncapacited = true;
+		mHealth = 0;
 	}
 }
 
@@ -55,7 +59,7 @@ void Pokemon::LearnAbilities(std::vector<Abilities>& allAbilities) {
 	int answer;
 	size_t abilitiesAvailableSize = allAbilities.size();
 
-	if (abilities.size() < 5) {
+	if (mAbilities.size() < 5) {
 		std::cout << "\nVotre pokemon peut apprendre ces abilites, laquelle voulez-vous ?\n";
 		for (int i = 0; i < abilitiesAvailableSize; i++) {
 			std::cout << i + 1 << ". " << allAbilities[i].GetAbilityName() << ".\n";
@@ -63,29 +67,29 @@ void Pokemon::LearnAbilities(std::vector<Abilities>& allAbilities) {
 		do {
 			std::cin >> answer;
 		} while (answer <= 0 || answer > abilitiesAvailableSize);
-		abilities.push_back(allAbilities[answer - 1]);
-		std::cout << "Votre pokemon " << name << " vient d'apprendre l'abilité : " << allAbilities[answer - 1].GetAbilityName() << ".\n";
+		mAbilities.push_back(allAbilities[answer - 1]);
+		std::cout << "Votre pokemon " << mName << " vient d'apprendre l'abilité : " << allAbilities[answer - 1].GetAbilityName() << ".\n";
 	}
 	else {
-		std::cout << "Votre pokemon " << name << " ne peut plus apprendre d'abilites.\n";
+		std::cout << "Votre pokemon " << mName << " ne peut plus apprendre d'abilites.\n";
 	}
 }
 void Pokemon::GoOutOfPokeball() {
-	std::cout << name << " est sorti de sa pokeball.\n";
+	std::cout << mName << " est sorti de sa pokeball.\n";
 }
 void Pokemon::GoInAPokeball() {
-	std::cout << name << " est entre dans sa pokeball.\n";
+	std::cout << mName << " est entre dans sa pokeball.\n";
 }
 
 void Pokemon::Rest() {
-	health = maxHealth;
-	for (Abilities& ability : abilities) {
+	mHealth = mMaxHealth;
+	for (Abilities& ability : mAbilities) {
 		ability.ResetUses();
 	}
 }
 
 std::vector<Abilities>& Pokemon::GetAbilities() {
-	return abilities;
+	return mAbilities;
 }
 
 

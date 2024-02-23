@@ -11,15 +11,16 @@
 class Pokemon
 {
 private:
-	std::string name;
-	PokeType type;
-	int level;
-	std::string description;
-	float maxHealth;
-	float health;
-	std::vector<Abilities> abilities;
-	bool incapacited;
+	std::string mName;
+	PokeType mType;
+	int mLevel;
+	std::string mDescription;
+	float mMaxHealth;
+	float mHealth;
+	std::vector<Abilities> mAbilities;
+	bool mIncapacited;
 public:
+	Pokemon();
 	Pokemon(std::string name, PokeType type, int level, std::string description, float health);
 	~Pokemon();
 	std::string GetName() const;
