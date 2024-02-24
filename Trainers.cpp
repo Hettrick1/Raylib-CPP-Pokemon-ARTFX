@@ -22,10 +22,8 @@ Trainers::Trainers(std::string name, std::string lastName, std::string catchPhra
 	mLifePoints = lifePoints;
 	mPokeballs = pokeballs;
 }
-Trainers::Trainers(std::string name, std::string lastName, std::string catchPhrase, Pokemon& firstPokemon) {
+Trainers::Trainers(std::string name, Pokemon& firstPokemon) {
 	mName = name;
-	mLastName = lastName;
-	mCatchPhrase = catchPhrase;
 	mMoney = 100;
 	mLifePoints = 100;
 	mPokeballs = 10;

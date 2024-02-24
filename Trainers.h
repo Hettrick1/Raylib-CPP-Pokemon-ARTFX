@@ -22,7 +22,7 @@ private:
 public:
 	Trainers();
 	Trainers(std::string dName, std::string dLastName, std::string dCatchPhrase, int dMoney, int dLifePoints, int dPokeballs);
-	Trainers(std::string dName, std::string dLastName, std::string dCatchPhrase, Pokemon& dFirstPokemon);
+	Trainers(std::string dName, Pokemon& dFirstPokemon);
 	~Trainers();
 	std::string GetName();
 	std::vector<Pokemon>& GetTeam();

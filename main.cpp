@@ -1,4 +1,10 @@
 #include "raylib.h"
+#include "PokemonData.h"
+#include "Initializer.h"
+#include "Pokemon.h"
+#include "Trainers.h"
+#include "Abilities.h"
+#include "Battle.h"
 #include <iostream>
 
 const int WIDTH = 800;
@@ -11,6 +17,8 @@ void Update();
 void Draw();
 void Unload();
 void center_window(float window_width, float window_height);
+
+Initializer init = Initializer();
 
 int main() {
     Load();
@@ -32,22 +40,26 @@ void Load()
 void Start()
 {
     center_window(WIDTH, HEIGHT);
+    init.Start();
 }
 
 void Update()
 {
     deltaTime = GetFrameTime();
+    init.CreatePlayer();
 }
 
 void Draw()
 {
     BeginDrawing();
     ClearBackground(WHITE);
+    init.Draw();
     EndDrawing();
 }
 
 void Unload()
 {
+    init.Unload();
     CloseWindow();
 }
 
