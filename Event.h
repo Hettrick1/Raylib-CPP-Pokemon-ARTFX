@@ -4,6 +4,8 @@ class Event
 private:
 
 public:
+	Event();
+	~Event();
 	void Start();
 	void Update();
 	void Draw();

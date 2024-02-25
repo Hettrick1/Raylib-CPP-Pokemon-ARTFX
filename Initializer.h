@@ -20,6 +20,7 @@ public:
 	std::vector<Abilities>& GetAbilitiesAvailable();
 	void CreatePlayer();
 	Trainers& GetPlayer();
+	bool GetInitFinish();
 	void Start();
 	void Update();
 	void Draw();

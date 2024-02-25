@@ -37,7 +37,7 @@ void Trainers::AddPokemon(Pokemon& pokemon) {
 std::vector<Pokemon>& Trainers::GetTeam() { return mTeam; }
 void Trainers::ShowTeam() {
 	std::cout << "Dresseur : " << mName << "\nTeam : \n";
-	for (const Pokemon& pokemon : mTeam) {
+	for (Pokemon& pokemon : mTeam) {
 		std::cout << pokemon.GetName() << " " << pokemon.GetLevel() << "\nDescription : " << pokemon.GetDescription() << "\n";
 	}
 }

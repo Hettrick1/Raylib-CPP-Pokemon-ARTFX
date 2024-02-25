@@ -18,10 +18,10 @@ Pokemon::Pokemon(std::string name, PokeType type, int level, std::string descrip
 }
 Pokemon::~Pokemon() {}
 
-std::string Pokemon::GetName() const { return mName; }
-int Pokemon::GetLevel() const { return mLevel; }
-std::string Pokemon::GetDescription() const { return mDescription; }
-float Pokemon::GetHealth() const { return mHealth; }
+std::string Pokemon::GetName() { return mName; }
+int Pokemon::GetLevel() { return mLevel; }
+std::string Pokemon::GetDescription() { return mDescription; }
+float Pokemon::GetHealth() { return mHealth; }
 PokeType Pokemon::GetType() { return mType; }
 bool Pokemon::GetIncapacited() { return mIncapacited; }
 

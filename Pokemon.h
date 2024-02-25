@@ -23,11 +23,11 @@ public:
 	Pokemon();
 	Pokemon(std::string name, PokeType type, int level, std::string description, float health);
 	~Pokemon();
-	std::string GetName() const;
+	std::string GetName();
 	PokeType GetType();
-	int GetLevel() const;
-	std::string GetDescription() const;
-	float GetHealth() const;
+	int GetLevel();
+	std::string GetDescription();
+	float GetHealth();
 	bool GetIncapacited();
 	float CalculateDamage(Abilities& ability, Pokemon& defender);
 	void TakeDamages(float damage);

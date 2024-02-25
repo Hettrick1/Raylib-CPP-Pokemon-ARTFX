@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include "PokemonData.h"
 #include "Initializer.h"
+#include "Event.h"
 #include "Pokemon.h"
 #include "Trainers.h"
 #include "Abilities.h"
@@ -19,6 +20,7 @@ void Unload();
 void center_window(float window_width, float window_height);
 
 Initializer init = Initializer();
+Event event = Event();
 
 int main() {
     Load();
@@ -42,12 +44,16 @@ void Start()
     center_window(WIDTH, HEIGHT);
     WaitTime(0.00001f);
     init.Start();
+    event.Start();
 }
 
 void Update()
 {
     deltaTime = GetFrameTime();
     init.CreatePlayer();
+    if (init.GetInitFinish()) {
+        event.Update();
+    }
 }
 
 void Draw()
@@ -55,12 +61,16 @@ void Draw()
     BeginDrawing();
     ClearBackground(WHITE);
     init.Draw();
+    if (init.GetInitFinish()) {
+        event.Draw();
+    }
     EndDrawing();
 }
 
 void Unload()
 {
     init.Unload();
+    event.Unload();
     CloseWindow();
 }
 

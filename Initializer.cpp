@@ -34,6 +34,8 @@ bool mouseOnBulbasaur = false;
 bool mouseOnCharmender = false;
 bool mouseOnSquirtle = false;
 
+bool initialisationFinished = false;
+
 Initializer::Initializer() {
 }
 Initializer::~Initializer() {}
@@ -145,8 +147,10 @@ void Initializer::Draw()
         DrawRectangleLines(550, 200,100, 100, DARKGRAY);
     }
     else if (hasFirstPokemon && hasLoaded){
-        /*DrawText("Vous avez choisi : ", 240, 40, 40, GRAY);*/
-        DrawText(player.GetCurrentPokemon()->GetName().c_str(), 240, 40, 40, RED);
+        DrawText("Vous avez choisi : ", 240, 40, 40, GRAY);
+        WaitTime(0.5f);
+        initialisationFinished = true;
+        /*DrawText(player.GetCurrentPokemon()->GetName().c_str(), 240, 40, 40, RED);*/
     }
 }
 
@@ -229,5 +233,8 @@ void Initializer::CreatePlayer() {
         player.AddPokemon(firstPokemon);
         hasLoaded = true;
     }
+}
+bool Initializer::GetInitFinish() {
+    return initialisationFinished;
 }
 

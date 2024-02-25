@@ -4,12 +4,21 @@
 #include "Battle.h"
 
 
+Event::Event()
+{
+}
+
+Event::~Event()
+{
+}
+
 void Event::Start()
 {
 }
 
 void Event::Update()
 {
+	
 }
 
 void Event::Draw()
