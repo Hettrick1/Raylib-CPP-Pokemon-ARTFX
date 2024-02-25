@@ -40,6 +40,7 @@ void Load()
 void Start()
 {
     center_window(WIDTH, HEIGHT);
+    WaitTime(0.00001f);
     init.Start();
 }
 
