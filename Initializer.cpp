@@ -135,10 +135,13 @@ void Initializer::Draw()
         DrawText("Welcome ", 240, 40, 40, GRAY);
         DrawText(playerFirstName.c_str(), 240 + MeasureText("Welcome ", 40), 40, 40, RED);
         DrawTexture(bulbasaurTexture, 400 - 50 - 200, 200, WHITE);
+        DrawText("Bulbasaur", 150, 320, 20, BLACK);
         DrawRectangleLines(150, 200, 100, 100, DARKGRAY);
         DrawTexture(charmenderTexture,400 - 50, 200, WHITE);
+        DrawText("Charmander", 350, 320, 20, BLACK);
         DrawRectangleLines(350, 200, 100, 100, DARKGRAY);
         DrawTexture(squirtleTexture,400 - 50 + 200, 200, WHITE);
+        DrawText("Squirtle", 550, 320, 20, BLACK);
         DrawRectangleLines(550, 200,100, 100, DARKGRAY);
     }
     else if (hasFirstPokemon && hasLoaded){
