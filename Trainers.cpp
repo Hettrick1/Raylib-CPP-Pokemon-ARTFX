@@ -22,12 +22,12 @@ Trainers::Trainers(std::string name, std::string lastName, std::string catchPhra
 	mLifePoints = lifePoints;
 	mPokeballs = pokeballs;
 }
-Trainers::Trainers(std::string name, Pokemon& firstPokemon) {
+Trainers::Trainers(std::string name) {
 	mName = name;
 	mMoney = 100;
 	mLifePoints = 100;
 	mPokeballs = 10;
-	mCurrentPokemon = &firstPokemon;
+	mCurrentPokemonIndex = 0;
 }
 Trainers::~Trainers() {}
 std::string Trainers::GetName() { return mName; }
@@ -71,22 +71,18 @@ void Trainers::ChangeCurrentPokemon() {
 		std::cin >> answer;
 	} while (answer <= 0 || answer > pokemonsAvailableSize);
 
-	mCurrentPokemon = pokemonsAvailable[answer - 1];
-	std::cout << "Vous avez choisi : " << mCurrentPokemon->GetName() << ".\n";
+	mCurrentPokemonIndex = answer - 1;
+	std::cout << "Vous avez choisi : " << mTeam[mCurrentPokemonIndex].GetName() << ".\n";
 }
 
-Pokemon* Trainers::GetCurrentPokemon() {
-	return mCurrentPokemon;
+int Trainers::GetCurrentPokemonIndex() {
+	return mCurrentPokemonIndex;
 }
 
 int Trainers::GetMoney() {
 	return mMoney;
 }
-void Trainers::SetCurrentPokemon(Pokemon& pokemon) {
-	mCurrentPokemon = &pokemon;
-}
-
-void Trainers::SetCurrentPokemon(int pokemon)
+void Trainers::SetCurrentPokemon(int pokemonIndex)
 {
-	mCurrentPokemon = &mTeam[pokemon];
+	mCurrentPokemonIndex = pokemonIndex;
 }

@@ -17,12 +17,12 @@ private:
 	int mLifePoints;
 	int mPokeballs;
 	std::vector<Pokemon> mTeam;
-	Pokemon* mCurrentPokemon;
+	int mCurrentPokemonIndex;
 
 public:
 	Trainers();
 	Trainers(std::string dName, std::string dLastName, std::string dCatchPhrase, int dMoney, int dLifePoints, int dPokeballs);
-	Trainers(std::string dName, Pokemon& dFirstPokemon);
+	Trainers(std::string dName);
 	~Trainers();
 	std::string GetName();
 	std::vector<Pokemon>& GetTeam();
@@ -32,9 +32,8 @@ public:
 	void EarnMoney(int amount);
 	void EarnPokeballs(int count);
 	void ChangeCurrentPokemon();
-	Pokemon* GetCurrentPokemon();
+	int GetCurrentPokemonIndex();
 	int GetMoney();
-	void SetCurrentPokemon(Pokemon& pokemon);
-	void SetCurrentPokemon(int pokemon);
+	void SetCurrentPokemon(int pokemonIndex);
 };
 

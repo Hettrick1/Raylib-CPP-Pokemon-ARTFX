@@ -139,18 +139,19 @@ void Initializer::Draw()
         DrawTexture(bulbasaurTexture, 400 - 50 - 200, 200, WHITE);
         DrawText("Bulbasaur", 150, 320, 20, BLACK);
         DrawRectangleLines(150, 200, 100, 100, DARKGRAY);
-        DrawTexture(charmenderTexture,400 - 50, 200, WHITE);
-        DrawText("Charmander", 350, 320, 20, BLACK);
-        DrawRectangleLines(350, 200, 100, 100, DARKGRAY);
-        DrawTexture(squirtleTexture,400 - 50 + 200, 200, WHITE);
-        DrawText("Squirtle", 550, 320, 20, BLACK);
-        DrawRectangleLines(550, 200,100, 100, DARKGRAY);
+        DrawTexture(charmenderTexture,400 - 50 + 200, 200, WHITE);
+        DrawText("Charmander", 550, 320, 20, BLACK);
+        DrawRectangleLines(550, 200, 100, 100, DARKGRAY);
+        DrawTexture(squirtleTexture,400 - 50, 200, WHITE);
+        DrawText("Squirtle", 350, 320, 20, BLACK);
+        DrawRectangleLines(350, 200,100, 100, DARKGRAY);
     }
     else if (hasFirstPokemon && hasLoaded){
-        DrawText("Vous avez choisi : ", 240, 40, 40, GRAY);
-        WaitTime(0.5f);
+        WaitTime(0.2);
+        std::string pokemonName = player.GetTeam()[0].GetName();
+        DrawText(TextFormat("You choose: %s", pokemonName.c_str()), 240, 40, 40, GRAY);
+        SetMouseCursor(MOUSE_CURSOR_DEFAULT);
         initialisationFinished = true;
-        /*DrawText(player.GetCurrentPokemon()->GetName().c_str(), 240, 40, 40, RED);*/
     }
 }
 
@@ -228,7 +229,7 @@ void Initializer::CreatePlayer() {
         
     }
     if (hasFirstPokemon) {
-        Trainers defaultPlayer(playerFirstName, firstPokemon);
+        Trainers defaultPlayer(playerFirstName);
         player = defaultPlayer;
         player.AddPokemon(firstPokemon);
         hasLoaded = true;
