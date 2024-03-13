@@ -147,7 +147,6 @@ void Initializer::Draw()
         DrawRectangleLines(350, 200,100, 100, DARKGRAY);
     }
     else if (hasFirstPokemon && hasLoaded && !isChoosingName){
-        WaitTime(0.2);
         SetMouseCursor(MOUSE_CURSOR_DEFAULT);
         DrawText(TextFormat("You choose: %s", pokemonName.c_str()), 240, 40, 40, GRAY); 
     }
@@ -226,14 +225,14 @@ void Initializer::CreatePlayer() {
         }
         
     }
-    if (hasFirstPokemon) {
+    if (hasFirstPokemon && !hasLoaded) {
         Trainers defaultPlayer(playerFirstName);
         player = defaultPlayer;
         player.AddPokemon(firstPokemon);
-        pokemonName = player.GetTeam()[0].GetName();
         hasLoaded = true;
     }
     if (hasLoaded) {
+        pokemonName = player.GetTeam()[0].GetName();
     }
 }
 bool Initializer::GetInitFinish() {
