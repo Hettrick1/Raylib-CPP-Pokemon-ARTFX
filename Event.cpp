@@ -1,3 +1,4 @@
+#include "raylib.h"
 #include "Event.h"
 #include "Pokemon.h"
 #include "Trainers.h"

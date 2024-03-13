@@ -21,6 +21,7 @@ bool isChoosingName = true;
 bool hasFirstPokemon = false;
 bool hasLoaded = false;
 std::string playerFirstName;
+std::string pokemonName;
 
 Image bulbasaur;
 Image charmander;
@@ -128,7 +129,6 @@ void Initializer::Draw()
         DrawText(TextFormat("INPUT CHARS: %i/%i", letterCount, MAX_INPUT_CHARS), 315, 250, 20, DARKGRAY);
         if (letterCount < MAX_INPUT_CHARS)
         {
-            // Draw blinking underscore char
             if (((framesCounter / 20) % 2) == 0) DrawText("_", (int)textBox.x + 8 + MeasureText(name, 40), (int)textBox.y + 12, 40, MAROON);
         }
         else DrawText("Press BACKSPACE to delete chars...", 230, 300, 20, GRAY);
@@ -146,12 +146,10 @@ void Initializer::Draw()
         DrawText("Squirtle", 350, 320, 20, BLACK);
         DrawRectangleLines(350, 200,100, 100, DARKGRAY);
     }
-    else if (hasFirstPokemon && hasLoaded){
+    else if (hasFirstPokemon && hasLoaded && !isChoosingName){
         WaitTime(0.2);
-        std::string pokemonName = player.GetTeam()[0].GetName();
-        DrawText(TextFormat("You choose: %s", pokemonName.c_str()), 240, 40, 40, GRAY);
         SetMouseCursor(MOUSE_CURSOR_DEFAULT);
-        initialisationFinished = true;
+        DrawText(TextFormat("You choose: %s", pokemonName.c_str()), 240, 40, 40, GRAY); 
     }
 }
 
@@ -232,7 +230,10 @@ void Initializer::CreatePlayer() {
         Trainers defaultPlayer(playerFirstName);
         player = defaultPlayer;
         player.AddPokemon(firstPokemon);
+        pokemonName = player.GetTeam()[0].GetName();
         hasLoaded = true;
+    }
+    if (hasLoaded) {
     }
 }
 bool Initializer::GetInitFinish() {

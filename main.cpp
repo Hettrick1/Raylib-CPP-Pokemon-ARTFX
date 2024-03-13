@@ -42,7 +42,6 @@ void Load()
 void Start()
 {
     center_window(WIDTH, HEIGHT);
-    WaitTime(0.00001f);
     init.Start();
     event.Start();
 }
@@ -61,9 +60,9 @@ void Draw()
     BeginDrawing();
     ClearBackground(WHITE);
     init.Draw();
-    if (init.GetInitFinish()) {
+    /*if (init.GetInitFinish()) {
         event.Draw();
-    }
+    }*/
     EndDrawing();
 }
 
