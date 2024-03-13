@@ -37,6 +37,7 @@ void Load()
 {
     InitWindow(WIDTH, HEIGHT, "Pokemon");
     SetTargetFPS(60);
+    LoadPokemonDatas();
 }
 
 void Start()
@@ -60,9 +61,9 @@ void Draw()
     BeginDrawing();
     ClearBackground(WHITE);
     init.Draw();
-    /*if (init.GetInitFinish()) {
+    if (init.GetInitFinish()) {
         event.Draw();
-    }*/
+    }
     EndDrawing();
 }
 
@@ -70,6 +71,7 @@ void Unload()
 {
     init.Unload();
     event.Unload();
+    UnloadPokemonDatas();
     CloseWindow();
 }
 

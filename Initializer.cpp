@@ -23,10 +23,6 @@ bool hasLoaded = false;
 std::string playerFirstName;
 std::string pokemonName;
 
-Image bulbasaur;
-Image charmander;
-Image squirtle;
-
 Texture2D bulbasaurTexture;
 Texture2D charmenderTexture;
 Texture2D squirtleTexture;
@@ -58,13 +54,8 @@ int Initializer::ChooseInt(int min, int max) {
     return dist(gen);
 }
 
-Pokemon Initializer::NewPokemon(std::vector<std::string>& AllNames) {
-    std::string name = ChooseName(AllNames);
-    std::string description = GetPokemonDescription(name);
-    PokeType type = GetPokemonType(name);
-    int level = ChooseInt(1, 21);
-
-    return Pokemon(name, type, level, description, 100);
+Pokemon Initializer::NewPokemon() {
+    return GetPokemon(ChooseInt(0,12));
 }
 
 Trainers& Initializer::GetTrainer(int dresseurIndex) {
@@ -81,29 +72,15 @@ Trainers& Initializer::GetPlayer() {
 
 void Initializer::Start()
 {
-    bulbasaur = LoadImage("Images/bulbasaur.png");
-    charmander = LoadImage("Images/charmander.png");
-    squirtle = LoadImage("Images/squirtle.png");
-
-    ImageResize(&bulbasaur, 100, 100);
-    ImageResize(&charmander, 100, 100);
-    ImageResize(&squirtle, 100, 100);
-
-    bulbasaurTexture = LoadTextureFromImage(bulbasaur);
-    charmenderTexture = LoadTextureFromImage(charmander);
-    squirtleTexture = LoadTextureFromImage(squirtle);
-
-    UnloadImage(bulbasaur);
-    UnloadImage(charmander);
-    UnloadImage(squirtle);
-
-    std::vector<std::string> names = GetAllPokemonNames();
+    bulbasaurTexture = LoadTexture("Images/bulbasaur.png");
+    charmenderTexture = LoadTexture("Images/charmander.png");
+    squirtleTexture = LoadTexture("Images/squirtle.png");
 
     Trainers dresseur("Ash", "alfn", "afkj", 100, 100, 10);
 
     for (int i = 0; i < 2; i++)
     {
-        Pokemon newPokemon = NewPokemon(names);
+        Pokemon newPokemon = NewPokemon();
         dresseur.AddPokemon(newPokemon);
     }
     AllDresseurs.push_back(dresseur);
@@ -136,13 +113,13 @@ void Initializer::Draw()
     else if (!isChoosingName && !hasFirstPokemon){
         DrawText("Welcome ", 240, 40, 40, GRAY);
         DrawText(playerFirstName.c_str(), 240 + MeasureText("Welcome ", 40), 40, 40, RED);
-        DrawTexture(bulbasaurTexture, 400 - 50 - 200, 200, WHITE);
+        DrawTextureEx(bulbasaurTexture, Vector2{ 140, 195 }, 0.0f, 2, WHITE);
         DrawText("Bulbasaur", 150, 320, 20, BLACK);
         DrawRectangleLines(150, 200, 100, 100, DARKGRAY);
-        DrawTexture(charmenderTexture,400 - 50 + 200, 200, WHITE);
+        DrawTextureEx(charmenderTexture, Vector2{ 540, 190 }, 0.0f, 2, WHITE);
         DrawText("Charmander", 550, 320, 20, BLACK);
         DrawRectangleLines(550, 200, 100, 100, DARKGRAY);
-        DrawTexture(squirtleTexture,400 - 50, 200, WHITE);
+        DrawTextureEx(squirtleTexture, Vector2{ 330, 190 }, 0.0f, 2, WHITE);
         DrawText("Squirtle", 350, 320, 20, BLACK);
         DrawRectangleLines(350, 200,100, 100, DARKGRAY);
     }
@@ -193,7 +170,7 @@ void Initializer::CreatePlayer() {
             mouseOnBulbasaur = true; 
             SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-                firstPokemon = Pokemon("Bulbizarre", PokeType::GRASS, 1, "Il a une etrange graine plantee sur son dos. Elle grandit avec lui depuis sa naissance.", 100);
+                firstPokemon = GetPokemon(0);
                 hasFirstPokemon = true;
             }
         }
@@ -202,7 +179,7 @@ void Initializer::CreatePlayer() {
             mouseOnCharmender = true; 
             SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-                firstPokemon = Pokemon("Carapuce", PokeType::WATER, 1, "La flamme sur sa queue represente l energie vitale de Salameche. Quand il est vigoureux, elle brule plus fort.", 100);
+                firstPokemon = GetPokemon(1);
                 hasFirstPokemon = true;
             }
         }
@@ -211,7 +188,7 @@ void Initializer::CreatePlayer() {
             mouseOnSquirtle = true; 
             SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-                firstPokemon = Pokemon("Salamèche", PokeType::FIRE, 1, "Il se refugie dans sa carapace et replique en eclaboussant l ennemi a la premiere occasion.", 100);
+                firstPokemon = GetPokemon(2);
                 hasFirstPokemon = true;
             }
         }
