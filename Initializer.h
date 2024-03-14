@@ -1,9 +1,10 @@
 #pragma once
+#include <vector>
+
 #include "Abilities.h"
 #include "Trainers.h"
 #include "Pokemon.h"
 
-#include <vector>
 class Initializer
 {
 private:

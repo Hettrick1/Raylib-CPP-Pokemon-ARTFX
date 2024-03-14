@@ -4,7 +4,6 @@
 #include "Pokemon.h"
 #include "PokemonData.h"
 
-#include <vector>
 #include <iostream>
 #include <random>
 
@@ -125,7 +124,8 @@ void Initializer::Draw()
     }
     else if (hasFirstPokemon && hasLoaded && !isChoosingName){
         SetMouseCursor(MOUSE_CURSOR_DEFAULT);
-        DrawText(TextFormat("You choose: %s", pokemonName.c_str()), 240, 40, 40, GRAY); 
+        DrawText(TextFormat("You choose: %s", pokemonName.c_str()),400 - MeasureText(TextFormat("You choose: %s", pokemonName.c_str()), 40)/2, 40, 40, GRAY);
+        DrawTextureEx(player.GetTeam()[0].GetFrontSprite(), Vector2{400.0f - player.GetTeam()[0].GetFrontSprite().width, 200.0f - player.GetTeam()[0].GetFrontSprite().height }, 0.0f, 5, WHITE);
     }
 }
 
@@ -206,10 +206,10 @@ void Initializer::CreatePlayer() {
         Trainers defaultPlayer(playerFirstName);
         player = defaultPlayer;
         player.AddPokemon(firstPokemon);
+        pokemonName = player.GetTeam()[0].GetName();
         hasLoaded = true;
     }
-    if (hasLoaded) {
-        pokemonName = player.GetTeam()[0].GetName();
+    if (hasLoaded && !initialisationFinished) {
     }
 }
 bool Initializer::GetInitFinish() {

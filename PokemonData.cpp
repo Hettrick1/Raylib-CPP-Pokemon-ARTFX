@@ -33,21 +33,7 @@ Texture2D psyduckBackTexture;
 Texture2D rattataFrontTexture;
 Texture2D rattataBackTexture;
 
-
-
-std::vector<Pokemon> allPokemons = {
-    Pokemon("Bulbasaur", PokeType::GRASS, 1, "Bulbasaur has a strange seed planted on its back. It grows with him since birth.", 100, bulbasaurFrontTexture, bulbasaurBackTexture),
-    Pokemon("Squirtle", PokeType::WATER, 1, "It retreats into its shell and retaliates by splashing the enemy at the first opportunity.", 100, squirtleFrontTexture, squirtleBackTexture),
-    Pokemon("Charmander", PokeType::FIRE, 1, "The flame on its tail represents Charmander's life energy. When it's vigorous, it burns stronger.", 100, charmanderFrontTexture, charmanderBackTexture),
-    Pokemon("Abra", PokeType::PSYSCHIC, 1, "It sleeps 18 hours a day. It can use many psychic powers, even while asleep.", 100, abraFrontTexture, abraBackTexture),
-    Pokemon("Caterpie", PokeType::BUG, 1, "To protect itself, it emits a foul odor from its antennae, which repels its bold enemies.", 100, caterpieFrontTexture, caterpieBackTexture),
-    Pokemon("Geodude", PokeType::ROCK, 1, "It lives in plains or mountains. It is often mistaken for a small pebble.", 100, geodudeFrontTexture, geodudeBackTexture),
-    Pokemon("Jigglypuff", PokeType::FAIRY, 1, "It hypnotizes its enemies with its big eyes before plunging them into a deep sleep by singing a sweet lullaby.", 100, jigglypuffFrontTexture, jigglypuffBackTexture),
-    Pokemon("Pidgey", PokeType::NORMAL, 1, "It is often seen in forests. With its wings, it stirs up the air close to the ground to throw sand.", 100, pidgeyFrontTexture, pidgeyBackTexture),
-    Pokemon("Pikachu", PokeType::ELECTRIC, 1, "It raises its tail to monitor its surroundings. It often attracts lightning in this position.", 100, pikachuFrontTexture, pikachuBackTexture),
-    Pokemon("Psyduck", PokeType::WATER, 1, "This Pokémon constantly has a headache. When the pain becomes unbearable, it starts using its psychic powers.", 100, psyduckFrontTexture, psyduckBackTexture),
-    Pokemon("Rattata", PokeType::NORMAL, 1, "Living wherever food is found, this scavenger spends its days searching for it.", 100, rattataFrontTexture, rattataBackTexture),
-};
+std::vector<Pokemon> allPokemons;
 
 float resistanceMatrix[18][18] = {
     {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.5, 0.0, 1.0, 1.0, 0.5, 1.0},
@@ -72,38 +58,52 @@ float resistanceMatrix[18][18] = {
 
 void LoadPokemonDatas()
 {
-    bulbasaurFrontTexture = LoadTexture("Images/bulbasaur");
-    bulbasaurBackTexture = LoadTexture("Images/bulbasaurBack");
+    bulbasaurFrontTexture = LoadTexture("Images/bulbasaur.png");
+    bulbasaurBackTexture = LoadTexture("Images/bulbasaurBack.png");
 
-    squirtleFrontTexture = LoadTexture("Images/");
-    squirtleBackTexture = LoadTexture("Images/");
+    squirtleFrontTexture = LoadTexture("Images/squirtle.png");
+    squirtleBackTexture = LoadTexture("Images/squirtleBack.png");
 
-    charmanderFrontTexture = LoadTexture("Images/charmander");
-    charmanderBackTexture = LoadTexture("Images/charmanderBack");
+    charmanderFrontTexture = LoadTexture("Images/charmander.png");
+    charmanderBackTexture = LoadTexture("Images/charmanderBack.png");
 
-    abraFrontTexture = LoadTexture("Images/abra");
-    abraBackTexture = LoadTexture("Images/abraBack");
+    abraFrontTexture = LoadTexture("Images/abra.png");
+    abraBackTexture = LoadTexture("Images/abraBack.png");
 
-    caterpieFrontTexture = LoadTexture("Images/caterpie");
-    caterpieBackTexture = LoadTexture("Images/caterpieBack");
+    caterpieFrontTexture = LoadTexture("Images/caterpie.png");
+    caterpieBackTexture = LoadTexture("Images/caterpieBack.png");
 
-    geodudeFrontTexture = LoadTexture("Images/geodude");
-    geodudeBackTexture = LoadTexture("Images/geodudeBack");
+    geodudeFrontTexture = LoadTexture("Images/geodude.png");
+    geodudeBackTexture = LoadTexture("Images/geodudeBack.png");
 
-    jigglypuffFrontTexture = LoadTexture("Images/jigglypuff");
-    jigglypuffBackTexture = LoadTexture("Images/jigglypuffBack");
+    jigglypuffFrontTexture = LoadTexture("Images/jigglypuff.png");
+    jigglypuffBackTexture = LoadTexture("Images/jigglypuffBack.png");
 
-    pidgeyFrontTexture = LoadTexture("Images/pidgey");
-    pidgeyBackTexture = LoadTexture("Images/pidgeyBack");
+    pidgeyFrontTexture = LoadTexture("Images/pidgey.png");
+    pidgeyBackTexture = LoadTexture("Images/pidgeyBack.png");
 
-    pikachuFrontTexture = LoadTexture("Images/pikachu");
-    pikachuBackTexture = LoadTexture("Images/pikachuBack");
+    pikachuFrontTexture = LoadTexture("Images/pikachu.png");
+    pikachuBackTexture = LoadTexture("Images/pikachuBack.png");
 
-    psyduckFrontTexture = LoadTexture("Images/psyduck");
-    psyduckBackTexture = LoadTexture("Images/psyduckBack");
+    psyduckFrontTexture = LoadTexture("Images/psyduck.png");
+    psyduckBackTexture = LoadTexture("Images/psyduckBack.png");
 
-    rattataFrontTexture = LoadTexture("Images/rattata");
-    rattataBackTexture = LoadTexture("Images/rattataBack");
+    rattataFrontTexture = LoadTexture("Images/rattata.png");
+    rattataBackTexture = LoadTexture("Images/rattataBack.png");
+
+    allPokemons = {
+    Pokemon("Bulbasaur", PokeType::GRASS, 1, "Bulbasaur has a strange seed planted on its back. It grows with him since birth.", 100, bulbasaurFrontTexture, bulbasaurBackTexture),
+    Pokemon("Squirtle", PokeType::WATER, 1, "It retreats into its shell and retaliates by splashing the enemy at the first opportunity.", 100, squirtleFrontTexture, squirtleBackTexture),
+    Pokemon("Charmander", PokeType::FIRE, 1, "The flame on its tail represents Charmander's life energy. When it's vigorous, it burns stronger.", 100, charmanderFrontTexture, charmanderBackTexture),
+    Pokemon("Abra", PokeType::PSYSCHIC, 1, "It sleeps 18 hours a day. It can use many psychic powers, even while asleep.", 100, abraFrontTexture, abraBackTexture),
+    Pokemon("Caterpie", PokeType::BUG, 1, "To protect itself, it emits a foul odor from its antennae, which repels its bold enemies.", 100, caterpieFrontTexture, caterpieBackTexture),
+    Pokemon("Geodude", PokeType::ROCK, 1, "It lives in plains or mountains. It is often mistaken for a small pebble.", 100, geodudeFrontTexture, geodudeBackTexture),
+    Pokemon("Jigglypuff", PokeType::FAIRY, 1, "It hypnotizes its enemies with its big eyes before plunging them into a deep sleep by singing a sweet lullaby.", 100, jigglypuffFrontTexture, jigglypuffBackTexture),
+    Pokemon("Pidgey", PokeType::NORMAL, 1, "It is often seen in forests. With its wings, it stirs up the air close to the ground to throw sand.", 100, pidgeyFrontTexture, pidgeyBackTexture),
+    Pokemon("Pikachu", PokeType::ELECTRIC, 1, "It raises its tail to monitor its surroundings. It often attracts lightning in this position.", 100, pikachuFrontTexture, pikachuBackTexture),
+    Pokemon("Psyduck", PokeType::WATER, 1, "This Pokémon constantly has a headache. When the pain becomes unbearable, it starts using its psychic powers.", 100, psyduckFrontTexture, psyduckBackTexture),
+    Pokemon("Rattata", PokeType::NORMAL, 1, "Living wherever food is found, this scavenger spends its days searching for it.", 100, rattataFrontTexture, rattataBackTexture),
+    };
 }
 
 void UnloadPokemonDatas()

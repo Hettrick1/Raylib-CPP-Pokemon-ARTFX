@@ -37,6 +37,7 @@ void Load()
 {
     InitWindow(WIDTH, HEIGHT, "Pokemon");
     SetTargetFPS(60);
+    WaitTime(0.01f);
     LoadPokemonDatas();
 }
 

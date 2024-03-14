@@ -37,6 +37,7 @@ Texture2D Pokemon::GetBackSprite()
 	return mBackSpriteTexture;
 }
 
+
 float Pokemon::CalculateDamage(Abilities& ability, Pokemon& defender) {
 
 	if (ability.CanUse()) {

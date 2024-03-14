@@ -1,12 +1,11 @@
 #pragma once
 
+#include <vector>
 #include "Poketype.h"
 #include "Abilities.h"
 #include "raylib.h"
 #include <iostream>
-#include <map>
 #include <string>
-#include <vector>
 
 class Pokemon
 {
