@@ -110,8 +110,7 @@ void Initializer::Draw()
         else DrawText("Press BACKSPACE to delete chars...", 230, 300, 20, GRAY);
     }
     else if (!isChoosingName && !hasFirstPokemon){
-        DrawText("Welcome ", 240, 40, 40, GRAY);
-        DrawText(playerFirstName.c_str(), 240 + MeasureText("Welcome ", 40), 40, 40, RED);
+        DrawText(TextFormat("Welcome %s", playerFirstName.c_str()), 400 - MeasureText(TextFormat("Welcome %s", playerFirstName.c_str()), 40)/2, 40, 40, GRAY);
         DrawTextureEx(bulbasaurTexture, Vector2{ 140, 195 }, 0.0f, 2, WHITE);
         DrawText("Bulbasaur", 150, 320, 20, BLACK);
         DrawRectangleLines(150, 200, 100, 100, DARKGRAY);
@@ -124,8 +123,10 @@ void Initializer::Draw()
     }
     else if (hasFirstPokemon && hasLoaded && !isChoosingName){
         SetMouseCursor(MOUSE_CURSOR_DEFAULT);
-        DrawText(TextFormat("You choose: %s", pokemonName.c_str()),400 - MeasureText(TextFormat("You choose: %s", pokemonName.c_str()), 40)/2, 40, 40, GRAY);
-        DrawTextureEx(player.GetTeam()[0].GetFrontSprite(), Vector2{400.0f - player.GetTeam()[0].GetFrontSprite().width, 200.0f - player.GetTeam()[0].GetFrontSprite().height }, 0.0f, 5, WHITE);
+        DrawText(TextFormat("You choose: %s", pokemonName.c_str()),400 - MeasureText(TextFormat("You choose: %s", pokemonName.c_str()), 40)/2, 80, 40, GRAY);
+        DrawTextureEx(player.GetTeam()[0].GetFrontSprite(), Vector2{(float)520 - player.GetTeam()[0].GetFrontSprite().width, (float)180 - player.GetTeam()[0].GetFrontSprite().height }, 0.0f, 5, WHITE);
+        DrawTextBoxed(GetFontDefault(), player.GetTeam()[0].GetDescription().c_str(), Rectangle {100, 200, 400, 300}, 30, 1.5f, true, BLACK);
+        DrawText("Press ENTER to continue", 400 - MeasureText("Press ENTER to continue", 30)/2, 450 ,30, LIGHTGRAY);
     }
 }
 
