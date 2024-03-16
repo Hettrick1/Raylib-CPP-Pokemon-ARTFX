@@ -36,13 +36,13 @@ Initializer::Initializer() {
 }
 Initializer::~Initializer() {}
 
-std::string Initializer::ChooseName(std::vector<std::string>& Allnames) {
-
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<int> dist(0, 11);
-    return Allnames[dist(gen)];
-}
+// std::string Initializer::ChooseName(std::vector<std::string>& Allnames) {
+//
+//     std::random_device rd;
+//     std::mt19937 gen(rd());
+//     std::uniform_int_distribution<int> dist(0, 11);
+//     return Allnames[dist(gen)];
+// }
 
 int Initializer::ChooseInt(int min, int max) {
 
@@ -121,12 +121,12 @@ void Initializer::Draw()
         DrawText("Squirtle", 350, 320, 20, BLACK);
         DrawRectangleLines(350, 200,100, 100, DARKGRAY);
     }
-    else if (hasFirstPokemon && hasLoaded && !isChoosingName){
+    else if (hasFirstPokemon && hasLoaded && !isChoosingName && !initialisationFinished){
         SetMouseCursor(MOUSE_CURSOR_DEFAULT);
-        DrawText(TextFormat("You choose: %s", pokemonName.c_str()),400 - MeasureText(TextFormat("You choose: %s", pokemonName.c_str()), 40)/2, 80, 40, GRAY);
+        DrawText(TextFormat("You choose: %s", pokemonName.c_str()),400 - MeasureText(TextFormat("You choose: %s", pokemonName.c_str()), 40)/2, 80, 40, BLACK);
         DrawTextureEx(player.GetTeam()[0].GetFrontSprite(), Vector2{(float)520 - player.GetTeam()[0].GetFrontSprite().width, (float)180 - player.GetTeam()[0].GetFrontSprite().height }, 0.0f, 5, WHITE);
         DrawTextBoxed(GetFontDefault(), player.GetTeam()[0].GetDescription().c_str(), Rectangle {100, 200, 400, 300}, 30, 1.5f, true, BLACK);
-        DrawText("Press ENTER to continue", 400 - MeasureText("Press ENTER to continue", 30)/2, 450 ,30, LIGHTGRAY);
+        DrawText("Press ENTER to continue", 400 - MeasureText("Press ENTER to continue", 30)/2, 430 ,30, LIGHTGRAY);
     }
 }
 
@@ -211,6 +211,10 @@ void Initializer::CreatePlayer() {
         hasLoaded = true;
     }
     if (hasLoaded && !initialisationFinished) {
+        if (IsKeyPressed(KEY_ENTER))
+        {
+            initialisationFinished = true;
+        }
     }
 }
 bool Initializer::GetInitFinish() {
