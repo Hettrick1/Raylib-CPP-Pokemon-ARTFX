@@ -11,6 +11,7 @@ public:
 	void Draw();
 	void Unload();
 	void Pokestop();
-	void GoInForest();
+	void HighGrass();
+	void LakeShores();
 };
 

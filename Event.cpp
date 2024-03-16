@@ -33,16 +33,31 @@ void Event::Update()
 		{
 			SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
 			mouseOnHighGrass = true;
+			if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+			{
+				HighGrass();
+				isChoosingEvent = false;
+			}
 		}
 		if (CheckCollisionPointRec(GetMousePosition(), lakeShoresRectangle))
 		{
 			SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
 			mouseOnLakeShore = true;
+			if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+			{
+				LakeShores();
+				isChoosingEvent = false;
+			}
 		}
 		if (CheckCollisionPointRec(GetMousePosition(), pokestopRectangle))
 		{
 			SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
 			mouseOnPokestop = true;
+			if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+			{
+				Pokestop();
+				isChoosingEvent = false;
+			}
 		}
 		if (!mouseOnPokestop && ! mouseOnHighGrass && !mouseOnLakeShore)
 		{
@@ -76,6 +91,11 @@ void Event::Pokestop()
 {
 }
 
-void Event::GoInForest()
+void Event::HighGrass()
 {
 }
+
+void Event::LakeShores()
+{
+}
+
