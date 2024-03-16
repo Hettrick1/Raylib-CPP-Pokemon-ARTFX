@@ -14,7 +14,6 @@ private:
 public:
 	Initializer();
 	~Initializer();
-	std::string ChooseName(std::vector<std::string>& Allnames);
 	int ChooseInt(int min, int max);
 	Pokemon NewPokemon();
 	Trainers& GetTrainer(int trainerIndex);

@@ -36,14 +36,6 @@ Initializer::Initializer() {
 }
 Initializer::~Initializer() {}
 
-// std::string Initializer::ChooseName(std::vector<std::string>& Allnames) {
-//
-//     std::random_device rd;
-//     std::mt19937 gen(rd());
-//     std::uniform_int_distribution<int> dist(0, 11);
-//     return Allnames[dist(gen)];
-// }
-
 int Initializer::ChooseInt(int min, int max) {
 
     std::random_device rd;
