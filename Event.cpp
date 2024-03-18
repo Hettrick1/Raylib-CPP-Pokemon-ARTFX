@@ -1,25 +1,23 @@
-#include "raylib.h"
 #include "Event.h"
-#include "Pokemon.h"
-#include "Trainers.h"
-#include "Battle.h"
-
-#include <random>
 
 Rectangle highGrassRectangle = {50, 150, 220, 300};
 Rectangle lakeShoresRectangle = {290, 150, 220, 300};
 Rectangle pokestopRectangle = { 530, 150, 220, 300};
 
+Battle battle = Battle();
+
 bool mouseOnHighGrass, mouseOnLakeShore, mouseOnPokestop;
 
-bool isChoosingEvent;
+bool isChoosingEvent, justStarted, isInFight;
 
 Event::Event()
 {
+
 }
 
 Event::~Event()
 {
+
 }
 
 void Event::Start()
@@ -27,9 +25,12 @@ void Event::Start()
 	isChoosingEvent = true;
 }
 
-void Event::Update()
+void Event::Update(Trainers& player)
 {
-	if (isChoosingEvent)
+	if (!justStarted) {
+		justStarted = true;
+	}
+	if (isChoosingEvent && !isInFight)
 	{
 		if (CheckCollisionPointRec(GetMousePosition(), highGrassRectangle))
 		{
@@ -37,8 +38,8 @@ void Event::Update()
 			mouseOnHighGrass = true;
 			if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
 			{
-				HighGrass();
 				isChoosingEvent = false;
+				HighGrass(player);
 			}
 		}
 		if (CheckCollisionPointRec(GetMousePosition(), lakeShoresRectangle))
@@ -47,8 +48,8 @@ void Event::Update()
 			mouseOnLakeShore = true;
 			if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
 			{
-				LakeShores();
 				isChoosingEvent = false;
+				LakeShores(player);
 			}
 		}
 		if (CheckCollisionPointRec(GetMousePosition(), pokestopRectangle))
@@ -57,8 +58,8 @@ void Event::Update()
 			mouseOnPokestop = true;
 			if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
 			{
-				Pokestop();
 				isChoosingEvent = false;
+				Pokestop(player);
 			}
 		}
 		if (!mouseOnPokestop && ! mouseOnHighGrass && !mouseOnLakeShore)
@@ -72,11 +73,17 @@ void Event::Update()
 			mouseOnLakeShore = false;
 		}
 	}
+	if (isInFight && !isChoosingEvent) {
+		battle.Update();
+		if (battle.GetQuitBattle()) {
+			isInFight = false;
+		}
+	}
 }
 
 void Event::Draw()
 {
-	if (isChoosingEvent)
+	if (isChoosingEvent && !isInFight)
 	{
 		DrawText("Where do you want to go ?", 400-(MeasureText("Where do you want to go ?", 30)/2), 50, 30, BLACK);
 		DrawRectangleLines(50, 150, 220, 300, DARKBLUE);
@@ -85,6 +92,9 @@ void Event::Draw()
 		DrawText("Lake Shores", 290 + (220 - MeasureText("Lake Shores", 30))/2, 200, 30, BLACK);
 		DrawRectangleLines(530, 150, 220, 300, DARKBLUE);
 		DrawText("Pokestop", 530 + (220 - MeasureText("Pokestop", 30))/2, 200, 30, BLACK);
+	}
+	if (isInFight && !isChoosingEvent) {
+		battle.Draw();
 	}
 }
 
@@ -101,24 +111,44 @@ int Event::ChooseInt(int min, int max)
 	return dist(gen);
 }
 
-void Event::Pokestop()
+void Event::Pokestop(Trainers& player)
 {
+
 }
 
-void Event::HighGrass()
+void Event::HighGrass(Trainers& player)
 {
-	int randomNumber = ChooseInt(0, 101);
+	int randomNumber = ChooseInt(0, 100);
 	if(randomNumber > 90)
 	{
-		Battle battle = Battle();
+		int randomIndex = ChooseInt(0, 5);
+		battle.FightTrainer(player, GetTrainer(randomIndex));
 	}
 	else
 	{
-		
+		int randomIndex = ChooseInt(0, 10);
+		Pokemon wildPokemon = GetPokemon(randomIndex);
+		if (wildPokemon.GetType() == PokeType::GRASS) {
+			battle.FightWildPokemon(player, wildPokemon);
+			isInFight = true;
+		}
+		else {
+			int randomNumber = ChooseInt(0, 100);
+			if (randomNumber >= 100) {
+				battle.FightWildPokemon(player, wildPokemon);
+				isInFight = true;
+			}
+			else {
+				isChoosingEvent = true;
+				mouseOnPokestop = false;
+				mouseOnHighGrass = false;
+				mouseOnLakeShore = false;
+			}
+		}
 	}
 }
 
-void Event::LakeShores()
+void Event::LakeShores(Trainers& player)
 {
 }
 

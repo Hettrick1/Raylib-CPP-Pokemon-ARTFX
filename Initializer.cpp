@@ -67,11 +67,6 @@ void Initializer::Start()
     }
 }
 
-//Pokemon Initializer::NewPokemon()
-//{
-//    return NULL;
-//}
-
 void Initializer::Update()
 {
     CreatePlayer();

@@ -53,7 +53,7 @@ void Update()
     init.CreatePlayer();
     if (init.GetInitFinish())
     {
-        event.Update();
+        event.Update(init.GetPlayer());
     }
 }
 

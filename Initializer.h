@@ -17,7 +17,6 @@ public:
     Initializer();
     ~Initializer();
     int ChooseInt(int min, int max);
-    /*Pokemon NewPokemon();*/
     void CreatePlayer();
     Trainers& GetPlayer();
     bool GetInitFinish();
