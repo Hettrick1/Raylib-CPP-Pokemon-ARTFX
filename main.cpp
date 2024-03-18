@@ -1,5 +1,4 @@
 #include "raylib.h"
-#include "PokemonData.h"
 #include "Initializer.h"
 #include "Event.h"
 #include "Pokemon.h"
@@ -8,8 +7,8 @@
 #include "Battle.h"
 #include <iostream>
 
-const int WIDTH = 800;
-const int HEIGHT = 500;
+constexpr int WIDTH = 800;
+constexpr int HEIGHT = 500;
 float deltaTime;
 
 void Load();
@@ -22,10 +21,12 @@ void center_window(float window_width, float window_height);
 Initializer init = Initializer();
 Event event = Event();
 
-int main() {
+int main()
+{
     Load();
     Start();
-    while (!WindowShouldClose()) {
+    while (!WindowShouldClose())
+    {
         Update();
         Draw();
     }
@@ -37,8 +38,6 @@ void Load()
 {
     InitWindow(WIDTH, HEIGHT, "Pokemon");
     SetTargetFPS(60);
-    WaitTime(0.01f);
-    LoadPokemonDatas();
 }
 
 void Start()
@@ -52,7 +51,8 @@ void Update()
 {
     deltaTime = GetFrameTime();
     init.CreatePlayer();
-    if (init.GetInitFinish()) {
+    if (init.GetInitFinish())
+    {
         event.Update();
     }
 }
@@ -62,7 +62,8 @@ void Draw()
     BeginDrawing();
     ClearBackground(WHITE);
     init.Draw();
-    if (init.GetInitFinish()) {
+    if (init.GetInitFinish())
+    {
         event.Draw();
     }
     EndDrawing();
@@ -72,7 +73,6 @@ void Unload()
 {
     init.Unload();
     event.Unload();
-    UnloadPokemonDatas();
     CloseWindow();
 }
 
@@ -81,5 +81,6 @@ void center_window(float window_width, float window_height)
     int monitor = GetCurrentMonitor();
     int monitor_width = GetMonitorWidth(monitor);
     int monitor_height = GetMonitorHeight(monitor);
-    SetWindowPosition((int)(monitor_width / 2) - (int)(window_width / 2), (int)(monitor_height / 2) - (int)(window_height / 2));
+    SetWindowPosition(monitor_width / 2 - static_cast<int>(window_width / 2),
+                      monitor_height / 2 - static_cast<int>(window_height / 2));
 }

@@ -21,6 +21,8 @@ Trainers::Trainers(std::string name, std::string lastName, std::string catchPhra
 	mMoney = money;
 	mLifePoints = lifePoints;
 	mPokeballs = pokeballs;
+	mCurrentPokemonIndex = 0;
+	mTeam.reserve(6);
 }
 Trainers::Trainers(std::string name) {
 	mName = name;
@@ -28,6 +30,7 @@ Trainers::Trainers(std::string name) {
 	mLifePoints = 100;
 	mPokeballs = 10;
 	mCurrentPokemonIndex = 0;
+	mTeam.reserve(6);
 }
 Trainers::~Trainers() {}
 std::string Trainers::GetName() { return mName; }

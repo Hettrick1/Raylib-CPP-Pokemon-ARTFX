@@ -1,9 +1,9 @@
 #pragma once
 
+#include "Poketype.h"
+
 #include <iostream>
 #include <string>
-
-#include "Poketype.h"
 
 class Abilities
 {
@@ -15,6 +15,7 @@ private:
 	PokeType mType;
 
 public:
+	Abilities();
 	Abilities(std::string name, float damages, PokeType type);
 	~Abilities();
 	float GetDamages();

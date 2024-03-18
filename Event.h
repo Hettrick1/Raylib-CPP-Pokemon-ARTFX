@@ -10,6 +10,7 @@ public:
 	void Update();
 	void Draw();
 	void Unload();
+	int ChooseInt(int min, int max);
 	void Pokestop();
 	void HighGrass();
 	void LakeShores();

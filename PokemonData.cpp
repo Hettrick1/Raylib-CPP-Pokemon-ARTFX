@@ -34,6 +34,17 @@ Texture2D rattataFrontTexture;
 Texture2D rattataBackTexture;
 
 std::vector<Pokemon> allPokemons;
+std::vector<Trainers> allTrainers = {
+        Trainers("w", "q", "q", 100, 100, 0),
+        Trainers("r", "w", "w", 200, 100, 5),
+        Trainers("t", "e", "e", 300, 100, 4),
+        Trainers("z", "r", "r", 100, 100, 8),
+        Trainers("u", "t", "t", 200, 100, 10),
+        Trainers("i", "z", "z", 300, 100, 5),
+};
+std::vector<Abilities> allAbilities = {
+        Abilities("hello", 10, PokeType::ELECTRIC),
+};
 
 float resistanceMatrix[18][18] = {
     {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.5, 0.0, 1.0, 1.0, 0.5, 1.0},
@@ -92,17 +103,39 @@ void LoadPokemonDatas()
     rattataBackTexture = LoadTexture("Images/rattataBack.png");
 
     allPokemons = {
-    Pokemon("Bulbasaur", PokeType::GRASS, 1, "Bulbasaur has a strange seed planted on its back. It grows with him since birth.", 100, bulbasaurFrontTexture, bulbasaurBackTexture),
-    Pokemon("Squirtle", PokeType::WATER, 1, "It retreats into its shell and retaliates by splashing the enemy at the first opportunity.", 100, squirtleFrontTexture, squirtleBackTexture),
-    Pokemon("Charmander", PokeType::FIRE, 1, "The flame on its tail represents Charmander's life energy. When it's vigorous, it burns stronger.", 100, charmanderFrontTexture, charmanderBackTexture),
-    Pokemon("Abra", PokeType::PSYSCHIC, 1, "It sleeps 18 hours a day. It can use many psychic powers, even while asleep.", 100, abraFrontTexture, abraBackTexture),
-    Pokemon("Caterpie", PokeType::BUG, 1, "To protect itself, it emits a foul odor from its antennae, which repels its bold enemies.", 100, caterpieFrontTexture, caterpieBackTexture),
-    Pokemon("Geodude", PokeType::ROCK, 1, "It lives in plains or mountains. It is often mistaken for a small pebble.", 100, geodudeFrontTexture, geodudeBackTexture),
-    Pokemon("Jigglypuff", PokeType::FAIRY, 1, "It hypnotizes its enemies with its big eyes before plunging them into a deep sleep by singing a sweet lullaby.", 100, jigglypuffFrontTexture, jigglypuffBackTexture),
-    Pokemon("Pidgey", PokeType::NORMAL, 1, "It is often seen in forests. With its wings, it stirs up the air close to the ground to throw sand.", 100, pidgeyFrontTexture, pidgeyBackTexture),
-    Pokemon("Pikachu", PokeType::ELECTRIC, 1, "It raises its tail to monitor its surroundings. It often attracts lightning in this position.", 100, pikachuFrontTexture, pikachuBackTexture),
-    Pokemon("Psyduck", PokeType::WATER, 1, "This Pokémon constantly has a headache. When the pain becomes unbearable, it starts using its psychic powers.", 100, psyduckFrontTexture, psyduckBackTexture),
-    Pokemon("Rattata", PokeType::NORMAL, 1, "Living wherever food is found, this scavenger spends its days searching for it.", 100, rattataFrontTexture, rattataBackTexture),
+        Pokemon("Bulbasaur", PokeType::GRASS, 1,
+                "Bulbasaur has a strange seed planted on its back. It grows with him since birth.", 100,
+                bulbasaurFrontTexture, bulbasaurBackTexture),
+        Pokemon("Squirtle", PokeType::WATER, 1,
+                "It retreats into its shell and retaliates by splashing the enemy at the first opportunity.", 100,
+                squirtleFrontTexture, squirtleBackTexture),
+        Pokemon("Charmander", PokeType::FIRE, 1,
+                "The flame on its tail represents Charmander's life energy. When it's vigorous, it burns stronger.",
+                100, charmanderFrontTexture, charmanderBackTexture),
+        Pokemon("Abra", PokeType::PSYSCHIC, 1,
+                "It sleeps 18 hours a day. It can use many psychic powers, even while asleep.", 100, abraFrontTexture,
+                abraBackTexture),
+        Pokemon("Caterpie", PokeType::BUG, 1,
+                "To protect itself, it emits a foul odor from its antennae, which repels its bold enemies.", 100,
+                caterpieFrontTexture, caterpieBackTexture),
+        Pokemon("Geodude", PokeType::ROCK, 1,
+                "It lives in plains or mountains. It is often mistaken for a small pebble.", 100, geodudeFrontTexture,
+                geodudeBackTexture),
+        Pokemon("Jigglypuff", PokeType::FAIRY, 1,
+                "It hypnotizes its enemies with its big eyes before plunging them into a deep sleep by singing a sweet lullaby.",
+                100, jigglypuffFrontTexture, jigglypuffBackTexture),
+        Pokemon("Pidgey", PokeType::NORMAL, 1,
+                "It is often seen in forests. With its wings, it stirs up the air close to the ground to throw sand.",
+                100, pidgeyFrontTexture, pidgeyBackTexture),
+        Pokemon("Pikachu", PokeType::ELECTRIC, 1,
+                "It raises its tail to monitor its surroundings. It often attracts lightning in this position.", 100,
+                pikachuFrontTexture, pikachuBackTexture),
+        Pokemon("Psyduck", PokeType::WATER, 1,
+                "This Pokémon constantly has a headache. When the pain becomes unbearable, it starts using its psychic powers.",
+                100, psyduckFrontTexture, psyduckBackTexture),
+        Pokemon("Rattata", PokeType::NORMAL, 1,
+                "Living wherever food is found, this scavenger spends its days searching for it.", 100,
+                rattataFrontTexture, rattataBackTexture),
     };
 }
 
@@ -142,39 +175,47 @@ void UnloadPokemonDatas()
     UnloadTexture(rattataBackTexture);
 }
 
-Pokemon GetPokemon(int pokemonIndex) {
+Pokemon GetPokemon(int pokemonIndex)
+{
     return allPokemons[pokemonIndex];
 }
 
-float GetResistance(int attackType, int defenderType) {
+Trainers& GetTrainer(int trainerIndex)
+{
+    return allTrainers[trainerIndex];
+}
+
+float GetResistance(int attackType, int defenderType)
+{
     return resistanceMatrix[attackType][defenderType];
 }
 
 // this code allows me to make auto breaks line when I draw a text (function that does not exist directly in raylib)
 // it comes from a raylib example (Rectangle bounds) contributed by Vlad Adrian (@demizdor) and reviewed by Ramon Santamaria (@raysan5)
 
-void DrawTextBoxed(Font font, const char *text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint)
+void DrawTextBoxed(Font font, const char* text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint)
 {
     DrawTextBoxedSelectable(font, text, rec, fontSize, spacing, wordWrap, tint, 0, 0, WHITE, WHITE);
 }
 
 // Draw text using font inside rectangle limits with support for text selection
-void DrawTextBoxedSelectable(Font font, const char *text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint, int selectStart, int selectLength, Color selectTint, Color selectBackTint)
+void DrawTextBoxedSelectable(Font font, const char* text, Rectangle rec, float fontSize, float spacing, bool wordWrap,
+                             Color tint, int selectStart, int selectLength, Color selectTint, Color selectBackTint)
 {
-    int length = TextLength(text);  // Total length in bytes of the text, scanned by codepoints in loop
+    int length = TextLength(text); // Total length in bytes of the text, scanned by codepoints in loop
 
-    float textOffsetY = 0;          // Offset between lines (on line break '\n')
-    float textOffsetX = 0.0f;       // Offset X to next character to draw
+    float textOffsetY = 0; // Offset between lines (on line break '\n')
+    float textOffsetX = 0.0f; // Offset X to next character to draw
 
-    float scaleFactor = fontSize/(float)font.baseSize;     // Character rectangle scaling factor
+    float scaleFactor = fontSize / static_cast<float>(font.baseSize); // Character rectangle scaling factor
 
     // Word/character wrapping mechanism variables
     enum { MEASURE_STATE = 0, DRAW_STATE = 1 };
-    int state = wordWrap? MEASURE_STATE : DRAW_STATE;
+    int state = wordWrap ? MEASURE_STATE : DRAW_STATE;
 
-    int startLine = -1;         // Index where to begin drawing (where a line begins)
-    int endLine = -1;           // Index where to stop drawing (where a line ends)
-    int lastk = -1;             // Holds last value of the character position
+    int startLine = -1; // Index where to begin drawing (where a line begins)
+    int endLine = -1; // Index where to stop drawing (where a line ends)
+    int lastk = -1; // Holds last value of the character position
 
     for (int i = 0, k = 0; i < length; i++, k++)
     {
@@ -191,18 +232,20 @@ void DrawTextBoxedSelectable(Font font, const char *text, Rectangle rec, float f
         float glyphWidth = 0;
         if (codepoint != '\n')
         {
-            glyphWidth = (font.glyphs[index].advanceX == 0) ? font.recs[index].width*scaleFactor : font.glyphs[index].advanceX*scaleFactor;
+            glyphWidth = (font.glyphs[index].advanceX == 0)
+                             ? font.recs[index].width * scaleFactor
+                             : font.glyphs[index].advanceX * scaleFactor;
 
             if (i + 1 < length) glyphWidth = glyphWidth + spacing;
         }
-        
+
         if (state == MEASURE_STATE)
         {
             if ((codepoint == ' ') || (codepoint == '\t') || (codepoint == '\n')) endLine = i;
 
             if ((textOffsetX + glyphWidth) > rec.width)
             {
-                endLine = (endLine < 1)? i : endLine;
+                endLine = (endLine < 1) ? i : endLine;
                 if (i == endLine) endLine -= codepointByteCount;
                 if ((startLine + codepointByteCount) == endLine) endLine = (i - codepointByteCount);
 
@@ -233,7 +276,7 @@ void DrawTextBoxedSelectable(Font font, const char *text, Rectangle rec, float f
             {
                 if (!wordWrap)
                 {
-                    textOffsetY += (font.baseSize + font.baseSize/2)*scaleFactor;
+                    textOffsetY += (font.baseSize + font.baseSize / 2) * scaleFactor;
                     textOffsetX = 0;
                 }
             }
@@ -241,31 +284,35 @@ void DrawTextBoxedSelectable(Font font, const char *text, Rectangle rec, float f
             {
                 if (!wordWrap && ((textOffsetX + glyphWidth) > rec.width))
                 {
-                    textOffsetY += (font.baseSize + font.baseSize/2)*scaleFactor;
+                    textOffsetY += (font.baseSize + font.baseSize / 2) * scaleFactor;
                     textOffsetX = 0;
                 }
 
                 // When text overflows rectangle height limit, just stop drawing
-                if ((textOffsetY + font.baseSize*scaleFactor) > rec.height) break;
+                if ((textOffsetY + font.baseSize * scaleFactor) > rec.height) break;
 
                 // Draw selection background
                 bool isGlyphSelected = false;
                 if ((selectStart >= 0) && (k >= selectStart) && (k < (selectStart + selectLength)))
                 {
-                    DrawRectangleRec(Rectangle{ rec.x + textOffsetX - 1, rec.y + textOffsetY, glyphWidth, font.baseSize*scaleFactor }, selectBackTint);
+                    DrawRectangleRec(Rectangle{
+                                         rec.x + textOffsetX - 1, rec.y + textOffsetY, glyphWidth,
+                                         font.baseSize * scaleFactor
+                                     }, selectBackTint);
                     isGlyphSelected = true;
                 }
 
                 // Draw current character glyph
                 if ((codepoint != ' ') && (codepoint != '\t'))
                 {
-                    DrawTextCodepoint(font, codepoint, Vector2{ rec.x + textOffsetX, rec.y + textOffsetY }, fontSize, isGlyphSelected? selectTint : tint);
+                    DrawTextCodepoint(font, codepoint, Vector2{rec.x + textOffsetX, rec.y + textOffsetY}, fontSize,
+                                      isGlyphSelected ? selectTint : tint);
                 }
             }
 
             if (wordWrap && (i == endLine))
             {
-                textOffsetY += (font.baseSize + font.baseSize/2)*scaleFactor;
+                textOffsetY += (font.baseSize + font.baseSize / 2) * scaleFactor;
                 textOffsetX = 0;
                 startLine = endLine;
                 endLine = -1;
@@ -277,6 +324,6 @@ void DrawTextBoxedSelectable(Font font, const char *text, Rectangle rec, float f
             }
         }
 
-        if ((textOffsetX != 0) || (codepoint != ' ')) textOffsetX += glyphWidth;  // avoid leading spaces
+        if ((textOffsetX != 0) || (codepoint != ' ')) textOffsetX += glyphWidth; // avoid leading spaces
     }
 }

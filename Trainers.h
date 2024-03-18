@@ -1,11 +1,11 @@
 #pragma once
 
+#include "Abilities.h"
+#include "Pokemon.h"
+
 #include <vector>
 #include <iostream>
 #include <string>
-
-#include "Abilities.h"
-#include "Pokemon.h"
 
 class Trainers
 {

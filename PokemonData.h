@@ -1,12 +1,10 @@
 #pragma once
 
-#include <vector>
-#include <string>
-#include <map>
-
+#include "Trainers.h"
+#include "raylib.h"
 #include "Pokemon.h"
-#include "PokeType.h"
 
+#include <vector>
 
 extern Texture2D bulbasaurFrontTexture;
 extern Texture2D bulbasaurBackTexture;
@@ -42,14 +40,20 @@ extern Texture2D rattataFrontTexture;
 extern Texture2D rattataBackTexture;
 
 extern std::vector<Pokemon> allPokemons;
+extern std::vector<Trainers> allTrainers;
+extern std::vector<Abilities> allAbilities;
 
 void LoadPokemonDatas();
 void UnloadPokemonDatas();
 
-void DrawTextBoxed(Font font, const char *text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint);
-void DrawTextBoxedSelectable(Font font, const char *text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint, int selectStart, int selectLength, Color selectTint, Color selectBackTint);    // Draw text using font inside rectangle limits with support for text selection
+void DrawTextBoxed(Font font, const char* text, Rectangle rec, float fontSize, float spacing, bool wordWrap,
+                   Color tint);
+void DrawTextBoxedSelectable(Font font, const char* text, Rectangle rec, float fontSize, float spacing, bool wordWrap,
+                             Color tint, int selectStart, int selectLength, Color selectTint,
+                             Color selectBackTint);
+// Draw text using font inside rectangle limits with support for text selection
 
 Pokemon GetPokemon(int pokemonIndex);
+Trainers& GetTrainer(int trainerIndex);
 
 float GetResistance(int attackType, int defenderType);
-

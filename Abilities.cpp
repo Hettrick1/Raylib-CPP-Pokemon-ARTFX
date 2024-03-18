@@ -1,5 +1,9 @@
 #include "Abilities.h"
 
+Abilities::Abilities()
+{
+}
+
 Abilities::Abilities(std::string name, float damages, PokeType type) {
 	mName = name;
 	mDamages = damages;
