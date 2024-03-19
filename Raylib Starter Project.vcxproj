@@ -140,6 +140,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Pokemon.cpp" />
     <ClCompile Include="PokemonData.cpp" />
+    <ClCompile Include="Pokestop.cpp" />
     <ClCompile Include="Trainers.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -149,6 +150,7 @@
     <ClInclude Include="Initializer.h" />
     <ClInclude Include="Pokemon.h" />
     <ClInclude Include="PokemonData.h" />
+    <ClInclude Include="Pokestop.h" />
     <ClInclude Include="Poketype.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Trainers.h" />

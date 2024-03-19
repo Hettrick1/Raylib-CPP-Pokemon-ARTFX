@@ -64,7 +64,7 @@ void Draw()
     init.Draw();
     if (init.GetInitFinish())
     {
-        event.Draw();
+        event.Draw(init.GetPlayer());
     }
     EndDrawing();
 }

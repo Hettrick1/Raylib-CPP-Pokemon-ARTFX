@@ -5,6 +5,7 @@
 #include "Trainers.h"
 #include "Battle.h"
 #include "PokemonData.h"
+#include "Pokestop.h"
 
 #include <random>
 
@@ -16,7 +17,7 @@ public:
 	~Event();
 	void Start();
 	void Update(Trainers& player);
-	void Draw();
+	void Draw(Trainers& player);
 	void Unload();
 	int ChooseInt(int min, int max);
 	void Pokestop(Trainers& player);
