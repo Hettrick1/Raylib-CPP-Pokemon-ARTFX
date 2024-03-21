@@ -55,5 +55,6 @@ void DrawTextBoxedSelectable(Font font, const char* text, Rectangle rec, float f
 
 Pokemon GetPokemon(int pokemonIndex);
 Trainers& GetTrainer(int trainerIndex);
+Abilities GetAbility(int abilityIndex);
 
 float GetResistance(int attackType, int defenderType);

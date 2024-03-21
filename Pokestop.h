@@ -3,6 +3,7 @@
 #include "Trainers.h"
 #include "raylib.h"
 #include "Pokemon.h"
+#include "Abilities.h"
 #include "PokemonData.h"
 
 #include <vector>
@@ -17,7 +18,9 @@ public:
 	void EnterPokestop(Trainers& player);
 	void QuitPokestop();
 	bool GetQuitPokestop();
-	bool ResetMouseCursor();
-	void OnButtonClick(int buttonIndex);
+	bool ResetPokemonMouseCursor();
+	bool ResetAbilityMouseCursor();
+	void OnButtonClickPokemon(int buttonIndex, Trainers& player);
+	void OnButtonClickAbility(int buttonIndex, Trainers& player);
 };
 

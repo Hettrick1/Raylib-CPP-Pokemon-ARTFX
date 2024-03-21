@@ -43,7 +43,15 @@ std::vector<Trainers> allTrainers = {
         Trainers("i", "z", "z", 300, 100, 5),
 };
 std::vector<Abilities> allAbilities = {
-        Abilities("hello", 10, PokeType::ELECTRIC),
+        Abilities("Ability1", 10, PokeType::ELECTRIC),
+        Abilities("Ability2", 10, PokeType::ELECTRIC),
+        Abilities("Ability3", 10, PokeType::ELECTRIC),
+        Abilities("Ability4", 10, PokeType::ELECTRIC),
+        Abilities("Ability5", 10, PokeType::ELECTRIC),
+        Abilities("Ability6", 10, PokeType::ELECTRIC),
+        Abilities("Ability7", 10, PokeType::ELECTRIC),
+        Abilities("Ability8", 10, PokeType::ELECTRIC),
+        Abilities("Ability9", 10, PokeType::ELECTRIC),
 };
 
 float resistanceMatrix[18][18] = {
@@ -183,6 +191,10 @@ Pokemon GetPokemon(int pokemonIndex)
 Trainers& GetTrainer(int trainerIndex)
 {
     return allTrainers[trainerIndex];
+}
+Abilities GetAbility(int abilityIndex)
+{
+    return allAbilities[abilityIndex];
 }
 
 float GetResistance(int attackType, int defenderType)
