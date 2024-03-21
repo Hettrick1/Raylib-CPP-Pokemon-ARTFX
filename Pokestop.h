@@ -17,5 +17,7 @@ public:
 	void EnterPokestop(Trainers& player);
 	void QuitPokestop();
 	bool GetQuitPokestop();
+	bool ResetMouseCursor();
+	void OnButtonClick(int buttonIndex);
 };
 
