@@ -3,6 +3,7 @@
 #include "Trainers.h"
 #include "raylib.h"
 #include "Pokemon.h"
+#include "PokemonData.h"
 
 #include <vector>
 

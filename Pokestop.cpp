@@ -12,7 +12,7 @@ Rectangle quitPokestopRectangle = { 600, 400, 150, 50 };
 Rectangle healPokemonRectangle = { 450, 130, 300, 50 } ;
 Rectangle learnAbilityRectangle = { 50, 130, 300, 50 };
 
-std::vector<Rectangle> pokemonBtn = { {50 , 180, 150, 30}, {50 , 210, 150, 30}, {50 , 240, 150, 30}, {50 , 270, 150, 30}, {50 , 300, 150, 30}, {50 , 330, 150, 30} };
+std::vector<Rectangle> pokemonBtn = { {50 , 180, 180, 48}, {50 , 228, 180, 48}, {50 , 276, 180, 48}, {50 , 324, 180, 48}, {50 , 372, 180, 48}, {50 , 420, 180, 48} };
 
 Pokestop::Pokestop()
 {
@@ -30,6 +30,8 @@ void Pokestop::Update(Trainers& player)
 		showAbilities = false;
 		abilityBtnColor = WHITE;
 		pokestopIndex = 0;
+		Pokemon poke = GetPokemon(6);
+		player.AddPokemon(poke);
 	}
 	if (!quitPokestop) {
 
@@ -76,7 +78,8 @@ void Pokestop::Update(Trainers& player)
 			mouseOnLearnAbility = false;
 		}
 		if (showAbilities) {
-
+			int pokeNumber = player.GetTeam().size();
+			for ()
 		}
 	}
 }
@@ -93,7 +96,12 @@ void Pokestop::Draw(Trainers& player)
 		DrawRectangleLines(450, 130, 300, 50, DARKBLUE);
 		DrawText("Heal Pokemons", 450 + (300 - MeasureText("Heal Pokemons", 30)) / 2, 140, 30, BLACK);
 		if (showAbilities) {
-
+			int pokeNumber = player.GetTeam().size();
+			for (int i = 0; i < pokeNumber; i++) {
+				DrawRectangleLines(pokemonBtn[i].x, pokemonBtn[i].y, pokemonBtn[i].width, pokemonBtn[i].height, DARKBLUE);
+				DrawTextureEx(player.GetTeam()[i].GetFrontSprite(), Vector2{ pokemonBtn[i].x, pokemonBtn[i].y}, 0, 0.75, WHITE);
+				DrawText(player.GetTeam()[i].GetName().c_str(), pokemonBtn[i].x + 110 - MeasureText(player.GetTeam()[i].GetName().c_str(), 20)/2, pokemonBtn[i].y + 15, 20, BLACK);
+			}
 		}
 	}
 }
