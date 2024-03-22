@@ -26,7 +26,7 @@ Trainers::Trainers(std::string name, std::string lastName, std::string catchPhra
 }
 Trainers::Trainers(std::string name) {
 	mName = name;
-	mMoney = 100;
+	mMoney = 1000;
 	mLifePoints = 100;
 	mPokeballs = 10;
 	mCurrentPokemonIndex = 0;
