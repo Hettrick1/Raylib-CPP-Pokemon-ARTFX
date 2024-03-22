@@ -43,15 +43,15 @@ std::vector<Trainers> allTrainers = {
         Trainers("i", "z", "z", 300, 100, 5),
 };
 std::vector<Abilities> allAbilities = {
-        Abilities("Ability1", 10, PokeType::ELECTRIC),
-        Abilities("Ability2", 10, PokeType::ELECTRIC),
-        Abilities("Ability3", 10, PokeType::ELECTRIC),
-        Abilities("Ability4", 10, PokeType::ELECTRIC),
-        Abilities("Ability5", 10, PokeType::ELECTRIC),
-        Abilities("Ability6", 10, PokeType::ELECTRIC),
-        Abilities("Ability7", 10, PokeType::ELECTRIC),
-        Abilities("Ability8", 10, PokeType::ELECTRIC),
-        Abilities("Ability9", 10, PokeType::ELECTRIC),
+        Abilities("Ability1", 10, 35, PokeType::ELECTRIC),
+        Abilities("Ability2", 10, 35, PokeType::ELECTRIC),
+        Abilities("Ability3", 10, 35, PokeType::ELECTRIC),
+        Abilities("Ability4", 10, 35, PokeType::ELECTRIC),
+        Abilities("Ability5", 10, 35, PokeType::ELECTRIC),
+        Abilities("Ability6", 10, 35, PokeType::ELECTRIC),
+        Abilities("Ability7", 10, 35, PokeType::ELECTRIC),
+        Abilities("Ability8", 10, 35, PokeType::ELECTRIC),
+        Abilities("Ability9", 10, 35, PokeType::ELECTRIC),
 };
 
 float resistanceMatrix[18][18] = {

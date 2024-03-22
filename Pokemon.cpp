@@ -68,24 +68,8 @@ void Pokemon::TakeDamages(float damages) {
 	}
 }
 
-void Pokemon::LearnAbilities(std::vector<Abilities>& allAbilities) {
-	int answer;
-	size_t abilitiesAvailableSize = allAbilities.size();
-
-	if (mAbilities.size() < 5) {
-		std::cout << "\nVotre pokemon peut apprendre ces abilites, laquelle voulez-vous ?\n";
-		for (int i = 0; i < abilitiesAvailableSize; i++) {
-			std::cout << i + 1 << ". " << allAbilities[i].GetAbilityName() << ".\n";
-		}
-		do {
-			std::cin >> answer;
-		} while (answer <= 0 || answer > abilitiesAvailableSize);
-		mAbilities.push_back(allAbilities[answer - 1]);
-		std::cout << "Votre pokemon " << mName << " vient d'apprendre l'abilité : " << allAbilities[answer - 1].GetAbilityName() << ".\n";
-	}
-	else {
-		std::cout << "Votre pokemon " << mName << " ne peut plus apprendre d'abilites.\n";
-	}
+void Pokemon::LearnAbilities(Abilities& ability) {
+	mAbilities.push_back(ability);
 }
 void Pokemon::GoOutOfPokeball() {
 	std::cout << mName << " est sorti de sa pokeball.\n";

@@ -22,5 +22,7 @@ public:
 	bool ResetAbilityMouseCursor();
 	void OnButtonClickPokemon(int buttonIndex, Trainers& player);
 	void OnButtonClickAbility(int buttonIndex, Trainers& player);
+	void OnButtonClickAccept(Trainers& player);
+	void OnButtonClickRefuse(Trainers& player);
 };
 

@@ -49,12 +49,10 @@ void Trainers::Introduce() { // modifier pour afficher les sprites des trainers 
 }
 void Trainers::EarnMoney(int amount) {
 	mMoney += amount;
-	std::cout << "Earned " << amount << " money. Total money: " << mMoney << "\n";
 }
 
 void Trainers::EarnPokeballs(int count) {
 	mPokeballs += count;
-	std::cout << "Earned " << count << " pokeballs. Total pokeballs: " << mPokeballs << "\n";
 }
 
 void Trainers::ChangeCurrentPokemon() {
@@ -82,7 +80,7 @@ int Trainers::GetCurrentPokemonIndex() {
 	return mCurrentPokemonIndex;
 }
 
-int Trainers::GetMoney() {
+int& Trainers::GetMoney() {
 	return mMoney;
 }
 void Trainers::SetCurrentPokemon(int pokemonIndex)

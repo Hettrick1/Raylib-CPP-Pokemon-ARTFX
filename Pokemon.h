@@ -35,7 +35,7 @@ public:
 	Texture2D GetBackSprite();
 	float CalculateDamage(Abilities& ability, Pokemon& defender);
 	void TakeDamages(float damage);
-	void LearnAbilities(std::vector<Abilities>& abilitiesAvailable);
+	void LearnAbilities(Abilities& ability);
 	void GoOutOfPokeball();
 	void GoInAPokeball();
 	void Rest();
