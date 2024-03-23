@@ -30,6 +30,7 @@ public:
 	int GetLevel();
 	std::string GetDescription();
 	float GetHealth();
+	float GetMaxHealth();
 	bool GetIncapacited();
 	Texture2D GetFrontSprite();
 	Texture2D GetBackSprite();
@@ -38,7 +39,7 @@ public:
 	void LearnAbilities(Abilities& ability);
 	void GoOutOfPokeball();
 	void GoInAPokeball();
-	void Rest();
+	void Rest(float addHealth);
 	std::vector<Abilities>& GetAbilities();
 	void ChoseAbilities(std::vector<Abilities>& abilities, Pokemon& defender);
 };

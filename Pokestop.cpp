@@ -6,18 +6,18 @@ bool mouseOnQuitPokestop, mouseOnHeal, mouseOnLearnAbility, hasClickedOnPokemon,
 
 int pokestopIndex = 0, buttonPokemonIndexRef = 0, buttonAbilityIndexRef = 0;
 
-Color chooseAbilityBtnColor = WHITE;
+Color chooseAbilityBtnColor = BLANK;
 
-Rectangle quitPokestopRectangle = { 600, 400, 150, 50 };
-Rectangle healPokemonRectangle = { 450, 130, 300, 50 } ;
-Rectangle learnAbilityRectangle = { 50, 130, 300, 50 };
-Rectangle acceptBtn = { 550, 250, 50, 50};
-Rectangle refuseBtn = { 650, 250, 50, 50};
+Rectangle quitPokestopRectangle = { 590, 630, 150, 35 };
+Rectangle healPokemonRectangle = { 580, 180, 300, 50 } ;
+Rectangle learnAbilityRectangle = { 200, 130, 300, 50 };
+Rectangle acceptBtn = { 465, 540, 50, 50};
+Rectangle refuseBtn = { 565, 540, 50, 50};
 
-std::vector<Rectangle> pokemonBtn = { {50 , 180, 180, 48}, {50 , 228, 180, 48}, {50 , 276, 180, 48}, {50 , 324, 180, 48}, {50 , 372, 180, 48}, {50 , 420, 180, 48} };
-std::vector<Rectangle> abilityBtn = { {230 , 180, 120, 48}, {230 , 228, 120, 48}, {230 , 276, 120, 48}, {230 , 324, 120, 48}, {230 , 372, 120, 48}, {230 , 420, 120, 48}, {350 , 180, 120, 48}, {350 , 228, 120, 48}, {350 , 276, 120, 48} };
-std::vector<Color> pokemonBtnColor = { WHITE, WHITE, WHITE, WHITE, WHITE, WHITE };
-std::vector<Color> abilityBtnColor = { WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE };
+std::vector<Rectangle> pokemonBtn = { {learnAbilityRectangle.x , 180, 180, 48}, {learnAbilityRectangle.x , 228, 180, 48}, {learnAbilityRectangle.x , 276, 180, 48}, {learnAbilityRectangle.x , 324, 180, 48}, {learnAbilityRectangle.x , 372, 180, 48}, {learnAbilityRectangle.x , 420, 180, 48} };
+std::vector<Rectangle> abilityBtn = { {pokemonBtn[0].x + pokemonBtn[0].width , 180, 120, 48}, {pokemonBtn[0].x + pokemonBtn[0].width  , 228, 120, 48}, {pokemonBtn[0].x + pokemonBtn[0].width  , 276, 120, 48}, {pokemonBtn[0].x + pokemonBtn[0].width  , 324, 120, 48}, {pokemonBtn[0].x + pokemonBtn[0].width  , 372, 120, 48}, {pokemonBtn[0].x + pokemonBtn[0].width  , 420, 120, 48}, {pokemonBtn[0].x + pokemonBtn[0].width + 120, 180, 120, 48}, {pokemonBtn[0].x + pokemonBtn[0].width + 120 , 228, 120, 48}, {pokemonBtn[0].x + pokemonBtn[0].width + 120 , 276, 120, 48}};
+std::vector<Color> pokemonBtnColor = { BLANK, BLANK, BLANK, BLANK, BLANK, BLANK };
+std::vector<Color> abilityBtnColor = { BLANK, BLANK, BLANK, BLANK, BLANK, BLANK, BLANK, BLANK, BLANK };
 std::vector<Abilities> abilitiesAvailable;
 
 std::vector<bool> pokeBtn = {false, false, false, false, false, false};
@@ -37,12 +37,17 @@ void Pokestop::Update(Trainers& player)
 		justEntered = false;
 		quitPokestop = false;
 		showAbilities = false;
-		chooseAbilityBtnColor = WHITE;
+		chooseAbilityBtnColor = BLANK;
 		pokestopIndex = 0;
 		Pokemon poke = GetPokemon(6);
+		poke.TakeDamages(80);
 		player.AddPokemon(poke);
 	}
 	if (!quitPokestop) {
+		int pokeNumber = player.GetTeam().size();
+		for (int i = 0; i < pokeNumber; i++) {
+			player.GetTeam()[i].Rest(0.08f);
+		}
 
 		if (CheckCollisionPointRec(GetMousePosition(), quitPokestopRectangle)) {
 			SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
@@ -52,7 +57,7 @@ void Pokestop::Update(Trainers& player)
 				QuitPokestop();
 			}
 		}
-		if (CheckCollisionPointRec(GetMousePosition(), healPokemonRectangle) && showHealBtn) {
+		/*if (CheckCollisionPointRec(GetMousePosition(), healPokemonRectangle) && showHealBtn) {
 			SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
 			mouseOnHeal = true;
 			if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
@@ -61,22 +66,22 @@ void Pokestop::Update(Trainers& player)
 					pokemon.Rest();
 				}
 			}
-		}
+		}*/
 		if (CheckCollisionPointRec(GetMousePosition(), learnAbilityRectangle)) {
 			SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
 			mouseOnLearnAbility = true;
 			if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
 			{
 				if (!showAbilities) {
-					chooseAbilityBtnColor = GRAY;
+					chooseAbilityBtnColor = LIGHTGRAY;
 					showAbilities = true;
 					showHealBtn = false;
 				}
 				else if (showAbilities) {
-					chooseAbilityBtnColor = WHITE;
+					chooseAbilityBtnColor = BLANK;
 					showAbilities = false;
 					hasClickedOnPokemon = false;
-					pokemonBtnColor[buttonPokemonIndexRef] = WHITE;
+					pokemonBtnColor[buttonPokemonIndexRef] = BLANK;
 					error = false;
 					showValidationBtn = false;
 					showHealBtn = true;
@@ -146,67 +151,90 @@ void Pokestop::Update(Trainers& player)
 void Pokestop::Draw(Trainers& player)
 {
 	if (!quitPokestop) {
-		DrawText(TextFormat("%i", player.GetMoney()), 600 - 50 - MeasureText(TextFormat("%i", player.GetMoney()), 30), 410, 30, ORANGE);
-		DrawText("Welcome in the Pokestop, trainer !", 400 - MeasureText("Welcome in the Pokestop, trainer !", 40) / 2, 50, 40, BLACK);
-		DrawRectangleLines(600, 400, 150, 50, DARKBLUE);
-		DrawText("Return", 600 + (150 - MeasureText("Return", 30)) / 2, 410, 30, BLACK);
-		DrawRectangle(50, 130, 300, 50, chooseAbilityBtnColor);
-		DrawRectangleLines(50, 130, 300, 50, DARKBLUE);
-		DrawText("Learn Ability", 50 + (300 - MeasureText("Learn Ability", 30)) / 2, 140, 30, BLACK);
-		if (showHealBtn) {
-			DrawRectangleLines(450, 130, 300, 50, DARKBLUE);
-			DrawText("Heal Pokemons", 450 + (300 - MeasureText("Heal Pokemons", 30)) / 2, 140, 30, BLACK);
-		}
+		DrawText(TextFormat("%i", player.GetMoney()), quitPokestopRectangle.x - 50 - MeasureText(TextFormat("%i", player.GetMoney()), 30), quitPokestopRectangle.y + 20, 30, ORANGE);
+		DrawText(TextFormat("%i", player.GetPokeballs()), quitPokestopRectangle.x - 50 - MeasureText(TextFormat("%i", player.GetPokeballs()), 30), quitPokestopRectangle.y - 10, 30, RED);
+		DrawText("Welcome in the Pokestop, trainer", 540 - MeasureText("Welcome in the Pokestop, trainer", 40) / 2, 70, 40, BLACK);
+		DrawRectangleLines(quitPokestopRectangle.x, quitPokestopRectangle.y, quitPokestopRectangle.width, quitPokestopRectangle.height, BLACK);
+		DrawText("Return", quitPokestopRectangle.x + (quitPokestopRectangle.width - MeasureText("Return", 20)) / 2, quitPokestopRectangle.y + 8, 20, BLACK);
+		DrawRectangle(learnAbilityRectangle.x, learnAbilityRectangle.y, learnAbilityRectangle.width, learnAbilityRectangle.height, chooseAbilityBtnColor);
+		DrawRectangleLines(learnAbilityRectangle.x, learnAbilityRectangle.y, learnAbilityRectangle.width, learnAbilityRectangle.height, BLACK);
+		DrawText("Learn Ability", learnAbilityRectangle.x + (learnAbilityRectangle.width - MeasureText("Learn Ability", 30)) / 2, learnAbilityRectangle.y + 10, 30, BLACK);
 		if (showAbilities) {
 			int pokeNumber = player.GetTeam().size();
 			int abilityNumber = abilitiesAvailable.size();
 			if (hasClickedOnPokemon) {
 				for (int i = 0; i < pokeNumber; i++) {
 					if (i != buttonPokemonIndexRef) {
-						pokemonBtnColor[i] = WHITE;
+						pokemonBtnColor[i] = BLANK;
 					}
 					else
 					{
-						pokemonBtnColor[buttonPokemonIndexRef] = GRAY;
+						pokemonBtnColor[buttonPokemonIndexRef] = LIGHTGRAY;
 					}
 				}
 				if (hasClickedOnAbility) {
 					hasClickedOnAbility = false;
 					for (int i = 0; i < abilityNumber; i++) {
 						if (i != buttonAbilityIndexRef) {
-							abilityBtnColor[i] = WHITE;
+							abilityBtnColor[i] = BLANK;
 						}
 						else
 						{
-							abilityBtnColor[buttonAbilityIndexRef] = GRAY;
+							abilityBtnColor[buttonAbilityIndexRef] = LIGHTGRAY;
 						}
 					}
 				}
 				for (int i = 0; i < abilityNumber; i++) {
 					DrawRectangle(abilityBtn[i].x, abilityBtn[i].y, abilityBtn[i].width, abilityBtn[i].height, abilityBtnColor[i]);
-					DrawRectangleLines(abilityBtn[i].x, abilityBtn[i].y, abilityBtn[i].width, abilityBtn[i].height, DARKBLUE);
+					DrawRectangleLines(abilityBtn[i].x, abilityBtn[i].y, abilityBtn[i].width, abilityBtn[i].height, BLACK);
 					DrawText(abilitiesAvailable[i].GetAbilityName().c_str(), abilityBtn[i].x + 60 - MeasureText(abilitiesAvailable[i].GetAbilityName().c_str(), 20) / 2, abilityBtn[i].y + 15, 20, BLACK);
 				}
 			}
 			for (int i = 0; i < pokeNumber; i++) {
+				Color abilityCountColor;
+				if (player.GetTeam()[i].GetAbilities().size() < 4) {
+					abilityCountColor = GRAY;
+				}
+				else {
+					abilityCountColor = RED;
+				}
 				DrawRectangle(pokemonBtn[i].x, pokemonBtn[i].y, pokemonBtn[i].width, pokemonBtn[i].height, pokemonBtnColor[i]);
-				DrawRectangleLines(pokemonBtn[i].x, pokemonBtn[i].y, pokemonBtn[i].width, pokemonBtn[i].height, DARKBLUE);
+				DrawRectangleLines(pokemonBtn[i].x, pokemonBtn[i].y, pokemonBtn[i].width, pokemonBtn[i].height, BLACK);
 				DrawTextureEx(player.GetTeam()[i].GetFrontSprite(), Vector2{ pokemonBtn[i].x, pokemonBtn[i].y}, 0, 0.75, WHITE);
 				DrawText(player.GetTeam()[i].GetName().c_str(), pokemonBtn[i].x + 110 - MeasureText(player.GetTeam()[i].GetName().c_str(), 20)/2, pokemonBtn[i].y + 15, 20, BLACK);
-				DrawText(TextFormat("%i/4", player.GetTeam()[i].GetAbilities().size()), pokemonBtn[i].x - 5 - MeasureText(TextFormat("%i/4", player.GetTeam()[i].GetAbilities().size()), 20), pokemonBtn[i].y + 15, 20, RED);
+				DrawText(TextFormat("%i/4", player.GetTeam()[i].GetAbilities().size()), pokemonBtn[i].x - 5 - MeasureText(TextFormat("%i/4", player.GetTeam()[i].GetAbilities().size()), 20), pokemonBtn[i].y + 15, 20, abilityCountColor);
 			}
 		}
 		if (showValidationBtn) {
 			
-			DrawText(TextFormat("Spend %i gold?", abilitiesAvailable[buttonAbilityIndexRef].GetPrice()), 625 - MeasureText(TextFormat("Spend %i gold?", abilitiesAvailable[buttonAbilityIndexRef].GetPrice()), 30) / 2, 200, 30, BLACK);
+			DrawText(TextFormat("Spend %i gold?", abilitiesAvailable[buttonAbilityIndexRef].GetPrice()), 540 - MeasureText(TextFormat("Spend %i gold?", abilitiesAvailable[buttonAbilityIndexRef].GetPrice()), 30) / 2, 490, 30, BLACK);
 			DrawRectangleLines(acceptBtn.x, acceptBtn.y, acceptBtn.width, acceptBtn.height, GREEN);
 			DrawText("Y", acceptBtn.x + (acceptBtn.width - MeasureText("Y", 40)) / 2, acceptBtn.y + 10, 40, GREEN);
 			DrawRectangleLines(refuseBtn.x, refuseBtn.y, refuseBtn.width, refuseBtn.height, RED);
 			DrawText("N", refuseBtn.x + (refuseBtn.width - MeasureText("N", 40)) / 2, refuseBtn.y + 10, 40, RED);
 		}
 		if(error && showAbilities) {
-			DrawText("You can't do that", 625 - MeasureText("You can't do that", 30) / 2, 200, 30, RED);
+			DrawText("You can't do that", 540 - MeasureText("You can't do that", 30) / 2, 490, 30, RED);
 		}
+		if(showHealBtn){
+			int pokeNumber = player.GetTeam().size();
+			Color lifeBarColor;
+			for (int i = 0; i < pokeNumber; i++) {
+				if (player.GetTeam()[i].GetHealth() < (player.GetTeam()[i].GetMaxHealth() * 0.75) && player.GetTeam()[i].GetHealth() >= (player.GetTeam()[i].GetMaxHealth() * 0.4)) {
+					lifeBarColor = ORANGE;
+				}
+				else if (player.GetTeam()[i].GetHealth() < (player.GetTeam()[i].GetMaxHealth() * 0.4)) {
+					lifeBarColor = RED;
+				}
+				else {
+					lifeBarColor = GREEN;
+				}
+				DrawTextureEx(player.GetTeam()[i].GetFrontSprite(), Vector2{ 750, static_cast<float> (120 + i * 70) }, 0, 1.3, WHITE);
+				DrawText(player.GetTeam()[i].GetName().c_str(), 750 - 120, 145 + i * 70, 25,BLACK);
+				DrawRectangle(750 - 120, 175 + i * 70, 120, 5, GRAY);
+				DrawRectangle(750 - 120, 175 + i * 70, (player.GetTeam()[i].GetHealth() / player.GetTeam()[i].GetMaxHealth()) * 120, 5, lifeBarColor);
+			}
+		}	
 	}
 }
 
@@ -218,10 +246,10 @@ void Pokestop::EnterPokestop(Trainers& player)
 void Pokestop::QuitPokestop()
 {
 	if (!justEntered) {
-		chooseAbilityBtnColor = WHITE;
+		chooseAbilityBtnColor = BLANK;
 		showAbilities = false;
 		hasClickedOnPokemon = false;
-		pokemonBtnColor[buttonPokemonIndexRef] = WHITE;
+		pokemonBtnColor[buttonPokemonIndexRef] = BLANK;
 		showValidationBtn = false;
 		error = false;
 		quitPokestop = true;
@@ -273,7 +301,7 @@ void Pokestop::OnButtonClickPokemon(int buttonIndex, Trainers& player) {
 	}
 	int abilityNumber = abilitiesAvailable.size();
 	for (int i = 0; i < abilityNumber; i++) {
-		abilityBtnColor[i] = WHITE;
+		abilityBtnColor[i] = BLANK;
 	}
 }
 void Pokestop::OnButtonClickAbility(int buttonIndex, Trainers& player) {
@@ -287,19 +315,19 @@ void Pokestop::OnButtonClickAccept(Trainers& player)
 		player.EarnMoney(-abilitiesAvailable[buttonAbilityIndexRef].GetPrice());
 		player.GetTeam()[buttonPokemonIndexRef].LearnAbilities(abilitiesAvailable[buttonAbilityIndexRef]);
 		hasClickedOnPokemon = false;
-		pokemonBtnColor[buttonPokemonIndexRef] = WHITE;
+		pokemonBtnColor[buttonPokemonIndexRef] = BLANK;
 	}
 	else {
 		error = true;
 		hasClickedOnPokemon = false;
-		pokemonBtnColor[buttonPokemonIndexRef] = WHITE;
+		pokemonBtnColor[buttonPokemonIndexRef] = BLANK;
 	}
 	showValidationBtn = false;
 }
 void Pokestop::OnButtonClickRefuse(Trainers& player)
 {
 	hasClickedOnPokemon = false;
-	pokemonBtnColor[buttonPokemonIndexRef] = WHITE;
+	pokemonBtnColor[buttonPokemonIndexRef] = BLANK;
 	showValidationBtn = false;
 	error = false;
 }

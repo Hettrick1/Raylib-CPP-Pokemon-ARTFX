@@ -24,6 +24,10 @@ std::string Pokemon::GetName() { return mName; }
 int Pokemon::GetLevel() { return mLevel; }
 std::string Pokemon::GetDescription() { return mDescription; }
 float Pokemon::GetHealth() { return mHealth; }
+float Pokemon::GetMaxHealth()
+{
+	return mMaxHealth;
+}
 PokeType Pokemon::GetType() { return mType; }
 bool Pokemon::GetIncapacited() { return mIncapacited; }
 
@@ -78,8 +82,10 @@ void Pokemon::GoInAPokeball() {
 	std::cout << mName << " est entre dans sa pokeball.\n";
 }
 
-void Pokemon::Rest() {
-	mHealth = mMaxHealth;
+void Pokemon::Rest(float addHealth) {
+	if (mHealth < mMaxHealth) {
+		mHealth += addHealth;
+	}
 	for (Abilities& ability : mAbilities) {
 		ability.ResetUses();
 	}

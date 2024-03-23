@@ -1,8 +1,8 @@
 #include "Event.h"
 
-Rectangle highGrassRectangle = { 530, 150, 220, 300};
-Rectangle lakeShoresRectangle = {290, 150, 220, 300};
-Rectangle pokestopRectangle = { 50, 150, 220, 300 };
+Rectangle highGrassRectangle = { 680, 180, 220, 300};
+Rectangle lakeShoresRectangle = {430, 180, 220, 300};
+Rectangle pokestopRectangle = { 180, 180, 220, 300 };
 
 Battle battle = Battle();
 Pokestop pokestop = Pokestop();
@@ -94,13 +94,13 @@ void Event::Draw(Trainers& player)
 {
 	if (isChoosingEvent && !isInFight)
 	{
-		DrawText("Where do you want to go ?", 400-(MeasureText("Where do you want to go ?", 30)/2), 50, 30, BLACK);
-		DrawRectangleLines(50, 150, 220, 300, DARKBLUE);
-		DrawText("Pokestop", 50 + (220 - MeasureText("Pokestop", 30))/2, 200, 30, BLACK);
-		DrawRectangleLines(290, 150, 220, 300, DARKBLUE);
-		DrawText("Lake Shores", 290 + (220 - MeasureText("Lake Shores", 30))/2, 200, 30, BLACK);
-		DrawRectangleLines(530, 150, 220, 300, DARKBLUE);
-		DrawText("High Grass", 530 + (220 - MeasureText("High Grass", 30))/2, 200, 30, BLACK);
+		DrawText("Where do you want to go ?", 540-(MeasureText("Where do you want to go ?", 40)/2), 100, 40, BLACK);
+		DrawRectangleLines(pokestopRectangle.x, pokestopRectangle.y, pokestopRectangle.width, pokestopRectangle.height, DARKBLUE);
+		DrawText("Pokestop", pokestopRectangle.x + (pokestopRectangle.width - MeasureText("Pokestop", 30))/2, 200, 30, BLACK);
+		DrawRectangleLines(lakeShoresRectangle.x, lakeShoresRectangle.y, lakeShoresRectangle.width, lakeShoresRectangle.height, DARKBLUE);
+		DrawText("Lake Shores", lakeShoresRectangle.x + (lakeShoresRectangle.width - MeasureText("Lake Shores", 30))/2, 200, 30, BLACK);
+		DrawRectangleLines(highGrassRectangle.x, highGrassRectangle.y, highGrassRectangle.width, highGrassRectangle.height, DARKBLUE);
+		DrawText("High Grass", highGrassRectangle.x + (highGrassRectangle.width - MeasureText("High Grass", 30))/2, 200, 30, BLACK);
 	}
 	if (isInFight && !isChoosingEvent) {
 		battle.Draw();

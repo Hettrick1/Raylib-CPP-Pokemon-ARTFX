@@ -2,10 +2,10 @@
 
 #define MAX_INPUT_CHARS     9
 
-Rectangle textBox = {300, 180, 225, 50};
-Rectangle bulbasaurBox = {150, 200, 100, 100};
-Rectangle charmanderBox = {350, 200, 100, 100};
-Rectangle squirtleBox = {550, 200, 100, 100};
+Rectangle textBox = {425, 300, 230, 50};
+Rectangle bulbasaurBox = {290, 300, 100, 100};
+Rectangle squirtleBox = {490, 300, 100, 100};
+Rectangle charmanderBox = {690, 300, 100, 100};
 char name[MAX_INPUT_CHARS + 1] = "\0";
 int letterCount = 0;
 int framesCounter = 0;
@@ -76,46 +76,42 @@ void Initializer::Draw()
 {
     if (isChoosingName)
     {
-        DrawText("Hello trainer ! What is your name ?", 240, 140, 20, GRAY);
+        DrawText("Hello trainer ! What is your name ?", 540 - MeasureText("Hello trainer ! What is your name ?", 30)/2, 250, 30, BLACK);
         DrawRectangleRec(textBox, LIGHTGRAY);
-        DrawRectangleLines(static_cast<int>(textBox.x), static_cast<int>(textBox.y), static_cast<int>(textBox.width),
-                           static_cast<int>(textBox.height), DARKGRAY);
-        DrawText(name, static_cast<int>(textBox.x) + 5, static_cast<int>(textBox.y) + 8, 40, MAROON);
+        DrawRectangleLines(textBox.x, textBox.y, textBox.width, textBox.height, DARKGRAY);
+        DrawText(name, textBox.x + 5, textBox.y + 8, 40, MAROON);
 
-        DrawText(TextFormat("INPUT CHARS: %i/%i", letterCount, MAX_INPUT_CHARS), 315, 250, 20, DARKGRAY);
+        DrawText(TextFormat("INPUT CHARS: %i/%i", letterCount, MAX_INPUT_CHARS), 540 - MeasureText(TextFormat("INPUT CHARS: %i/%i", letterCount, MAX_INPUT_CHARS), 20)/2, 365, 20, DARKGRAY);
         if (letterCount < MAX_INPUT_CHARS)
         {
-            if (((framesCounter / 20) % 2) == 0) DrawText("_", static_cast<int>(textBox.x) + 8 + MeasureText(name, 40),
-                                                          static_cast<int>(textBox.y) + 12, 40, MAROON);
+            if (((framesCounter / 60) % 2) == 0) DrawText("_", textBox.x + 8 + MeasureText(name, 40), textBox.y + 12, 40, MAROON);
         }
-        else DrawText("Press BACKSPACE to delete chars...", 230, 300, 20, GRAY);
+        else DrawText("Press BACKSPACE to delete chars...", 540 - MeasureText("Press BACKSPACE to delete chars...", 20)/2, 400, 20, GRAY);
     }
     else if (!isChoosingName && !hasFirstPokemon)
     {
-        DrawText(TextFormat("Welcome %s", playerFirstName.c_str()),
-                 400 - MeasureText(TextFormat("Welcome %s", playerFirstName.c_str()), 40) / 2, 40, 40, GRAY);
-        DrawTextureEx(bulbasaurTexture, Vector2{140, 195}, 0.0f, 2, WHITE);
-        DrawText("Bulbasaur", 150, 320, 20, BLACK);
-        DrawRectangleLines(150, 200, 100, 100, DARKGRAY);
-        DrawTextureEx(charmenderTexture, Vector2{540, 190}, 0.0f, 2, WHITE);
-        DrawText("Charmander", 550, 320, 20, BLACK);
-        DrawRectangleLines(550, 200, 100, 100, DARKGRAY);
-        DrawTextureEx(squirtleTexture, Vector2{330, 190}, 0.0f, 2, WHITE);
-        DrawText("Squirtle", 350, 320, 20, BLACK);
-        DrawRectangleLines(350, 200, 100, 100, DARKGRAY);
+        DrawText(TextFormat("Welcome %s !", playerFirstName.c_str()), 540 - MeasureText(TextFormat("Welcome %s !", playerFirstName.c_str()), 40) / 2, 140, 40, BLACK);
+        DrawText("Choose your first Pokemon !", 540 - MeasureText("Choose your first Pokemon !", 30) / 2, 220, 30, GRAY);
+
+        DrawTextureEx(bulbasaurTexture, Vector2{278, 295}, 0.0f, 2, WHITE);
+        DrawText("Bulbasaur", bulbasaurBox.x + (bulbasaurBox.width -MeasureText("Bulbasaur", 20))/2, bulbasaurBox.y + 110, 20, BLACK);
+        DrawRectangleLines(bulbasaurBox.x, bulbasaurBox.y, bulbasaurBox.width, bulbasaurBox.height, DARKGRAY);
+
+        DrawTextureEx(squirtleTexture, Vector2{ 470, 290 }, 0.0f, 2, WHITE);
+        DrawText("Squirtle", squirtleBox.x + (squirtleBox.width - MeasureText("Squirtle", 20)) / 2, squirtleBox.y + 110, 20, BLACK);
+        DrawRectangleLines(squirtleBox.x, squirtleBox.y, squirtleBox.width, squirtleBox.height, DARKGRAY);
+
+        DrawTextureEx(charmenderTexture, Vector2{680, 293}, 0.0f, 2, WHITE);
+        DrawText("Charmander", charmanderBox.x + (charmanderBox.width - MeasureText("Charmander", 20)) / 2, charmanderBox.y + 110, 20, BLACK);
+        DrawRectangleLines(charmanderBox.x, charmanderBox.y, charmanderBox.width, charmanderBox.height, DARKGRAY);     
     }
     else if (hasFirstPokemon && hasLoaded && !isChoosingName && !initialisationFinished)
     {
         SetMouseCursor(MOUSE_CURSOR_DEFAULT);
-        DrawText(TextFormat("You choose: %s", pokemonName.c_str()),
-                 400 - MeasureText(TextFormat("You choose: %s", pokemonName.c_str()), 40) / 2, 50, 40, BLACK);
-        DrawTextureEx(player.GetTeam()[0].GetFrontSprite(), Vector2{
-                          static_cast<float>(520) - player.GetTeam()[0].GetFrontSprite().width,
-                          static_cast<float>(160) - player.GetTeam()[0].GetFrontSprite().height
-                      }, 0.0f, 5, WHITE);
-        DrawTextBoxed(GetFontDefault(), player.GetTeam()[0].GetDescription().c_str(), Rectangle{100, 180, 400, 300}, 30,
-                      1.5f, true, BLACK);
-        DrawText("Press ENTER to continue", 400 - MeasureText("Press ENTER to continue", 30) / 2, 410, 30, LIGHTGRAY);
+        DrawText(TextFormat("You choose: %s", pokemonName.c_str()), 540 - MeasureText(TextFormat("You choose: %s", pokemonName.c_str()), 40) / 2, 150, 40, BLACK);
+        DrawTextureEx(player.GetTeam()[0].GetFrontSprite(), Vector2{static_cast<float>(650) - player.GetTeam()[0].GetFrontSprite().width,static_cast<float>(260) - player.GetTeam()[0].GetFrontSprite().height}, 0.0f, 5, WHITE);
+        DrawTextBoxed(GetFontDefault(), player.GetTeam()[0].GetDescription().c_str(), Rectangle{250, 260, 360, 300}, 30, 1.5f, true, BLACK);
+        DrawText("Press ENTER to continue", 540 - MeasureText("Press ENTER to continue", 30) / 2, 510, 30, LIGHTGRAY);
     }
 }
 
@@ -133,6 +129,7 @@ void Initializer::CreatePlayer()
 
     if (isChoosingName)
     {
+        framesCounter++;
         int key = GetCharPressed();
         while (key > 0)
         {
@@ -176,7 +173,7 @@ void Initializer::CreatePlayer()
             SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
             {
-                firstPokemon = GetPokemon(1);
+                firstPokemon = GetPokemon(2);
                 hasFirstPokemon = true;
             }
         }
@@ -186,7 +183,7 @@ void Initializer::CreatePlayer()
             SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
             {
-                firstPokemon = GetPokemon(2);
+                firstPokemon = GetPokemon(1);
                 hasFirstPokemon = true;
             }
         }

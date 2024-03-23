@@ -7,9 +7,11 @@
 #include "Battle.h"
 #include <iostream>
 
-constexpr int WIDTH = 800;
-constexpr int HEIGHT = 500;
+constexpr int WIDTH = 1080;
+constexpr int HEIGHT = 720;
 float deltaTime;
+
+Texture2D cadreTexture;
 
 void Load();
 void Start();
@@ -36,7 +38,8 @@ int main()
 
 void Load()
 {
-    InitWindow(WIDTH, HEIGHT, "Pokemon");
+    InitWindow(WIDTH, HEIGHT, "PokemonLikeGame");
+    cadreTexture = LoadTexture("Images/cadre.png");
     SetTargetFPS(60);
 }
 
@@ -60,7 +63,8 @@ void Update()
 void Draw()
 {
     BeginDrawing();
-    ClearBackground(WHITE);
+    ClearBackground(Color({245, 245, 245, 255}));
+    DrawTextureEx(cadreTexture, Vector2({ 0,0 }), 0, 1, WHITE);
     init.Draw();
     if (init.GetInitFinish())
     {
@@ -71,6 +75,7 @@ void Draw()
 
 void Unload()
 {
+    UnloadTexture(cadreTexture);
     init.Unload();
     event.Unload();
     CloseWindow();

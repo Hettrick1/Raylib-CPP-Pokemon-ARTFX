@@ -83,6 +83,10 @@ int Trainers::GetCurrentPokemonIndex() {
 int& Trainers::GetMoney() {
 	return mMoney;
 }
+int& Trainers::GetPokeballs()
+{
+	return mPokeballs;
+}
 void Trainers::SetCurrentPokemon(int pokemonIndex)
 {
 	mCurrentPokemonIndex = pokemonIndex;

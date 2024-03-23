@@ -34,6 +34,7 @@ public:
 	void ChangeCurrentPokemon();
 	int GetCurrentPokemonIndex();
 	int& GetMoney();
+	int& GetPokeballs();
 	void SetCurrentPokemon(int pokemonIndex);
 };
 
