@@ -15,6 +15,7 @@ private:
 public:
 	Event();
 	~Event();
+	void Load();
 	void Start();
 	void Update(Trainers& player);
 	void Draw(Trainers& player);

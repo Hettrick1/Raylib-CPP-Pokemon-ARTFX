@@ -40,6 +40,7 @@ void Load()
 {
     InitWindow(WIDTH, HEIGHT, "PokemonLikeGame");
     cadreTexture = LoadTexture("Images/cadre.png");
+    event.Load();
     SetTargetFPS(60);
 }
 

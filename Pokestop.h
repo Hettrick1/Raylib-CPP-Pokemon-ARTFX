@@ -14,7 +14,7 @@ public:
 	Pokestop();
 	~Pokestop();
 	void Update(Trainers& player);
-	void Draw(Trainers& player);
+	void Draw(Trainers& player, Texture2D& pokeball, Texture2D& coin);
 	void EnterPokestop(Trainers& player);
 	void QuitPokestop();
 	bool GetQuitPokestop();

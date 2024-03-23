@@ -148,11 +148,13 @@ void Pokestop::Update(Trainers& player)
 	}
 }
 
-void Pokestop::Draw(Trainers& player)
+void Pokestop::Draw(Trainers& player, Texture2D& pokeball, Texture2D& coin)
 {
 	if (!quitPokestop) {
-		DrawText(TextFormat("%i", player.GetMoney()), quitPokestopRectangle.x - 50 - MeasureText(TextFormat("%i", player.GetMoney()), 30), quitPokestopRectangle.y + 20, 30, ORANGE);
-		DrawText(TextFormat("%i", player.GetPokeballs()), quitPokestopRectangle.x - 50 - MeasureText(TextFormat("%i", player.GetPokeballs()), 30), quitPokestopRectangle.y - 10, 30, RED);
+		DrawText(TextFormat("%i", player.GetMoney()), quitPokestopRectangle.x - 70 - MeasureText(TextFormat("%i", player.GetMoney()), 30), quitPokestopRectangle.y + 30, 30, ORANGE);
+		DrawText(TextFormat("%i", player.GetPokeballs()), quitPokestopRectangle.x - 70 - MeasureText(TextFormat("%i", player.GetPokeballs()), 30), quitPokestopRectangle.y - 15, 30, RED);
+		DrawTextureEx(pokeball, Vector2{ static_cast<float>(quitPokestopRectangle.x - 60),  static_cast<float>(quitPokestopRectangle.y - 25) }, 0, 2, WHITE);
+		DrawTextureEx(coin, Vector2{ static_cast<float>(quitPokestopRectangle.x - 60),  static_cast<float>(quitPokestopRectangle.y + 20) }, 0, 2, WHITE);
 		DrawText("Welcome in the Pokestop, trainer", 540 - MeasureText("Welcome in the Pokestop, trainer", 40) / 2, 70, 40, BLACK);
 		DrawRectangleLines(quitPokestopRectangle.x, quitPokestopRectangle.y, quitPokestopRectangle.width, quitPokestopRectangle.height, BLACK);
 		DrawText("Return", quitPokestopRectangle.x + (quitPokestopRectangle.width - MeasureText("Return", 20)) / 2, quitPokestopRectangle.y + 8, 20, BLACK);

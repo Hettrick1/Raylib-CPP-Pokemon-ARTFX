@@ -11,6 +11,9 @@ bool mouseOnHighGrass, mouseOnLakeShore, mouseOnPokestop;
 
 bool isChoosingEvent, justStarted, isInFight, isInPokestop;
 
+Texture2D pokeball;
+Texture2D gold;
+
 Event::Event()
 {
 
@@ -19,6 +22,12 @@ Event::Event()
 Event::~Event()
 {
 
+}
+
+void Event::Load()
+{
+	pokeball = LoadTexture("Images/poke-ball.png");
+	gold = LoadTexture("Images/coin.png");
 }
 
 void Event::Start()
@@ -106,12 +115,14 @@ void Event::Draw(Trainers& player)
 		battle.Draw();
 	}
 	if (!isInFight && !isChoosingEvent && isInPokestop) {
-		pokestop.Draw(player);
+		pokestop.Draw(player, pokeball, gold);
 	}
 }
 
 void Event::Unload()
 {
+	UnloadTexture(pokeball);
+	UnloadTexture(gold);
 }
 
 int Event::ChooseInt(int min, int max)
