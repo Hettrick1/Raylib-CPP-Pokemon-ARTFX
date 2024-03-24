@@ -24,5 +24,6 @@ public:
 	void QuitBattle();
 	bool GetQuitBattle();
 	bool GetDefeated();
+	void DrawTypewriterTextEx(Vector2 position, float fontSize, Color color, float speed, const char* format, ...);
 };
 

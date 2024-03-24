@@ -69,8 +69,9 @@ void Battle::Draw(Trainers& player, bool isInHighGrass, Texture2D& battleBackGro
 	if (againstPokemon) {
 		if (timer <= 180) {
 			timer += 1;
-			DrawText(TextFormat("Un %s sauvage apparait", opponentPokemon.GetName().c_str()), 540 - MeasureText(TextFormat("Un %s sauvage apparait", opponentPokemon.GetName().c_str()), 40) / 2, 180, 40, BLACK);
-			DrawTextureEx(opponentPokemon.GetFrontSprite(), Vector2{ (float)530 - opponentPokemon.GetFrontSprite().width * 2, (float)200 }, 0, 5, WHITE);
+			//DrawText(TextFormat("Un %s sauvage apparait", opponentPokemon.GetName().c_str()), 540 - MeasureText(TextFormat("Un %s sauvage apparait", opponentPokemon.GetName().c_str()), 40) / 2, 180, 40, BLACK);
+			DrawTypewriterTextEx(Vector2{(float) 540,(float) 180 }, 40, BLACK, 0.05, "Un %s sauvage apparait", opponentPokemon.GetName().c_str());
+			DrawTextureEx(opponentPokemon.GetFrontSprite(), Vector2{ (float)540 - opponentPokemon.GetFrontSprite().width *2, (float)200 }, 0, 5, WHITE);
 		}
 		else {
 			hasBattleLoaded = true;
@@ -175,4 +176,47 @@ bool Battle::GetQuitBattle()
 bool Battle::GetDefeated()
 {
 	return false;
+}
+
+void Battle::DrawTypewriterTextEx(Vector2 position, float fontSize, Color color, float speed, const char* format, ...)
+{
+	static int index = 0; // Index du caractère actuel à afficher
+	static float timer = 0.0f; // Timer pour mettre à jour l'index du caractère
+	static std::string text; // Texte formaté
+	static char formattedText[1024]; // Tableau de caractères pour le texte formaté
+
+	// Mettre à jour le timer
+	timer += GetFrameTime();
+
+	// Formater le texte avec les arguments variables
+	va_list args;
+	va_start(args, format);
+	vsnprintf(formattedText, sizeof(formattedText), format, args);
+	va_end(args);
+
+	// Mettre à jour le texte statique avec le nouveau texte formaté
+	text = formattedText;
+
+	// Si le temps écoulé depuis la dernière mise à jour du caractère est supérieur à la vitesse désirée
+	if (timer >= speed)
+	{
+		// Réinitialiser le timer
+		timer = 0.0f;
+
+		// Incrémenter l'index du caractère
+		index++;
+
+		// S'assurer que l'index ne dépasse pas la longueur du texte
+		if (index > text.length())
+		{
+			index = text.length();
+		}
+	}
+	Vector2 textSize = MeasureTextEx(GetFontDefault(), text.substr(0, index).c_str(), fontSize, 1);
+
+	// Calculer la position horizontale centrée
+	float centeredX = (GetScreenWidth() - textSize.x) / 2.0f;
+
+	// Afficher le texte jusqu'à l'index actuel et centré
+	DrawTextEx(GetFontDefault(), text.substr(0, index).c_str(), { centeredX, position.y }, fontSize, 1, color);
 }
