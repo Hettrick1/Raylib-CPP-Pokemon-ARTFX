@@ -9,10 +9,15 @@ Pokestop pokestop = Pokestop();
 
 bool mouseOnHighGrass, mouseOnLakeShore, mouseOnPokestop;
 
-bool isChoosingEvent, justStarted, isInFight, isInPokestop;
+bool isChoosingEvent, justStarted, isInFight, isInPokestop, isInHighGrass, isInLakeShores;
 
 Texture2D pokeball;
 Texture2D gold;
+Texture2D battleBackGroundGrass;
+Texture2D battleBackGroundWater;
+Texture2D enemyPokemonInfos;
+Texture2D playerPokemonInfos;
+
 
 Event::Event()
 {
@@ -28,6 +33,10 @@ void Event::Load()
 {
 	pokeball = LoadTexture("Images/poke-ball.png");
 	gold = LoadTexture("Images/coin.png");
+	battleBackGroundGrass = LoadTexture("Images/BattleBackgroundGrass.png");
+	battleBackGroundWater = LoadTexture("Images/BattleBackgroundWater.png");
+	enemyPokemonInfos = LoadTexture("Images/EnemyPokemonInfos.png");
+	playerPokemonInfos = LoadTexture("Images/PlayerPokemonInfos.png");
 }
 
 void Event::Start()
@@ -84,9 +93,16 @@ void Event::Update(Trainers& player)
 		}
 	}
 	if (isInFight && !isChoosingEvent && !isInPokestop) {
-		battle.Update();
+		if (isInHighGrass) {
+			battle.Update(player, true);
+		}
+		else {
+			battle.Update(player, false);
+		}
 		if (battle.GetQuitBattle()) {
 			isInFight = false;
+			isInHighGrass = false;
+			isInLakeShores = false;
 			isChoosingEvent = true;
 		}
 	}
@@ -112,7 +128,12 @@ void Event::Draw(Trainers& player)
 		DrawText("High Grass", highGrassRectangle.x + (highGrassRectangle.width - MeasureText("High Grass", 30))/2, 200, 30, BLACK);
 	}
 	if (isInFight && !isChoosingEvent) {
-		battle.Draw();
+		if (isInHighGrass) {
+			battle.Draw(player, true, battleBackGroundGrass, pokeball, gold, enemyPokemonInfos, playerPokemonInfos);
+		}
+		else {
+			battle.Draw(player, false, battleBackGroundWater, pokeball, gold, enemyPokemonInfos, playerPokemonInfos);
+		}
 	}
 	if (!isInFight && !isChoosingEvent && isInPokestop) {
 		pokestop.Draw(player, pokeball, gold);
@@ -123,6 +144,10 @@ void Event::Unload()
 {
 	UnloadTexture(pokeball);
 	UnloadTexture(gold);
+	UnloadTexture(battleBackGroundGrass);
+	UnloadTexture(battleBackGroundWater);
+	UnloadTexture(enemyPokemonInfos);
+	UnloadTexture(playerPokemonInfos);
 }
 
 int Event::ChooseInt(int min, int max)
@@ -149,18 +174,8 @@ void Event::HighGrass(Trainers& player)
 	mouseOnHighGrass = false;
 	mouseOnLakeShore = false;
 	isInFight = true;
-	int randomNumber = ChooseInt(0, 100);
-	if(randomNumber > 90)
-	{
-		int randomIndex = ChooseInt(0, 5);
-		battle.FightTrainer(player, GetTrainer(randomIndex));
-	}
-	else
-	{
-		int randomIndex = ChooseInt(0, 10);
-		Pokemon wildPokemon = GetPokemon(randomIndex);
-		battle.FightWildPokemon(player, wildPokemon);
-	}
+	isInHighGrass = true;
+	battle.EnterBattle();
 }
 
 void Event::LakeShores(Trainers& player)
@@ -169,17 +184,7 @@ void Event::LakeShores(Trainers& player)
 	mouseOnHighGrass = false;
 	mouseOnLakeShore = false;
 	isInFight = true;
-	int randomNumber = ChooseInt(0, 100);
-	if (randomNumber > 50)
-	{
-		int randomIndex = ChooseInt(0, 5);
-		battle.FightTrainer(player, GetTrainer(randomIndex));
-	}
-	else
-	{
-		int randomIndex = ChooseInt(0, 10);
-		Pokemon wildPokemon = GetPokemon(randomIndex);
-		battle.FightWildPokemon(player, wildPokemon);
-	}
+	isInHighGrass = false;
+	battle.EnterBattle();
 }
 

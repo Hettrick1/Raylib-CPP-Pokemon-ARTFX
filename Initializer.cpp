@@ -93,15 +93,15 @@ void Initializer::Draw()
         DrawText(TextFormat("Welcome %s !", playerFirstName.c_str()), 540 - MeasureText(TextFormat("Welcome %s !", playerFirstName.c_str()), 40) / 2, 140, 40, BLACK);
         DrawText("Choose your first Pokemon !", 540 - MeasureText("Choose your first Pokemon !", 30) / 2, 220, 30, GRAY);
 
-        DrawTextureEx(bulbasaurTexture, Vector2{278, 295}, 0.0f, 2, WHITE);
+        DrawTextureEx(bulbasaurTexture, Vector2{ bulbasaurBox.x-15, 265}, 0.0f, 2, WHITE);
         DrawText("Bulbasaur", bulbasaurBox.x + (bulbasaurBox.width -MeasureText("Bulbasaur", 20))/2, bulbasaurBox.y + 110, 20, BLACK);
         DrawRectangleLines(bulbasaurBox.x, bulbasaurBox.y, bulbasaurBox.width, bulbasaurBox.height, DARKGRAY);
 
-        DrawTextureEx(squirtleTexture, Vector2{ 470, 290 }, 0.0f, 2, WHITE);
+        DrawTextureEx(squirtleTexture, Vector2{ squirtleBox.x-15, 265 }, 0.0f, 2, WHITE);
         DrawText("Squirtle", squirtleBox.x + (squirtleBox.width - MeasureText("Squirtle", 20)) / 2, squirtleBox.y + 110, 20, BLACK);
         DrawRectangleLines(squirtleBox.x, squirtleBox.y, squirtleBox.width, squirtleBox.height, DARKGRAY);
 
-        DrawTextureEx(charmenderTexture, Vector2{680, 293}, 0.0f, 2, WHITE);
+        DrawTextureEx(charmenderTexture, Vector2{ charmanderBox.x-15, 265}, 0.0f, 2, WHITE);
         DrawText("Charmander", charmanderBox.x + (charmanderBox.width - MeasureText("Charmander", 20)) / 2, charmanderBox.y + 110, 20, BLACK);
         DrawRectangleLines(charmanderBox.x, charmanderBox.y, charmanderBox.width, charmanderBox.height, DARKGRAY);     
     }
@@ -109,7 +109,7 @@ void Initializer::Draw()
     {
         SetMouseCursor(MOUSE_CURSOR_DEFAULT);
         DrawText(TextFormat("You choose: %s", pokemonName.c_str()), 540 - MeasureText(TextFormat("You choose: %s", pokemonName.c_str()), 40) / 2, 150, 40, BLACK);
-        DrawTextureEx(player.GetTeam()[0].GetFrontSprite(), Vector2{static_cast<float>(650) - player.GetTeam()[0].GetFrontSprite().width,static_cast<float>(260) - player.GetTeam()[0].GetFrontSprite().height}, 0.0f, 5, WHITE);
+        DrawTextureEx(player.GetTeam()[0].GetFrontSprite(), Vector2{static_cast<float>(650) - player.GetTeam()[0].GetFrontSprite().width,static_cast<float>(190) - player.GetTeam()[0].GetFrontSprite().height}, 0.0f, 5, WHITE);
         DrawTextBoxed(GetFontDefault(), player.GetTeam()[0].GetDescription().c_str(), Rectangle{250, 260, 360, 300}, 30, 1.5f, true, BLACK);
         DrawText("Press ENTER to continue", 540 - MeasureText("Press ENTER to continue", 30) / 2, 510, 30, LIGHTGRAY);
     }
