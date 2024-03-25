@@ -20,10 +20,12 @@ public:
 	int ChooseInt(int min, int max);
 	void AgainstPokemon(Trainers& player, Pokemon& pokemon);
 	void AgainstTrainer(Trainers& player, Trainers& opponent);
+	void OnAbilityHovered(int index);
 	void EnterBattle();
 	void QuitBattle();
 	bool GetQuitBattle();
 	bool GetDefeated();
 	void DrawTypewriterTextEx(Vector2 position, float fontSize, Color color, float speed, const char* format, ...);
+	bool ResetAbilityMouseCursor();
 };
 

@@ -9,7 +9,8 @@ class Abilities
 {
 private:
 	std::string mName;
-	float mDamages;
+	float mDamagesMin;
+	float mDamagesMax;
 	int mMaxUses;
 	int mCurrentUses;
 	int mPrice;
@@ -17,14 +18,16 @@ private:
 
 public:
 	Abilities();
-	Abilities(std::string name, float damages, int price, PokeType type);
+	Abilities(std::string name, float damagesMin, float damagesMax, int price, PokeType type);
 	~Abilities();
-	float GetDamages();
+	float GetDamagesMin();
+	float GetDamagesMax();
 	PokeType GetAbilityType();
 	std::string GetAbilityName();
 	int& GetPrice();
 	bool CanUse();
 	void ResetUses();
 	void SetCurrentUses();
+	int GetUseRemaning();
 };
 

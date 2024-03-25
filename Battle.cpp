@@ -1,15 +1,19 @@
 #include "Battle.h"
 
 
-bool justEnteredBattle, chooseOpponent, againstTrainer, againstPokemon, hasBattleLoaded;
+bool justEnteredBattle, chooseOpponent, againstTrainer, againstPokemon, hasBattleLoaded, abilityHovered;
 
 int randomNumber;
 int randomIndex;
 int timer = 0;
+int abilityHoveredIndex = 0;
 
 Rectangle infosTextBox = { 397, 554, 350, 120 };
 
 std::vector<Rectangle> abilityButtons = { {230,430, 155, 45}, {230, 475, 155, 45}, {385,430, 155, 45}, {385, 475, 155, 45} };
+
+std::vector<Color> pokeAbilityBtnColor = { BLANK, BLANK, BLANK, BLANK };
+std::vector<bool> abilityBtnBool = { false, false, false, false };
 
 Pokemon opponentPokemon;
 
@@ -60,6 +64,26 @@ void Battle::Update(Trainers& player, bool isInHighGrass)
 		}
 		else {
 
+		}
+	}
+	if (hasBattleLoaded) {
+		int abiNumber = player.GetTeam()[player.GetCurrentPokemonIndex()].GetAbilities().size();
+		for (int i = 0; i < abiNumber; i++) {
+			if (CheckCollisionPointRec(GetMousePosition(), abilityButtons[i])) {
+				SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
+				OnAbilityHovered(i);
+				abilityBtnBool[i] = true;
+				if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+
+				}
+			}
+			else if (!CheckCollisionPointRec(GetMousePosition(), abilityButtons[i])) {
+				abilityBtnBool[i] = false;
+			}
+		}
+		if (ResetAbilityMouseCursor()) {
+			SetMouseCursor(MOUSE_CURSOR_DEFAULT);
+			abilityHovered = false;
 		}
 	}
 }
@@ -134,6 +158,19 @@ void Battle::Draw(Trainers& player, bool isInHighGrass, Texture2D& battleBackGro
 		for (int i = 0; i < player.GetTeam()[player.GetCurrentPokemonIndex()].GetAbilities().size(); i++) {
 			DrawText(player.GetTeam()[player.GetCurrentPokemonIndex()].GetAbilities()[i].GetAbilityName().c_str(), abilityButtons[i].x + (155 - MeasureText(player.GetTeam()[player.GetCurrentPokemonIndex()].GetAbilities()[i].GetAbilityName().c_str(), 30)) / 2, abilityButtons[i].y + 10, 30, BLACK);
 		}
+		if (abilityHovered) {
+			if (isInHighGrass) {
+				DrawRectangle(230, 400, 309, 30, Color{ 206,252,186,220 });
+			}
+			else {
+				DrawRectangle(230, 400, 309, 30, Color{ 201,255,229,220 });
+			}
+			DrawRectangle(230, 400, 2, 30, BLACK);
+			DrawRectangle(230, 400, 310, 2, BLACK);
+			DrawRectangle(539, 400, 2, 30, BLACK);
+			Abilities& ability = player.GetTeam()[player.GetCurrentPokemonIndex()].GetAbilities()[abilityHoveredIndex];
+			DrawText(TextFormat("Damages : %i - %i Uses : %i", static_cast<int>(ability.GetDamagesMin()), static_cast<int>(ability.GetDamagesMax()), ability.GetUseRemaning()), 385 - MeasureText(TextFormat("Damages : %i - %i Uses : %i", static_cast<int>(ability.GetDamagesMin()), static_cast<int>(ability.GetDamagesMax()), ability.GetUseRemaning()), 20)/2, 405, 20, BLACK);
+		}
 	}
 }
 
@@ -161,6 +198,12 @@ void Battle::AgainstTrainer(Trainers& player, Trainers& opponent)
 	againstTrainer = true;
 }
 
+void Battle::OnAbilityHovered(int index)
+{
+	abilityHovered = true;
+	abilityHoveredIndex = index;
+}
+
 void Battle::EnterBattle()
 {
 	justEnteredBattle = true;
@@ -183,33 +226,25 @@ bool Battle::GetDefeated()
 
 void Battle::DrawTypewriterTextEx(Vector2 position, float fontSize, Color color, float speed, const char* format, ...)
 {
-	static int index = 0; // Index du caractère actuel à afficher
-	static float timer = 0.0f; // Timer pour mettre à jour l'index du caractère
-	static std::string text; // Texte formaté
-	static char formattedText[1024]; // Tableau de caractères pour le texte formaté
+	static int index = 0;
+	static float timer = 0.0f;
+	static std::string text;
+	static char formattedText[50];
 
-	// Mettre à jour le timer
 	timer += GetFrameTime();
 
-	// Formater le texte avec les arguments variables
 	va_list args;
 	va_start(args, format);
 	vsnprintf(formattedText, sizeof(formattedText), format, args);
 	va_end(args);
 
-	// Mettre à jour le texte statique avec le nouveau texte formaté
 	text = formattedText;
 
-	// Si le temps écoulé depuis la dernière mise à jour du caractère est supérieur à la vitesse désirée
 	if (timer >= speed)
 	{
-		// Réinitialiser le timer
 		timer = 0.0f;
-
-		// Incrémenter l'index du caractère
 		index++;
 
-		// S'assurer que l'index ne dépasse pas la longueur du texte
 		if (index > text.length())
 		{
 			index = text.length();
@@ -217,9 +252,16 @@ void Battle::DrawTypewriterTextEx(Vector2 position, float fontSize, Color color,
 	}
 	Vector2 textSize = MeasureTextEx(GetFontDefault(), text.substr(0, index).c_str(), fontSize, 1);
 
-	// Calculer la position horizontale centrée
 	float centeredX = (GetScreenWidth() - textSize.x) / 2.0f;
 
-	// Afficher le texte jusqu'à l'index actuel et centré
 	DrawTextEx(GetFontDefault(), text.substr(0, index).c_str(), { centeredX, position.y }, fontSize, 1, color);
+}
+bool Battle::ResetAbilityMouseCursor()
+{
+	for (bool i : abilityBtnBool) {
+		if (i == true) {
+			return false;
+		}
+	}
+	return true;
 }

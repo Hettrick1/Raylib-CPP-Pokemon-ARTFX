@@ -1,4 +1,5 @@
 #include "PokemonData.h"
+#include "Pokemon.h"
 
 Texture2D bulbasaurFrontTexture;
 Texture2D bulbasaurBackTexture;
@@ -43,15 +44,15 @@ std::vector<Trainers> allTrainers = {
         Trainers("i", "z", "z", 300, 100, 5),
 };
 std::vector<Abilities> allAbilities = {
-        Abilities("Ability1", 10, 35, PokeType::ELECTRIC),
-        Abilities("Ability2", 10, 35, PokeType::ELECTRIC),
-        Abilities("Ability3", 10, 35, PokeType::ELECTRIC),
-        Abilities("Ability4", 10, 35, PokeType::ELECTRIC),
-        Abilities("Ability5", 10, 35, PokeType::ELECTRIC),
-        Abilities("Ability6", 10, 35, PokeType::ELECTRIC),
-        Abilities("Ability7", 10, 35, PokeType::ELECTRIC),
-        Abilities("Ability8", 10, 35, PokeType::ELECTRIC),
-        Abilities("Ability9", 10, 35, PokeType::ELECTRIC),
+        Abilities("Ability1", 10, 15, 35, PokeType::ELECTRIC),
+        Abilities("Ability2", 15, 20, 35, PokeType::ELECTRIC),
+        Abilities("Ability3", 12, 16, 35, PokeType::ELECTRIC),
+        Abilities("Ability4", 14, 18, 35, PokeType::ELECTRIC),
+        Abilities("Ability5", 8, 18, 35, PokeType::ELECTRIC),
+        Abilities("Ability6", 10, 12, 35, PokeType::ELECTRIC),
+        Abilities("Ability7", 13, 15, 35, PokeType::ELECTRIC),
+        Abilities("Ability8", 10, 15, 35, PokeType::ELECTRIC),
+        Abilities("Ability9", 7, 16, 35, PokeType::ELECTRIC),
 };
 
 float resistanceMatrix[18][18] = {
@@ -113,37 +114,37 @@ void LoadPokemonDatas()
     allPokemons = {
         Pokemon("Bulbasaur", PokeType::GRASS, 1,
                 "Bulbasaur has a strange seed planted on its back. It grows with him since birth.", 100,
-                bulbasaurFrontTexture, bulbasaurBackTexture),
+                bulbasaurFrontTexture, bulbasaurBackTexture, allAbilities[0]),
         Pokemon("Squirtle", PokeType::WATER, 1,
                 "It retreats into its shell and retaliates by splashing the enemy at the first opportunity.", 100,
-                squirtleFrontTexture, squirtleBackTexture),
+                squirtleFrontTexture, squirtleBackTexture, allAbilities[0]),
         Pokemon("Charmander", PokeType::FIRE, 1,
                 "The flame on its tail represents Charmander's life energy. When it's vigorous, it burns stronger.",
-                100, charmanderFrontTexture, charmanderBackTexture),
+                100, charmanderFrontTexture, charmanderBackTexture, allAbilities[0]),
         Pokemon("Abra", PokeType::PSYSCHIC, 1,
                 "It sleeps 18 hours a day. It can use many psychic powers, even while asleep.", 100, abraFrontTexture,
-                abraBackTexture),
+                abraBackTexture, allAbilities[0]),
         Pokemon("Caterpie", PokeType::BUG, 1,
                 "To protect itself, it emits a foul odor from its antennae, which repels its bold enemies.", 100,
-                caterpieFrontTexture, caterpieBackTexture),
+                caterpieFrontTexture, caterpieBackTexture, allAbilities[0]),
         Pokemon("Geodude", PokeType::ROCK, 1,
                 "It lives in plains or mountains. It is often mistaken for a small pebble.", 100, geodudeFrontTexture,
-                geodudeBackTexture),
+                geodudeBackTexture, allAbilities[0]),
         Pokemon("Jigglypuff", PokeType::FAIRY, 1,
                 "It hypnotizes its enemies with its big eyes before plunging them into a deep sleep by singing a sweet lullaby.",
-                100, jigglypuffFrontTexture, jigglypuffBackTexture),
+                100, jigglypuffFrontTexture, jigglypuffBackTexture, allAbilities[0]),
         Pokemon("Pidgey", PokeType::NORMAL, 1,
                 "It is often seen in forests. With its wings, it stirs up the air close to the ground to throw sand.",
-                100, pidgeyFrontTexture, pidgeyBackTexture),
+                100, pidgeyFrontTexture, pidgeyBackTexture, allAbilities[0]),
         Pokemon("Pikachu", PokeType::ELECTRIC, 1,
                 "It raises its tail to monitor its surroundings. It often attracts lightning in this position.", 100,
-                pikachuFrontTexture, pikachuBackTexture),
+                pikachuFrontTexture, pikachuBackTexture, allAbilities[0]),
         Pokemon("Psyduck", PokeType::WATER, 1,
                 "This Pokémon constantly has a headache. When the pain becomes unbearable, it starts using its psychic powers.",
-                100, psyduckFrontTexture, psyduckBackTexture),
+                100, psyduckFrontTexture, psyduckBackTexture, allAbilities[0]),
         Pokemon("Rattata", PokeType::NORMAL, 1,
                 "Living wherever food is found, this scavenger spends its days searching for it.", 100,
-                rattataFrontTexture, rattataBackTexture),
+                rattataFrontTexture, rattataBackTexture, allAbilities[0]),
     };
 }
 

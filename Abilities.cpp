@@ -3,16 +3,18 @@
 Abilities::Abilities()
 {
 	mName = "name";
-	mDamages = 0;
+	mDamagesMin = 0;
+	mDamagesMax = 0;
 	mType = PokeType::NORMAL;
 	mPrice = 0;
 	mMaxUses = 5;
 	mCurrentUses = 0;
 }
 
-Abilities::Abilities(std::string name, float damages, int price, PokeType type) {
+Abilities::Abilities(std::string name, float damagesMin, float damagesMax, int price, PokeType type) {
 	mName = name;
-	mDamages = damages;
+	mDamagesMin = damagesMin;
+	mDamagesMax = damagesMax;
 	mType = type;
 	mPrice = price;
 	mMaxUses = 5;
@@ -21,8 +23,13 @@ Abilities::Abilities(std::string name, float damages, int price, PokeType type) 
 
 Abilities::~Abilities() {}
 
-float Abilities::GetDamages() {
-	return mDamages;
+float Abilities::GetDamagesMin() {
+	return mDamagesMin;
+}
+
+float Abilities::GetDamagesMax()
+{
+	return mDamagesMax;
 }
 
 PokeType Abilities::GetAbilityType() {
@@ -46,4 +53,9 @@ void Abilities::ResetUses() {
 }
 void Abilities::SetCurrentUses() {
 	mCurrentUses++;
+}
+
+int Abilities::GetUseRemaning()
+{
+	return mMaxUses - mCurrentUses;
 }

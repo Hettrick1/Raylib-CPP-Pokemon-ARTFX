@@ -7,7 +7,7 @@ Pokemon::Pokemon()
 {
 }
 
-Pokemon::Pokemon(std::string name, PokeType type, int level, std::string description, float health, Texture2D frontSpriteTexture, Texture2D backSpriteTexture) {
+Pokemon::Pokemon(std::string name, PokeType type, int level, std::string description, float health, Texture2D frontSpriteTexture, Texture2D backSpriteTexture, Abilities ability) {
 	mName = name;
 	mType = type;
 	mLevel = level;
@@ -17,6 +17,7 @@ Pokemon::Pokemon(std::string name, PokeType type, int level, std::string descrip
 	mIncapacited = false;
 	mFrontSpriteTexture = frontSpriteTexture;
 	mBackSpriteTexture = backSpriteTexture;
+	mAbilities.push_back(ability);
 }
 Pokemon::~Pokemon() {}
 
@@ -52,7 +53,7 @@ float Pokemon::CalculateDamage(Abilities& ability, Pokemon& defender) {
 
 		float resistance = GetResistance(static_cast<int>(attackType), static_cast<int>(defenderType));
 
-		float damage = ability.GetDamages() * resistance;
+		float damage = ability.GetDamagesMin() * resistance;
 
 		return damage;
 	}

@@ -1,8 +1,8 @@
 #pragma once
 
+#include "raylib.h"
 #include "Poketype.h"
 #include "Abilities.h"
-#include "raylib.h"
 
 #include <vector>
 #include <iostream>
@@ -23,7 +23,7 @@ private:
 	Texture2D mBackSpriteTexture;
 public:
 	Pokemon();
-	Pokemon(std::string name, PokeType type, int level, std::string description, float health, Texture2D frontSpriteTexture, Texture2D backSpriteTexture);
+	Pokemon(std::string name, PokeType type, int level, std::string description, float health, Texture2D frontSpriteTexture, Texture2D backSpriteTexture, Abilities ability);
 	~Pokemon();
 	std::string GetName();
 	PokeType GetType();
