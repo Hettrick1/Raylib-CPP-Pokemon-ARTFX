@@ -121,7 +121,7 @@ void Event::Draw(Trainers& player)
 	{
 		DrawText("Where do you want to go ?", 540-(MeasureText("Where do you want to go ?", 40)/2), 100, 40, BLACK);
 		DrawRectangleLines(pokestopRectangle.x, pokestopRectangle.y, pokestopRectangle.width, pokestopRectangle.height, DARKBLUE);
-		DrawText("Pokestop", pokestopRectangle.x + (pokestopRectangle.width - MeasureText("Pokestop", 30))/2, 200, 30, BLACK);
+		DrawText("Pokecenter", pokestopRectangle.x + (pokestopRectangle.width - MeasureText("Pokecenter", 30))/2, 200, 30, BLACK);
 		DrawRectangleLines(lakeShoresRectangle.x, lakeShoresRectangle.y, lakeShoresRectangle.width, lakeShoresRectangle.height, DARKBLUE);
 		DrawText("Lake Shores", lakeShoresRectangle.x + (lakeShoresRectangle.width - MeasureText("Lake Shores", 30))/2, 200, 30, BLACK);
 		DrawRectangleLines(highGrassRectangle.x, highGrassRectangle.y, highGrassRectangle.width, highGrassRectangle.height, DARKBLUE);

@@ -119,10 +119,10 @@ void Battle::Draw(Trainers& player, bool isInHighGrass, Texture2D& battleBackGro
 		DrawTextureEx(battleBackGround, Vector2{ 205, 110 }, 0, 2.8, WHITE);
 		DrawTextureEx(player.GetTeam()[player.GetCurrentPokemonIndex()].GetBackSprite(), Vector2{ 265, 203 }, 0, 3.4, WHITE);
 		DrawTextureEx(opponentPokemon.GetFrontSprite(), Vector2{ 600, 70 }, 0, 3.4, WHITE);
-		DrawRectangle(406, 168, 192, 12, GRAY);
-		DrawRectangle(406, 168, 192, 12, enemylifeBarColor);
-		DrawTextureEx(enemyPokemonInfos, Vector2{ 250, 100 }, 0, 4, WHITE);
-		DrawText(opponentPokemon.GetName().c_str(), 280, 120, 30, BLACK);
+		DrawRectangle(386, 168, 192, 12, GRAY);
+		DrawRectangle(386, 168, 192, 12, enemylifeBarColor);
+		DrawTextureEx(enemyPokemonInfos, Vector2{ 230, 100 }, 0, 4, WHITE);
+		DrawText(opponentPokemon.GetName().c_str(), 260, 120, 30, BLACK);
 		DrawRectangle(692, 368, 192, 12, GRAY);
 		DrawRectangle(692, 368, 192, 12, playerlifeBarColor);
 		DrawTextureEx(playerPokemonInfos, Vector2{ 500, 300 }, 0, 4, WHITE);
@@ -131,6 +131,9 @@ void Battle::Draw(Trainers& player, bool isInHighGrass, Texture2D& battleBackGro
 		DrawText(TextFormat("%i", player.GetPokeballs()), 605, 440, 30, RED);
 		DrawTextureEx(pokeball, Vector2{ static_cast<float>(550),  static_cast<float>(430) }, 0, 2, WHITE);
 		DrawTextureEx(gold, Vector2{ static_cast<float>(550),  static_cast<float>(470) }, 0, 2, WHITE);
+		for (int i = 0; i < player.GetTeam()[player.GetCurrentPokemonIndex()].GetAbilities().size(); i++) {
+			DrawText(player.GetTeam()[player.GetCurrentPokemonIndex()].GetAbilities()[i].GetAbilityName().c_str(), abilityButtons[i].x + (155 - MeasureText(player.GetTeam()[player.GetCurrentPokemonIndex()].GetAbilities()[i].GetAbilityName().c_str(), 30)) / 2, abilityButtons[i].y + 10, 30, BLACK);
+		}
 	}
 }
 
