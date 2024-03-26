@@ -93,7 +93,6 @@ void Battle::Draw(Trainers& player, bool isInHighGrass, Texture2D& battleBackGro
 	if (againstPokemon) {
 		if (timer <= 180) {
 			timer += 1;
-			//DrawText(TextFormat("Un %s sauvage apparait", opponentPokemon.GetName().c_str()), 540 - MeasureText(TextFormat("Un %s sauvage apparait", opponentPokemon.GetName().c_str()), 40) / 2, 180, 40, BLACK);
 			DrawTypewriterTextEx(Vector2{(float) 540,(float) 180 }, 40, BLACK, 0.05, "Un %s sauvage apparait", opponentPokemon.GetName().c_str());
 			DrawTextureEx(opponentPokemon.GetFrontSprite(), Vector2{ (float)540 - opponentPokemon.GetFrontSprite().width *2, (float)200 }, 0, 5, WHITE);
 		}
