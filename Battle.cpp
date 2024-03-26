@@ -3,12 +3,18 @@
 
 bool justEnteredBattle, chooseOpponent, againstTrainer, againstPokemon, hasBattleLoaded, abilityHovered;
 
+bool mouseOnQuitBattleButton, mouseOnChangePokemonButton, mouseOnThrowPokeballButton;
+
 int randomNumber;
 int randomIndex;
 int timer = 0;
 int abilityHoveredIndex = 0;
 
 Rectangle infosTextBox = { 397, 554, 350, 120 };
+
+Rectangle ChangePokemonBtn = { 695, 430, 155, 30 };
+Rectangle ThrowPokeballBtn = { 695, 460, 155, 30 };
+Rectangle QuitBattleBtn = { 695, 490, 155, 30 };
 
 std::vector<Rectangle> abilityButtons = { {230,430, 155, 45}, {230, 475, 155, 45}, {385,430, 155, 45}, {385, 475, 155, 45} };
 
@@ -66,6 +72,10 @@ void Battle::Update(Trainers& player, bool isInHighGrass)
 
 		}
 	}
+	if (ResetAbilityMouseCursor() && !mouseOnChangePokemonButton && !mouseOnQuitBattleButton && !mouseOnThrowPokeballButton) {
+		SetMouseCursor(MOUSE_CURSOR_DEFAULT);
+		abilityHovered = false;
+	}
 	if (hasBattleLoaded) {
 		int abiNumber = player.GetTeam()[player.GetCurrentPokemonIndex()].GetAbilities().size();
 		for (int i = 0; i < abiNumber; i++) {
@@ -81,9 +91,18 @@ void Battle::Update(Trainers& player, bool isInHighGrass)
 				abilityBtnBool[i] = false;
 			}
 		}
-		if (ResetAbilityMouseCursor()) {
-			SetMouseCursor(MOUSE_CURSOR_DEFAULT);
-			abilityHovered = false;
+		if (CheckCollisionPointRec(GetMousePosition(), QuitBattleBtn)) {
+			SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
+			mouseOnQuitBattleButton = true;
+			if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+			{
+				QuitBattle();
+			}
+		}
+		else {
+			mouseOnQuitBattleButton = false;
+			mouseOnChangePokemonButton = false;
+			mouseOnThrowPokeballButton = false;
 		}
 	}
 }
