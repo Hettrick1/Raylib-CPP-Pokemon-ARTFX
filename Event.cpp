@@ -128,12 +128,7 @@ void Event::Draw(Trainers& player)
 		DrawText("High Grass", highGrassRectangle.x + (highGrassRectangle.width - MeasureText("High Grass", 30))/2, 200, 30, BLACK);
 	}
 	if (isInFight && !isChoosingEvent) {
-		if (isInHighGrass) {
-			battle.Draw(player, true, battleBackGroundGrass, pokeball, gold, enemyPokemonInfos, playerPokemonInfos);
-		}
-		else {
-			battle.Draw(player, false, battleBackGroundWater, pokeball, gold, enemyPokemonInfos, playerPokemonInfos);
-		}
+		battle.Draw(player, isInHighGrass, battleBackGroundGrass, pokeball, gold, enemyPokemonInfos, playerPokemonInfos);
 	}
 	if (!isInFight && !isChoosingEvent && isInPokestop) {
 		pokestop.Draw(player, pokeball, gold);

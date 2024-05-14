@@ -117,6 +117,7 @@ void Battle::Draw(Trainers& player, bool isInHighGrass, Texture2D& battleBackGro
 		}
 		else {
 			hasBattleLoaded = true;
+			DrawTypewriterTextEx(Vector2{ (float)540,(float)180 }, 40, BLACK, 0.05, "");
 		}
 	}
 	if (againstTrainer) {
@@ -234,7 +235,7 @@ void Battle::QuitBattle()
 
 bool Battle::GetQuitBattle()
 {
-	return false;
+	return stopBattle;
 }
 
 bool Battle::GetDefeated()
