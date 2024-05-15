@@ -51,7 +51,7 @@ void Event::Update(Trainers& player)
 	}
 	if (isChoosingEvent && !isInFight && !isInPokestop)
 	{
-		if (CheckCollisionPointRec(GetMousePosition(), highGrassRectangle))
+		if (!player.GetIfTeamIsIncapacited() && CheckCollisionPointRec(GetMousePosition(), highGrassRectangle))
 		{
 			SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
 			mouseOnHighGrass = true;
@@ -61,7 +61,7 @@ void Event::Update(Trainers& player)
 				HighGrass(player);
 			}
 		}
-		if (CheckCollisionPointRec(GetMousePosition(), lakeShoresRectangle))
+		if (!player.GetIfTeamIsIncapacited() && CheckCollisionPointRec(GetMousePosition(), lakeShoresRectangle))
 		{
 			SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
 			mouseOnLakeShore = true;
@@ -132,6 +132,9 @@ void Event::Draw(Trainers& player)
 	}
 	if (!isInFight && !isChoosingEvent && isInPokestop) {
 		pokestop.Draw(player, pokeball, gold);
+	}
+	if (player.GetIfTeamIsIncapacited()) {
+		DrawText("You need to rest; go to Pokestop !", 540 - (MeasureText("You need to rest; go to Pokestop !", 30) / 2), 500, 30, RED);
 	}
 }
 

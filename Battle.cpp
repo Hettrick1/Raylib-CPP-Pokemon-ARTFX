@@ -53,10 +53,10 @@ void Battle::Update(Trainers& player, bool isInHighGrass)
 			AgainstPokemon(player, opponentPokemon);		
 		}
 		else{
-
+			// combat contre dresseur
 		}
 	}
-	else { // lakeShore -> il ne pourra trouver que certains type de pokémon mais proba de tomber contre un autre dresseur + élevée
+	else { //proba de tomber contre un autre dresseur + élevée
 		if (!chooseOpponent) {
 			randomNumber = ChooseInt(0, 100);
 		}
@@ -69,7 +69,7 @@ void Battle::Update(Trainers& player, bool isInHighGrass)
 			AgainstPokemon(player, opponentPokemon);
 		}
 		else {
-
+			// combat contre dresseur
 		}
 	}
 	if (ResetAbilityMouseCursor() && !mouseOnChangePokemonButton && !mouseOnQuitBattleButton && !mouseOnThrowPokeballButton) {
@@ -79,12 +79,14 @@ void Battle::Update(Trainers& player, bool isInHighGrass)
 	if (hasBattleLoaded) {
 		int abiNumber = player.GetTeam()[player.GetCurrentPokemonIndex()].GetAbilities().size();
 		for (int i = 0; i < abiNumber; i++) {
-			if (CheckCollisionPointRec(GetMousePosition(), abilityButtons[i])) {
+			if (player.GetTeam()[player.GetCurrentPokemonIndex()].GetAbilities()[i].CanUse() && CheckCollisionPointRec(GetMousePosition(), abilityButtons[i])) {
 				SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
 				OnAbilityHovered(i);
 				abilityBtnBool[i] = true;
 				if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-
+					float damages = player.GetTeam()[player.GetCurrentPokemonIndex()].CalculateDamage(player.GetTeam()[player.GetCurrentPokemonIndex()].GetAbilities()[i], opponentPokemon);
+					opponentPokemon.TakeDamages(damages);
+					OpponentTurn(player);
 				}
 			}
 			else if (!CheckCollisionPointRec(GetMousePosition(), abilityButtons[i])) {
@@ -163,11 +165,11 @@ void Battle::Draw(Trainers& player, bool isInHighGrass, Texture2D& battleBackGro
 		DrawTextureEx(player.GetTeam()[player.GetCurrentPokemonIndex()].GetBackSprite(), Vector2{ 265, 203 }, 0, 3.4, WHITE);
 		DrawTextureEx(opponentPokemon.GetFrontSprite(), Vector2{ 600, 70 }, 0, 3.4, WHITE);
 		DrawRectangle(386, 168, 192, 12, GRAY);
-		DrawRectangle(386, 168, 192, 12, enemylifeBarColor);
+		DrawRectangle(386, 168, (opponentPokemon.GetHealth()/100)*192, 12, enemylifeBarColor);
 		DrawTextureEx(enemyPokemonInfos, Vector2{ 230, 100 }, 0, 4, WHITE);
 		DrawText(opponentPokemon.GetName().c_str(), 260, 120, 30, BLACK);
 		DrawRectangle(692, 368, 192, 12, GRAY);
-		DrawRectangle(692, 368, 192, 12, playerlifeBarColor);
+		DrawRectangle(692, 368, (player.GetTeam()[player.GetCurrentPokemonIndex()].GetHealth() / 100) * 192, 12, playerlifeBarColor);
 		DrawTextureEx(playerPokemonInfos, Vector2{ 500, 300 }, 0, 4, WHITE);
 		DrawText(player.GetTeam()[player.GetCurrentPokemonIndex()].GetName().c_str(), 565, 320, 30, BLACK);
 		DrawText(TextFormat("%i", player.GetMoney()), 605, 480, 30, ORANGE);
@@ -190,6 +192,7 @@ void Battle::Draw(Trainers& player, bool isInHighGrass, Texture2D& battleBackGro
 			Abilities& ability = player.GetTeam()[player.GetCurrentPokemonIndex()].GetAbilities()[abilityHoveredIndex];
 			DrawText(TextFormat("Damages : %i - %i Uses : %i", static_cast<int>(ability.GetDamagesMin()), static_cast<int>(ability.GetDamagesMax()), ability.GetUseRemaning()), 385 - MeasureText(TextFormat("Damages : %i - %i Uses : %i", static_cast<int>(ability.GetDamagesMin()), static_cast<int>(ability.GetDamagesMax()), ability.GetUseRemaning()), 20)/2, 405, 20, BLACK);
 		}
+		DrawText("Escape", QuitBattleBtn.x + (QuitBattleBtn.width - MeasureText("Escape", 25)) / 2, QuitBattleBtn.y + 2, 25, BLACK);
 	}
 }
 
@@ -284,3 +287,21 @@ bool Battle::ResetAbilityMouseCursor()
 	}
 	return true;
 }
+
+void Battle::OpponentTurn(Trainers& player)
+{
+	float damages = opponentPokemon.CalculateDamage(opponentPokemon.GetAbilities()[GetRandomValue(0, opponentPokemon.GetAbilities().size())], player.GetTeam()[player.GetCurrentPokemonIndex()]);
+	player.GetTeam()[player.GetCurrentPokemonIndex()].TakeDamages(damages);
+	if (player.GetTeam()[player.GetCurrentPokemonIndex()].GetIncapacited()) {
+		for (int i = 0; i < player.GetTeam().size(); i++) {
+			if (!player.GetTeam()[i].GetIncapacited()) {
+				player.SetCurrentPokemon(i);
+			}
+		}
+		if (player.GetIfTeamIsIncapacited()) {
+			QuitBattle();
+		}
+	}
+}
+
+

@@ -39,9 +39,9 @@ void Pokestop::Update(Trainers& player)
 		showAbilities = false;
 		chooseAbilityBtnColor = BLANK;
 		pokestopIndex = 0;
-		Pokemon poke = GetPokemon(6);
+		/*Pokemon poke = GetPokemon(6);
 		poke.TakeDamages(80);
-		player.AddPokemon(poke);
+		player.AddPokemon(poke);*/
 	}
 	if (!quitPokestop) {
 		int pokeNumber = player.GetTeam().size();
@@ -253,6 +253,7 @@ void Pokestop::QuitPokestop()
 		hasClickedOnPokemon = false;
 		pokemonBtnColor[buttonPokemonIndexRef] = BLANK;
 		showValidationBtn = false;
+		showHealBtn = true;
 		error = false;
 		quitPokestop = true;
 	}

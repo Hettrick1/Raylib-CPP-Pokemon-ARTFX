@@ -53,12 +53,11 @@ float Pokemon::CalculateDamage(Abilities& ability, Pokemon& defender) {
 
 		float resistance = GetResistance(static_cast<int>(attackType), static_cast<int>(defenderType));
 
-		float damage = ability.GetDamagesMin() * resistance;
+		float damage = GetRandomValue(ability.GetDamagesMin(), ability.GetDamagesMax()) * resistance;
 
 		return damage;
 	}
 	else {
-		std::cout << "la capacité " << ability.GetAbilityName() << " ne peut plus être utilisée. \n";
 		return 0;
 	}
 }
@@ -90,6 +89,7 @@ void Pokemon::Rest(float addHealth) {
 	for (Abilities& ability : mAbilities) {
 		ability.ResetUses();
 	}
+	mIncapacited = false;
 }
 
 std::vector<Abilities>& Pokemon::GetAbilities() {

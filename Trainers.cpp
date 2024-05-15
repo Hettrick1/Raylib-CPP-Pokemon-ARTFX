@@ -91,3 +91,13 @@ void Trainers::SetCurrentPokemon(int pokemonIndex)
 {
 	mCurrentPokemonIndex = pokemonIndex;
 }
+
+bool Trainers::GetIfTeamIsIncapacited()
+{
+	for (int i = 0; i < mTeam.size(); i++) {
+		if (!mTeam[i].GetIncapacited()) {
+			return false;
+		}
+	}
+	return true;
+}

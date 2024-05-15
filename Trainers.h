@@ -36,5 +36,6 @@ public:
 	int& GetMoney();
 	int& GetPokeballs();
 	void SetCurrentPokemon(int pokemonIndex);
+	bool GetIfTeamIsIncapacited();
 };
 
