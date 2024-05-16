@@ -152,6 +152,7 @@
     <ClInclude Include="PokemonData.h" />
     <ClInclude Include="Pokestop.h" />
     <ClInclude Include="Poketype.h" />
+    <ClInclude Include="PopUpText.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Trainers.h" />
   </ItemGroup>

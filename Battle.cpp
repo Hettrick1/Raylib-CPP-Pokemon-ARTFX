@@ -44,6 +44,7 @@ void Battle::Update(Trainers& player, bool isInHighGrass)
 		chooseOpponent = false;
 		showPokemons = false;
 		endBattle = false;
+		mPopUpText.clear();
 	}
 	if (isInHighGrass) {
 		if (!chooseOpponent) {
@@ -91,6 +92,7 @@ void Battle::Update(Trainers& player, bool isInHighGrass)
 				if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
 					float damages = player.GetTeam()[player.GetCurrentPokemonIndex()].CalculateDamage(player.GetTeam()[player.GetCurrentPokemonIndex()].GetAbilities()[i], opponentPokemon);
 					opponentPokemon.TakeDamages(damages);
+					CreateNewPopUp({ 750, 170 }, TextFormat("%i", (int)damages));
 					OpponentTurn(player);
 					abiNumber = player.GetTeam()[player.GetCurrentPokemonIndex()].GetAbilities().size();
 				}
@@ -152,6 +154,16 @@ void Battle::Update(Trainers& player, bool isInHighGrass)
 			}
 		}
 		
+	}
+	for (PopUp& popUp : mPopUpText) {
+		popUp.time += GetFrameTime();
+		popUp.position.x += popUp.speedX * GetFrameTime();
+		popUp.position.y -= popUp.speedY * GetFrameTime();
+		popUp.alpha -= 8 * popUp.time;
+		popUp.alpha = (popUp.alpha < 0) ? 0 : popUp.alpha;
+		if (popUp.time > 1.2) {
+			mPopUpText.erase(begin(mPopUpText));
+		}
 	}
 }
 
@@ -261,6 +273,9 @@ void Battle::Draw(Trainers& player, bool isInHighGrass, Texture2D& battleBackGro
 		DrawText("Escape", QuitBattleBtn.x + (QuitBattleBtn.width - MeasureText("Escape", 25)) / 2, QuitBattleBtn.y + 2, 25, BLACK);
 		DrawText("Catch", ThrowPokeballBtn.x + (ThrowPokeballBtn.width - MeasureText("Catch", 25)) / 2, ThrowPokeballBtn.y + 2, 25, BLACK);
 		DrawText("Change", ChangePokemonBtn.x + (ChangePokemonBtn.width - MeasureText("Change", 25)) / 2, ChangePokemonBtn.y + 2, 25, BLACK);
+		for (PopUp& popUp : mPopUpText) {
+			DrawText(popUp.text.c_str(), popUp.position.x, popUp.position.y, 50, Color{ 255, 0, 0, (unsigned char)popUp.alpha });
+		}
 	}
 	if (endBattle && againstPokemon) {
 		DrawTextureEx(opponentPokemon.GetFrontSprite(), Vector2{ (float)540 - opponentPokemon.GetFrontSprite().width * 2, (float)200 }, 0, 5, WHITE);
@@ -380,6 +395,7 @@ void Battle::OpponentTurn(Trainers& player)
 {
 	float damages = opponentPokemon.CalculateDamage(opponentPokemon.GetAbilities()[GetRandomValue(0, (opponentPokemon.GetAbilities().size()-1))], player.GetTeam()[player.GetCurrentPokemonIndex()]);
 	player.GetTeam()[player.GetCurrentPokemonIndex()].TakeDamages(damages);
+	CreateNewPopUp({ 450, 370 }, TextFormat("%i", (int)damages));
 	if (player.GetTeam()[player.GetCurrentPokemonIndex()].GetIncapacited()) {
 		for (int i = 0; i < player.GetTeam().size(); i++) {
 			if (!player.GetTeam()[i].GetIncapacited()) {
@@ -425,6 +441,19 @@ void Battle::ThrowPokeball(Trainers& player)
 			endBattle = true;
 		}
 	}
+}
+
+void Battle::CreateNewPopUp(Vector2 pos, std::string text)
+{
+	PopUp newPopUp;
+
+	newPopUp.position = pos;
+	newPopUp.speedY = 100.0f;
+	newPopUp.speedX = (float)(GetRandomValue(-20, 20) * 2.0);
+	newPopUp.text = text;
+	newPopUp.time = 0.0f;
+	newPopUp.alpha = 255;
+	mPopUpText.push_back(newPopUp);
 }
 
 

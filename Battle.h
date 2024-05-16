@@ -2,6 +2,7 @@
 #include "Trainers.h"
 #include "Pokemon.h"
 #include "PokemonData.h"
+#include "PopUpText.h"
 
 #include <random>
 #include <vector>
@@ -15,6 +16,7 @@ private :
 	int typewriterTextIndex;
 	float typewriterTextTimer;
 	std::string typewriterTextText;
+	std::vector<PopUp> mPopUpText;
 public:
 	Battle();
 	~Battle();
@@ -34,5 +36,6 @@ public:
 	bool ResetPokemonMouseCursor();
 	void OpponentTurn(Trainers& player);
 	void ThrowPokeball(Trainers& player);
+	void CreateNewPopUp(Vector2 pos, std::string text);
 };
 
