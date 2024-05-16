@@ -12,6 +12,9 @@ class Battle
 private :
 	bool stopBattle;
 	bool enemyDefeated;
+	int typewriterTextIndex;
+	float typewriterTextTimer;
+	std::string typewriterTextText;
 public:
 	Battle();
 	~Battle();
@@ -26,7 +29,10 @@ public:
 	bool GetQuitBattle();
 	bool GetDefeated();
 	void DrawTypewriterTextEx(Vector2 position, float fontSize, Color color, float speed, const char* format, ...);
+	void ResetTypewriterText();
 	bool ResetAbilityMouseCursor();
+	bool ResetPokemonMouseCursor();
 	void OpponentTurn(Trainers& player);
+	void ThrowPokeball(Trainers& player);
 };
 

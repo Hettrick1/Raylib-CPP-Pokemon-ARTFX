@@ -1,13 +1,15 @@
 #include "Battle.h"
 
+//Les références au joueur dans chaque fonctions aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 
-bool justEnteredBattle, chooseOpponent, againstTrainer, againstPokemon, hasBattleLoaded, abilityHovered;
+bool justEnteredBattle, chooseOpponent, againstTrainer, againstPokemon, hasBattleLoaded, abilityHovered, endBattle, showPokemons;
 
 bool mouseOnQuitBattleButton, mouseOnChangePokemonButton, mouseOnThrowPokeballButton;
 
 int randomNumber;
 int randomIndex;
 int timer = 0;
+int endTimer = 0;
 int abilityHoveredIndex = 0;
 
 Rectangle infosTextBox = { 397, 554, 350, 120 };
@@ -17,9 +19,11 @@ Rectangle ThrowPokeballBtn = { 695, 460, 155, 30 };
 Rectangle QuitBattleBtn = { 695, 490, 155, 30 };
 
 std::vector<Rectangle> abilityButtons = { {230,430, 155, 45}, {230, 475, 155, 45}, {385,430, 155, 45}, {385, 475, 155, 45} };
+std::vector<Rectangle> pokemonsButtons = { {670, 400, 205, 30}, {670, 370, 205, 30}, {670, 340, 205, 30}, {670, 310, 205, 30}, {670, 280, 205, 30}, {670, 250, 205, 30} };
 
 std::vector<Color> pokeAbilityBtnColor = { BLANK, BLANK, BLANK, BLANK };
 std::vector<bool> abilityBtnBool = { false, false, false, false };
+std::vector<bool> pokemonsBtnBool = { false, false, false, false, false, false };
 
 Pokemon opponentPokemon;
 
@@ -38,7 +42,10 @@ void Battle::Update(Trainers& player, bool isInHighGrass)
 		stopBattle = false;
 		hasBattleLoaded = false;
 		timer = 0;
+		endTimer = 0;
 		chooseOpponent = false;
+		showPokemons = false;
+		endBattle = false;
 	}
 	if (isInHighGrass) {
 		if (!chooseOpponent) {
@@ -48,9 +55,9 @@ void Battle::Update(Trainers& player, bool isInHighGrass)
 			if (!chooseOpponent) {
 				randomIndex = ChooseInt(0, 10);
 				opponentPokemon = GetPokemon(randomIndex);
+				AgainstPokemon(player, opponentPokemon);
 				chooseOpponent = true;
-			}
-			AgainstPokemon(player, opponentPokemon);		
+			}	
 		}
 		else{
 			// combat contre dresseur
@@ -64,15 +71,15 @@ void Battle::Update(Trainers& player, bool isInHighGrass)
 			if (!chooseOpponent) {
 				randomIndex = ChooseInt(0, 10);
 				opponentPokemon = GetPokemon(randomIndex);
+				AgainstPokemon(player, opponentPokemon);
 				chooseOpponent = true;
 			}
-			AgainstPokemon(player, opponentPokemon);
 		}
 		else {
 			// combat contre dresseur
 		}
 	}
-	if (ResetAbilityMouseCursor() && !mouseOnChangePokemonButton && !mouseOnQuitBattleButton && !mouseOnThrowPokeballButton) {
+	if (ResetAbilityMouseCursor() && !mouseOnChangePokemonButton && !mouseOnQuitBattleButton && !mouseOnThrowPokeballButton && ResetPokemonMouseCursor()) {
 		SetMouseCursor(MOUSE_CURSOR_DEFAULT);
 		abilityHovered = false;
 	}
@@ -87,6 +94,7 @@ void Battle::Update(Trainers& player, bool isInHighGrass)
 					float damages = player.GetTeam()[player.GetCurrentPokemonIndex()].CalculateDamage(player.GetTeam()[player.GetCurrentPokemonIndex()].GetAbilities()[i], opponentPokemon);
 					opponentPokemon.TakeDamages(damages);
 					OpponentTurn(player);
+					abiNumber = player.GetTeam()[player.GetCurrentPokemonIndex()].GetAbilities().size();
 				}
 			}
 			else if (!CheckCollisionPointRec(GetMousePosition(), abilityButtons[i])) {
@@ -101,11 +109,51 @@ void Battle::Update(Trainers& player, bool isInHighGrass)
 				QuitBattle();
 			}
 		}
+		else if (againstPokemon && CheckCollisionPointRec(GetMousePosition(), ThrowPokeballBtn)) {
+			SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
+			mouseOnThrowPokeballButton = true;
+			if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+			{
+				ThrowPokeball(player);
+			}
+		}
+		else if (CheckCollisionPointRec(GetMousePosition(), ChangePokemonBtn)) {
+			SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
+			mouseOnChangePokemonButton = true;
+			if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+			{
+				showPokemons = !showPokemons;
+			}
+		}
 		else {
 			mouseOnQuitBattleButton = false;
 			mouseOnChangePokemonButton = false;
 			mouseOnThrowPokeballButton = false;
 		}
+		if (showPokemons) {
+			int pokeNumber = player.GetTeam().size();
+			for (int i = 0; i < pokeNumber; i++) {
+				if (!player.GetTeam()[i].GetIncapacited() && CheckCollisionPointRec(GetMousePosition(), pokemonsButtons[i])) {
+					SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
+					pokemonsBtnBool[i] = true;
+					if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+						player.SetCurrentPokemon(i);
+						pokemonsBtnBool[i] = false;
+						showPokemons = false;
+					}
+				}
+				else if (!CheckCollisionPointRec(GetMousePosition(), pokemonsButtons[i])) {
+					pokemonsBtnBool[i] = false;
+				}
+			}
+		}
+		if (endBattle) {
+			endTimer += 1;
+			if (endTimer >= 180) {
+				QuitBattle();
+			}
+		}
+		
 	}
 }
 
@@ -114,12 +162,14 @@ void Battle::Draw(Trainers& player, bool isInHighGrass, Texture2D& battleBackGro
 	if (againstPokemon) {
 		if (timer <= 180) {
 			timer += 1;
-			DrawTypewriterTextEx(Vector2{(float) 540,(float) 180 }, 40, BLACK, 0.05, "Un %s sauvage apparait", opponentPokemon.GetName().c_str());
+			DrawTypewriterTextEx(Vector2{(float) 540,(float) 180 }, 40, BLACK, 0.05, "A wild %s appears !", opponentPokemon.GetName().c_str());
 			DrawTextureEx(opponentPokemon.GetFrontSprite(), Vector2{ (float)540 - opponentPokemon.GetFrontSprite().width *2, (float)200 }, 0, 5, WHITE);
 		}
-		else {
-			hasBattleLoaded = true;
-			DrawTypewriterTextEx(Vector2{ (float)540,(float)180 }, 40, BLACK, 0.05, "");
+		else{
+			if (!hasBattleLoaded) {
+				hasBattleLoaded = true;
+				ResetTypewriterText();
+			}
 		}
 	}
 	if (againstTrainer) {
@@ -179,6 +229,25 @@ void Battle::Draw(Trainers& player, bool isInHighGrass, Texture2D& battleBackGro
 		for (int i = 0; i < player.GetTeam()[player.GetCurrentPokemonIndex()].GetAbilities().size(); i++) {
 			DrawText(player.GetTeam()[player.GetCurrentPokemonIndex()].GetAbilities()[i].GetAbilityName().c_str(), abilityButtons[i].x + (155 - MeasureText(player.GetTeam()[player.GetCurrentPokemonIndex()].GetAbilities()[i].GetAbilityName().c_str(), 30)) / 2, abilityButtons[i].y + 10, 30, BLACK);
 		}
+		if (showPokemons) {
+			for (int i = 0; i < player.GetTeam().size(); i++) {
+				if (isInHighGrass) {
+					DrawRectangle(pokemonsButtons[i].x, pokemonsButtons[i].y, pokemonsButtons[i].width, pokemonsButtons[i].height, Color{ 206,252,186,255 });
+				}
+				else {
+					DrawRectangle(pokemonsButtons[i].x, pokemonsButtons[i].y, pokemonsButtons[i].width, pokemonsButtons[i].height, Color{ 201,255,229,255 });
+				}
+				DrawRectangleLines(pokemonsButtons[i].x, pokemonsButtons[i].y, pokemonsButtons[i].width, pokemonsButtons[i].height, BLACK);
+				Color color;
+				if (player.GetTeam()[i].GetIncapacited()) {
+					color = RED;
+				}
+				else {
+					color = BLACK;
+				}
+				DrawText(player.GetTeam()[i].GetName().c_str(), pokemonsButtons[i].x + (205 - MeasureText(player.GetTeam()[i].GetName().c_str(), 30)) / 2, pokemonsButtons[i].y + 2, 30, color);
+			}
+		}
 		if (abilityHovered) {
 			if (isInHighGrass) {
 				DrawRectangle(230, 400, 309, 30, Color{ 206,252,186,220 });
@@ -193,6 +262,14 @@ void Battle::Draw(Trainers& player, bool isInHighGrass, Texture2D& battleBackGro
 			DrawText(TextFormat("Damages : %i - %i Uses : %i", static_cast<int>(ability.GetDamagesMin()), static_cast<int>(ability.GetDamagesMax()), ability.GetUseRemaning()), 385 - MeasureText(TextFormat("Damages : %i - %i Uses : %i", static_cast<int>(ability.GetDamagesMin()), static_cast<int>(ability.GetDamagesMax()), ability.GetUseRemaning()), 20)/2, 405, 20, BLACK);
 		}
 		DrawText("Escape", QuitBattleBtn.x + (QuitBattleBtn.width - MeasureText("Escape", 25)) / 2, QuitBattleBtn.y + 2, 25, BLACK);
+		DrawText("Catch", ThrowPokeballBtn.x + (ThrowPokeballBtn.width - MeasureText("Catch", 25)) / 2, ThrowPokeballBtn.y + 2, 25, BLACK);
+		DrawText("Change", ChangePokemonBtn.x + (ChangePokemonBtn.width - MeasureText("Change", 25)) / 2, ChangePokemonBtn.y + 2, 25, BLACK);
+
+		if (endBattle && againstPokemon) {
+			DrawRectangle(0, 0, 1080, 720, WHITE);
+			DrawTextureEx(opponentPokemon.GetFrontSprite(), Vector2{ (float)540 - opponentPokemon.GetFrontSprite().width * 2, (float)200 }, 0, 5, WHITE);
+			DrawTypewriterTextEx(Vector2{ (float)540,(float)180 }, 40, BLACK, 0.05, "You have captured a %s", opponentPokemon.GetName().c_str());
+		}
 	}
 }
 
@@ -207,7 +284,8 @@ int Battle::ChooseInt(int min, int max)
 
 void Battle::AgainstPokemon(Trainers& player, Pokemon& pokemon)
 {
-	for (int i = 0; i < 4; i++) {
+	int randomNumber = GetRandomValue(0, 3);
+	for (int i = 0; i < randomNumber; i++) {
 		int randomAbilityIndex = ChooseInt(0, 8);
 		Abilities ability = GetAbility(randomAbilityIndex);
 		pokemon.LearnAbilities(ability);
@@ -234,6 +312,8 @@ void Battle::EnterBattle()
 void Battle::QuitBattle()
 {
 	stopBattle = true;
+	endBattle = false;
+	ResetTypewriterText();
 }
 
 bool Battle::GetQuitBattle()
@@ -248,35 +328,38 @@ bool Battle::GetDefeated()
 
 void Battle::DrawTypewriterTextEx(Vector2 position, float fontSize, Color color, float speed, const char* format, ...)
 {
-	static int index = 0;
-	static float timer = 0.0f;
-	static std::string text;
-	static char formattedText[50];
+	char formattedText[50];
 
-	timer += GetFrameTime();
+	typewriterTextTimer += GetFrameTime();
 
 	va_list args;
 	va_start(args, format);
 	vsnprintf(formattedText, sizeof(formattedText), format, args);
 	va_end(args);
 
-	text = formattedText;
+	typewriterTextText = formattedText;
 
-	if (timer >= speed)
+	if (typewriterTextTimer >= speed)
 	{
-		timer = 0.0f;
-		index++;
+		typewriterTextTimer = 0.0f;
+		typewriterTextIndex++;
 
-		if (index > text.length())
+		if (typewriterTextIndex > typewriterTextText.length())
 		{
-			index = text.length();
+			typewriterTextIndex = typewriterTextText.length();
 		}
 	}
-	Vector2 textSize = MeasureTextEx(GetFontDefault(), text.substr(0, index).c_str(), fontSize, 1);
+	Vector2 textSize = MeasureTextEx(GetFontDefault(), typewriterTextText.substr(0, typewriterTextIndex).c_str(), fontSize, 1);
 
 	float centeredX = (GetScreenWidth() - textSize.x) / 2.0f;
 
-	DrawTextEx(GetFontDefault(), text.substr(0, index).c_str(), { centeredX, position.y }, fontSize, 1, color);
+	DrawTextEx(GetFontDefault(), typewriterTextText.substr(0, typewriterTextIndex).c_str(), { centeredX, position.y }, fontSize, 1, color);
+}
+void Battle::ResetTypewriterText()
+{
+	typewriterTextIndex = 0;
+	typewriterTextTimer = 0.0f;
+	typewriterTextText.clear();
 }
 bool Battle::ResetAbilityMouseCursor()
 {
@@ -288,18 +371,63 @@ bool Battle::ResetAbilityMouseCursor()
 	return true;
 }
 
+bool Battle::ResetPokemonMouseCursor()
+{
+	for (bool i : pokemonsBtnBool) {
+		if (i == true) {
+			return false;
+		}
+	}
+	return true;
+}
+
 void Battle::OpponentTurn(Trainers& player)
 {
-	float damages = opponentPokemon.CalculateDamage(opponentPokemon.GetAbilities()[GetRandomValue(0, opponentPokemon.GetAbilities().size())], player.GetTeam()[player.GetCurrentPokemonIndex()]);
+	float damages = opponentPokemon.CalculateDamage(opponentPokemon.GetAbilities()[GetRandomValue(0, (opponentPokemon.GetAbilities().size()-1))], player.GetTeam()[player.GetCurrentPokemonIndex()]);
 	player.GetTeam()[player.GetCurrentPokemonIndex()].TakeDamages(damages);
 	if (player.GetTeam()[player.GetCurrentPokemonIndex()].GetIncapacited()) {
 		for (int i = 0; i < player.GetTeam().size(); i++) {
 			if (!player.GetTeam()[i].GetIncapacited()) {
 				player.SetCurrentPokemon(i);
+				return;
 			}
 		}
 		if (player.GetIfTeamIsIncapacited()) {
 			QuitBattle();
+		}
+	}
+}
+
+void Battle::ThrowPokeball(Trainers& player)
+{
+	if (player.GetPokeballs() > 0) {
+		player.EarnPokeballs(-1);
+		if (opponentPokemon.GetHealth() >= 80) {
+			OpponentTurn(player);
+		}
+		else if (opponentPokemon.GetHealth() < 80 && opponentPokemon.GetHealth() >= 50) {
+			int randomNumber = GetRandomValue(0, 100);
+			if (randomNumber < 25) {
+				player.AddPokemon(opponentPokemon);
+				endBattle = true;
+			}
+			else {
+				OpponentTurn(player);
+			}
+		}
+		else if (opponentPokemon.GetHealth() < 50 && opponentPokemon.GetHealth() >= 20) {
+			int randomNumber = GetRandomValue(0, 100);
+			if (randomNumber < 70) {
+				player.AddPokemon(opponentPokemon);
+				endBattle = true;
+			}
+			else {
+				OpponentTurn(player);
+			}
+		}
+		else {
+			player.AddPokemon(opponentPokemon);
+			endBattle = true;
 		}
 	}
 }
