@@ -12,8 +12,6 @@ int timer = 0;
 int endTimer = 0;
 int abilityHoveredIndex = 0;
 
-Rectangle infosTextBox = { 397, 554, 350, 120 };
-
 Rectangle ChangePokemonBtn = { 695, 430, 155, 30 };
 Rectangle ThrowPokeballBtn = { 695, 460, 155, 30 };
 Rectangle QuitBattleBtn = { 695, 490, 155, 30 };
@@ -175,7 +173,7 @@ void Battle::Draw(Trainers& player, bool isInHighGrass, Texture2D& battleBackGro
 	if (againstTrainer) {
 
 	}
-	if (hasBattleLoaded) {
+	if (hasBattleLoaded && !endBattle) {
 		Color enemylifeBarColor;
 		Color playerlifeBarColor;
 		if (player.GetTeam()[player.GetCurrentPokemonIndex()].GetHealth() < (player.GetTeam()[player.GetCurrentPokemonIndex()].GetMaxHealth() * 0.75) && player.GetTeam()[player.GetCurrentPokemonIndex()].GetHealth() >= (player.GetTeam()[player.GetCurrentPokemonIndex()].GetMaxHealth() * 0.4)) {
@@ -203,7 +201,6 @@ void Battle::Draw(Trainers& player, bool isInHighGrass, Texture2D& battleBackGro
 		else {
 			ClearBackground(Color{ 201,255,229,200 });
 		}
-		DrawRectangleLinesEx(infosTextBox, 3, BLACK);
 		DrawRectangleLinesEx(Rectangle{ 230, 430, 620, 90 }, 2, BLACK);
 		DrawRectangle(539, 430, 2, 90, BLACK);
 		DrawRectangle(385, 430, 2, 90, BLACK);
@@ -264,12 +261,10 @@ void Battle::Draw(Trainers& player, bool isInHighGrass, Texture2D& battleBackGro
 		DrawText("Escape", QuitBattleBtn.x + (QuitBattleBtn.width - MeasureText("Escape", 25)) / 2, QuitBattleBtn.y + 2, 25, BLACK);
 		DrawText("Catch", ThrowPokeballBtn.x + (ThrowPokeballBtn.width - MeasureText("Catch", 25)) / 2, ThrowPokeballBtn.y + 2, 25, BLACK);
 		DrawText("Change", ChangePokemonBtn.x + (ChangePokemonBtn.width - MeasureText("Change", 25)) / 2, ChangePokemonBtn.y + 2, 25, BLACK);
-
-		if (endBattle && againstPokemon) {
-			DrawRectangle(0, 0, 1080, 720, WHITE);
-			DrawTextureEx(opponentPokemon.GetFrontSprite(), Vector2{ (float)540 - opponentPokemon.GetFrontSprite().width * 2, (float)200 }, 0, 5, WHITE);
-			DrawTypewriterTextEx(Vector2{ (float)540,(float)180 }, 40, BLACK, 0.05, "You have captured a %s", opponentPokemon.GetName().c_str());
-		}
+	}
+	if (endBattle && againstPokemon) {
+		DrawTextureEx(opponentPokemon.GetFrontSprite(), Vector2{ (float)540 - opponentPokemon.GetFrontSprite().width * 2, (float)200 }, 0, 5, WHITE);
+		DrawTypewriterTextEx(Vector2{ (float)540,(float)180 }, 40, BLACK, 0.05, "You have captured a %s", opponentPokemon.GetName().c_str());
 	}
 }
 
@@ -400,7 +395,7 @@ void Battle::OpponentTurn(Trainers& player)
 
 void Battle::ThrowPokeball(Trainers& player)
 {
-	if (player.GetPokeballs() > 0) {
+	if (player.GetPokeballs() > 0 && player.GetTeam().size() < 6) {
 		player.EarnPokeballs(-1);
 		if (opponentPokemon.GetHealth() >= 80) {
 			OpponentTurn(player);
