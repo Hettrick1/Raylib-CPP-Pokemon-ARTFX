@@ -110,8 +110,10 @@ void Battle::Update(Trainers& player, bool isInHighGrass)
 							QuitBattle();
 						}
 						else {
-							if (opponentTrainer.GetCurrentPokemonIndex() >= opponentTrainer.GetTeam().size()) {
-								QuitBattle();
+							if (opponentTrainer.GetCurrentPokemonIndex() >= opponentTrainer.GetTeam().size()-1) {
+								endBattle = true;
+								player.EarnPokeballs(opponentTrainer.GetPokeballs());
+								player.EarnMoney(opponentTrainer.GetMoney());
 							}
 							else {
 								opponentTrainer.SetCurrentPokemon(opponentTrainer.GetCurrentPokemonIndex() + 1);
@@ -328,6 +330,10 @@ void Battle::Draw(Trainers& player, bool isInHighGrass, Texture2D& battleBackGro
 	if (endBattle && againstPokemon) {
 		DrawTextureEx(opponentPokemon.GetFrontSprite(), Vector2{ (float)540 - opponentPokemon.GetFrontSprite().width * 2, (float)200 }, 0, 5, WHITE);
 		DrawTypewriterTextEx(Vector2{ (float)540,(float)180 }, 40, BLACK, 0.05, "You have captured a %s", opponentPokemon.GetName().c_str());
+	}
+	if (endBattle && againstTrainer)
+	{
+		DrawTypewriterTextEx(Vector2{ (float)540,(float)180 }, 40, BLACK, 0.05, "You have defeated %s", opponentTrainer.GetName().c_str());
 	}
 }
 
