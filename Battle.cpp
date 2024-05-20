@@ -24,6 +24,7 @@ std::vector<bool> abilityBtnBool = { false, false, false, false };
 std::vector<bool> pokemonsBtnBool = { false, false, false, false, false, false };
 
 Pokemon opponentPokemon;
+Trainers opponentTrainer;
 
 Battle::Battle()
 {
@@ -50,15 +51,21 @@ void Battle::Update(Trainers& player, bool isInHighGrass)
 		if (!chooseOpponent) {
 			randomNumber = ChooseInt(0, 100);
 		}
-		if (randomNumber <= 100) { // changer le nombre --> juste pour debug
+		if (randomNumber <= 80) { // changer le nombre --> juste pour debug
 			if (!chooseOpponent) {
-				randomIndex = ChooseInt(0, 10);
+				randomIndex = GetRandomValue(0, 10);
 				opponentPokemon = GetPokemon(randomIndex);
 				AgainstPokemon(player, opponentPokemon);
 				chooseOpponent = true;
 			}	
 		}
 		else{
+			if (!chooseOpponent) {
+				int randomNumber = GetRandomValue(0, 5);
+				opponentTrainer = GetTrainer(randomNumber);
+				AgainstTrainer(player, opponentTrainer);
+				chooseOpponent = true;
+			}
 			// combat contre dresseur
 		}
 	}
@@ -66,15 +73,21 @@ void Battle::Update(Trainers& player, bool isInHighGrass)
 		if (!chooseOpponent) {
 			randomNumber = ChooseInt(0, 100);
 		}
-		if (randomNumber <= 100) { // changer le nombre --> juste pour debug
+		if (randomNumber <= 40) { // changer le nombre --> juste pour debug
 			if (!chooseOpponent) {
-				randomIndex = ChooseInt(0, 10);
+				randomIndex = GetRandomValue(0, 10);
 				opponentPokemon = GetPokemon(randomIndex);
 				AgainstPokemon(player, opponentPokemon);
 				chooseOpponent = true;
 			}
 		}
 		else {
+			if (!chooseOpponent) {
+				int randomNumber = GetRandomValue(0, 5);
+				opponentTrainer = GetTrainer(randomNumber);
+				AgainstTrainer(player, opponentTrainer);
+				chooseOpponent = true;
+			}
 			// combat contre dresseur
 		}
 	}
@@ -92,6 +105,20 @@ void Battle::Update(Trainers& player, bool isInHighGrass)
 				if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
 					float damages = player.GetTeam()[player.GetCurrentPokemonIndex()].CalculateDamage(player.GetTeam()[player.GetCurrentPokemonIndex()].GetAbilities()[i], opponentPokemon);
 					opponentPokemon.TakeDamages(damages);
+					if (opponentPokemon.GetHealth() <= 0) {
+						if (againstPokemon) {
+							QuitBattle();
+						}
+						else {
+							if (opponentTrainer.GetCurrentPokemonIndex() >= opponentTrainer.GetTeam().size()) {
+								QuitBattle();
+							}
+							else {
+								opponentTrainer.SetCurrentPokemon(opponentTrainer.GetCurrentPokemonIndex() + 1);
+								opponentPokemon = opponentTrainer.GetTeam()[opponentTrainer.GetCurrentPokemonIndex()];
+							}
+						}
+					}
 					CreateNewPopUp({ 750, 170 }, TextFormat("%i", (int)damages));
 					OpponentTurn(player);
 					abiNumber = player.GetTeam()[player.GetCurrentPokemonIndex()].GetAbilities().size();
@@ -183,7 +210,26 @@ void Battle::Draw(Trainers& player, bool isInHighGrass, Texture2D& battleBackGro
 		}
 	}
 	if (againstTrainer) {
-
+		if (timer <= 180) {
+			timer += 1;
+			if (timer < 90) {
+				DrawTypewriterTextEx(Vector2{ (float)540,(float)180 }, 40, BLACK, 0.05, "%s %s", opponentTrainer.GetName().c_str(), opponentTrainer.GetLastName().c_str());
+			}
+			else if (timer == 90) {
+				DrawTextEx(GetFontDefault(), TextFormat("%s %s", opponentTrainer.GetName().c_str(), opponentTrainer.GetLastName().c_str()), { (float)540 - MeasureTextEx(GetFontDefault(), TextFormat("%s %s", opponentTrainer.GetName().c_str(), opponentTrainer.GetLastName().c_str()), 40, 1).x/ 2, (float)180 }, 40, 1, BLACK);
+				ResetTypewriterText();
+			}
+			else {
+				DrawTextEx(GetFontDefault(), TextFormat("%s %s", opponentTrainer.GetName().c_str(), opponentTrainer.GetLastName().c_str()), { (float)540 - MeasureTextEx(GetFontDefault(), TextFormat("%s %s", opponentTrainer.GetName().c_str(), opponentTrainer.GetLastName().c_str()), 40, 1).x / 2, (float)180 }, 40, 1, BLACK);
+				DrawTypewriterTextEx(Vector2{ (float)540,(float)250 }, 40, BLACK, 0.05, "%s", opponentTrainer.GetCatchPhrase().c_str());
+			}
+		}
+		else {
+			if (!hasBattleLoaded) {
+				hasBattleLoaded = true;
+				ResetTypewriterText();
+			}
+		}
 	}
 	if (hasBattleLoaded && !endBattle) {
 		Color enemylifeBarColor;
@@ -271,7 +317,9 @@ void Battle::Draw(Trainers& player, bool isInHighGrass, Texture2D& battleBackGro
 			DrawText(TextFormat("Damages : %i - %i Uses : %i", static_cast<int>(ability.GetDamagesMin()), static_cast<int>(ability.GetDamagesMax()), ability.GetUseRemaning()), 385 - MeasureText(TextFormat("Damages : %i - %i Uses : %i", static_cast<int>(ability.GetDamagesMin()), static_cast<int>(ability.GetDamagesMax()), ability.GetUseRemaning()), 20)/2, 405, 20, BLACK);
 		}
 		DrawText("Escape", QuitBattleBtn.x + (QuitBattleBtn.width - MeasureText("Escape", 25)) / 2, QuitBattleBtn.y + 2, 25, BLACK);
-		DrawText("Catch", ThrowPokeballBtn.x + (ThrowPokeballBtn.width - MeasureText("Catch", 25)) / 2, ThrowPokeballBtn.y + 2, 25, BLACK);
+		if (againstPokemon) {
+			DrawText("Catch", ThrowPokeballBtn.x + (ThrowPokeballBtn.width - MeasureText("Catch", 25)) / 2, ThrowPokeballBtn.y + 2, 25, BLACK);
+		}
 		DrawText("Change", ChangePokemonBtn.x + (ChangePokemonBtn.width - MeasureText("Change", 25)) / 2, ChangePokemonBtn.y + 2, 25, BLACK);
 		for (PopUp& popUp : mPopUpText) {
 			DrawText(popUp.text.c_str(), popUp.position.x, popUp.position.y, 50, Color{ 255, 0, 0, (unsigned char)popUp.alpha });
@@ -305,6 +353,19 @@ void Battle::AgainstPokemon(Trainers& player, Pokemon& pokemon)
 
 void Battle::AgainstTrainer(Trainers& player, Trainers& opponent)
 {
+	int randomNumber = GetRandomValue(0, 6);
+	for(int i = 0; i < randomNumber; i++) {
+		int randomIndex = GetRandomValue(0, 10);
+		Pokemon opponentPokemon = GetPokemon(randomIndex);
+		int random = GetRandomValue(0, 3);
+		for (int i = 0; i < random; i++) {
+			int randomAbilityIndex = GetRandomValue(0, 8);
+			Abilities ability = GetAbility(randomAbilityIndex);
+			opponentPokemon.LearnAbilities(ability);
+		}
+		opponent.AddPokemon(opponentPokemon);
+	}
+	opponentPokemon = opponent.GetTeam()[opponent.GetCurrentPokemonIndex()];
 	againstTrainer = true;
 }
 
@@ -321,6 +382,8 @@ void Battle::EnterBattle()
 
 void Battle::QuitBattle()
 {
+	againstPokemon = false;
+	againstTrainer = false;
 	stopBattle = true;
 	endBattle = false;
 	ResetTypewriterText();

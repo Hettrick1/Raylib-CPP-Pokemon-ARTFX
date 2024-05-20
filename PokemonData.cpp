@@ -36,12 +36,12 @@ Texture2D rattataBackTexture;
 
 std::vector<Pokemon> allPokemons;
 std::vector<Trainers> allTrainers = {
-        Trainers("w", "q", "q", 100, 100, 0),
-        Trainers("r", "w", "w", 200, 100, 5),
-        Trainers("t", "e", "e", 300, 100, 4),
-        Trainers("z", "r", "r", 100, 100, 8),
-        Trainers("u", "t", "t", 200, 100, 10),
-        Trainers("i", "z", "z", 300, 100, 5),
+        Trainers("Clover", "Spy", "Hello I'm Clover", 100, 100, 0),
+        Trainers("Sam", "Spy", "Hello I'm Sam", 200, 100, 5),
+        Trainers("Alex", "Spy", "Hello I'm Alex", 300, 100, 4),
+        Trainers("Jerry", "Lewis", "I just wooped you", 100, 100, 8),
+        Trainers("Mandy", "JusteMandy", "You stole my chocolate", 200, 100, 10),
+        Trainers("Martin", "Mistere", "Hello I'm Martin", 300, 100, 5),
 };
 std::vector<Abilities> allAbilities = {
         Abilities("Ability1", 10, 15, 35, PokeType::ELECTRIC),

@@ -25,6 +25,8 @@ public:
 	Trainers(std::string dName);
 	~Trainers();
 	std::string GetName();
+	std::string GetLastName();
+	std::string GetCatchPhrase();
 	std::vector<Pokemon>& GetTeam();
 	void AddPokemon(Pokemon& pokemon);
 	void ShowTeam();

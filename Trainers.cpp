@@ -34,6 +34,14 @@ Trainers::Trainers(std::string name) {
 }
 Trainers::~Trainers() {}
 std::string Trainers::GetName() { return mName; }
+std::string Trainers::GetLastName()
+{
+	return mLastName;
+}
+std::string Trainers::GetCatchPhrase()
+{
+	return mCatchPhrase;
+}
 void Trainers::AddPokemon(Pokemon& pokemon) {
 	mTeam.push_back(pokemon);
 }
